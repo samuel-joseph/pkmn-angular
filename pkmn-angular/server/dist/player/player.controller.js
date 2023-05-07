@@ -11,9 +11,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PlayerController = void 0;
 const common_1 = require("@nestjs/common");
+const player_service_1 = require("./player.service");
 let PlayerController = class PlayerController {
+    constructor(playerService) {
+        this.playerService = playerService;
+    }
     getPlayer() {
-        return ['Player One'];
+        return this.playerService.getPlayer();
     }
 };
 __decorate([
@@ -23,7 +27,8 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PlayerController.prototype, "getPlayer", null);
 PlayerController = __decorate([
-    (0, common_1.Controller)('player')
+    (0, common_1.Controller)('player'),
+    __metadata("design:paramtypes", [player_service_1.PlayerService])
 ], PlayerController);
 exports.PlayerController = PlayerController;
 //# sourceMappingURL=player.controller.js.map
