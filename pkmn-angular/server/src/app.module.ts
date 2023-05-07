@@ -3,11 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PlayerModule } from './player/player.module';
 import { PlayerController } from './player/player.controller';
-import { PlayerModule } from './player/player.module';
+import { PlayerService } from './player/player.service';
 
 @Module({
   imports: [PlayerModule],
   controllers: [AppController, PlayerController],
-  providers: [AppService],
+  providers: [AppService, PlayerService],
 })
 export class AppModule {}
