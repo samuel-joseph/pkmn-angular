@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { PokemonService } from '../_services/pokemon/pokemon.service';
-import { PokemonModel } from '../model/pokemon-model.model';
+import { PokemonModel, RegionPokemon } from '../model/pokemon-model.model';
+import { getStats, getMove, getTypes } from '../helper/pokemon-helper';
+import { Pokemon } from '../helper/pokemon.class';
+
 
 @Component({
   selector: 'app-player',
@@ -8,33 +11,26 @@ import { PokemonModel } from '../model/pokemon-model.model';
   styleUrls: ['./player.component.scss']
 })
 export class PlayerComponent implements OnInit{
-  constructor(private http: PokemonService) { }
-  myPokemon: PokemonModel
+  constructor(
+    private http: PokemonService,
+    private pokemonService: Pokemon
+  ) { }
+  // myPokemons: PokemonModel[] = []
+  myPokemons: any[] = []
+  regionPokemons: RegionPokemon[] = []
+  pokemon: any
+  count: number = 0
 
 
   ngOnInit(): void {
-    console.log("HELLO")
-    // this.http.getPokemon('658').subscribe(data => {
+    this.regionPokemons = this.pokemonService.getPokemonRegion()
+  }
 
-
-    //   this.myPokemon = {
-    //     id: data.id,
-    //     name: data.name,
-    //     stats: [
-    //       {
-    //         base_stat: data.stats[0].base_stat,
-    //         name: data.stats[0].name
-    //       }
-    //     ],
-    //     types: {
-    //       typeOne: data.types[0].name,
-    //       typeTwo: data.typeTwo[1].name
-    //     },
-    //     moves:
-    //     front_image: data.sprites.front_default,
-    //     back_image: data.sprites.back_default
-    //   }
-    // })
-    // console.log("CHECKING MY POKEMON ",this.myPokemon)
+  chosenPokemon(id: string){
+    this.count++
+    this.pokemon = this.http.getPokemon(id).subscribe((data) => {
+      this.pokemon = data
+      this.myPokemons.push(data)
+    })
   }
 }

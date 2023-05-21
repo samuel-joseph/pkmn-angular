@@ -1,1 +1,14 @@
-<p>player works!</p>
+<div *ngIf="pokemon">
+  <h2>{{ pokemon.sprites.front_default }}</h2>
+  <img [src]="pokemon.sprites.front_default" />
+</div>
+
+<div *ngIf="myPokemons">
+  <div *ngFor="let item of myPokemons">
+    <img [src]="item.sprites.front_default" />
+  </div>
+</div>
+
+<div *ngFor="let pokemon of regionPokemons">
+    <img [src]="pokemon.url" (click)="chosenPokemon(pokemon.id)" />
+</div>

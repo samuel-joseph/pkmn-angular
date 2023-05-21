@@ -10,6 +10,11 @@ export interface PokemonModel {
   back_image: string
 }
 
+export interface RegionPokemon {
+  id: string,
+  url: string
+}
+
 export interface Type{
   typeOne: string,
   typeTwo?: string
