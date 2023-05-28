@@ -5,7 +5,9 @@ import { PokemonModel, StatsModel } from 'src/app/model/pokemon-model.model';
 import { MoveModel } from 'src/app/model/move-model.model';
 import { getStats,getTypes, getMove } from 'src/app/helper/pokemon-helper';
 
-const POKEMON_API = 'https://pokeapi.co/api/v2/pokemon/';
+const url = 'https://pokeapi.co/api/v2';
+const monster = '/pokemon/'
+const move = '/move/'
 const kanto = 151
 
 @Injectable({
@@ -16,8 +18,7 @@ export class PokemonService {
   constructor(private http: HttpClient) { }
 
   getPokemon(id: string){
-    return this.http.get(`${POKEMON_API}${id}`)
-      
+    return this.http.get(`${url}${monster}${id}`)
     //   .pipe(map((res) => {
     //     console.log(res.moves)
     //     const pokemon = {
@@ -38,8 +39,8 @@ export class PokemonService {
     // })
   }
 
-  getPokemonMove(MOVE_API: string){
-    return this.http.get(`${MOVE_API}`)
+  getPokemonMove(id: string): Observable<any>{
+    return this.http.get(`${url}${move}${id}`)
   }
 
   handleError(error: any) {
