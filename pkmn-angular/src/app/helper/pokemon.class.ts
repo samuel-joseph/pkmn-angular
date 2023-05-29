@@ -13,14 +13,28 @@ import { regionPokemonsImage, region } from "./region-helper"
   regionPokemons: RegionPokemon[] = [];
    constructor(private restApi: PokemonService) { }
 
-   getPokemonRegion():any{
-     const regionSpecific = 'kanto'
-     const firstPokemon = region[regionSpecific].firstPokemon
-     const lastPokemon = region[regionSpecific].lastPokemon
-    console.log("in getPokemonRegion")
+   getPokemonRegion(request: string): any{
+     this.regionPokemons = []
+     let firstPokemon = 0
+     let lastPokemon = 0
+     switch (request) {
+       case 'kanto':
+         firstPokemon = 1
+         lastPokemon = 151
+         break
+       case 'johto':
+        firstPokemon = 152
+        lastPokemon = 251
+         break
+       case 'hoenn':
+        firstPokemon = 252
+        lastPokemon = 386
+         break
+     }
      for (let i = firstPokemon; i <= lastPokemon; i++){
        this.regionPokemons.push(regionPokemonsImage(`${i}`))
      }
+     console.log(this.regionPokemons)
      return this.regionPokemons
    }
    

@@ -16,6 +16,6 @@ export const region = {
 export const regionPokemonsImage = (id: string) => {
   return {
     id: id,
-    url: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${id}.png`
+    url: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
   }
 }

@@ -1,1 +1,15 @@
-<p>new-game works!</p>
+<div *ngIf="myPokemons">
+  <div *ngFor="let pokemon of myPokemons">
+    <img [src]="pokemon.sprites.front_default" (click)="removePokemon(pokemon.id)"/>
+  </div>
+</div>
+
+<span *ngFor="let region of regionArr">
+  <button (click)="getRegion(region)">{{region}}</button>
+</span>
+
+<div *ngIf="regionPokemons">
+  <div *ngFor="let pokemon of regionPokemons">
+      <img [src]="pokemon.url" (click)="chosenPokemon(pokemon.id)" />
+  </div>
+</div>
