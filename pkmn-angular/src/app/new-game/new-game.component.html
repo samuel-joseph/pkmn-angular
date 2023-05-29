@@ -1,7 +1,7 @@
 <div *ngIf="myPokemons">
-  <div *ngFor="let pokemon of myPokemons">
+  <span *ngFor="let pokemon of myPokemons">
     <img [src]="pokemon.sprites.front_default" (click)="removePokemon(pokemon.id)"/>
-  </div>
+  </span>
 </div>
 
 <span *ngFor="let region of regionArr">
@@ -9,7 +9,7 @@
 </span>
 
 <div *ngIf="regionPokemons">
-  <div *ngFor="let pokemon of regionPokemons">
+  <span *ngFor="let pokemon of regionPokemons">
       <img [src]="pokemon.url" (click)="chosenPokemon(pokemon.id)" />
-  </div>
+  </span>
 </div>

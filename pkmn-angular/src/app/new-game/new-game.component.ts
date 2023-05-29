@@ -54,7 +54,6 @@ export class NewGameComponent implements OnInit{
 
   getRegion(region: string) {
     let copyRegionPokemons = this.pokemonService.getPokemonRegion(region)
-    console.log(copyRegionPokemons)
     this.regionPokemons = copyRegionPokemons
   }
 

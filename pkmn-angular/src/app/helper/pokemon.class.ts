@@ -43,7 +43,6 @@ import { regionPokemonsImage } from "./region-helper"
      for (let i = firstPokemon; i <= lastPokemon; i++){
        this.regionPokemons.push(regionPokemonsImage(`${i}`))
      }
-     console.log(this.regionPokemons)
      return this.regionPokemons
    }
    
