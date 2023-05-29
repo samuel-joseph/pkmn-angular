@@ -10,9 +10,18 @@ import { PokemonModel } from './model/pokemon-model.model';
 export class AppComponent implements OnInit{
   title = 'pkmn-angular';
   constructor(private http: PokemonService) { }
-  myPokemon: PokemonModel
+  myPokemon: PokemonModel[] = []
+  page: string
 
-
+  public doSomething(child: any): void {
+    this.myPokemon.push(...child.pokemon)
+    console.log(this.myPokemon)
+    this.page = child.next
+  }
+  
   ngOnInit(): void {
+    if (this.myPokemon.length < 1) {
+      this.page = 'newGame'
+    }
   }
 }

@@ -1,1 +1,5 @@
-<router-outlet></router-outlet>
+<div [ngSwitch]="page">
+  <app-new-game *ngSwitchCase="'newGame'" (onDatePicked)="doSomething($event)"></app-new-game>
+  <app-player *ngSwitchCase="'player'"></app-player>
+</div>
+
