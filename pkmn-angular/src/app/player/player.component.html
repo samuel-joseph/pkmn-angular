@@ -1,1 +1,16 @@
 <h1>PLAYER</h1>
+<div>
+  <div *ngIf="myPokemons"> 
+    <div *ngFor="let pokemon of myPokemons">
+      <div>
+        <img [src]="pokemon.front_image"/>
+        <div *ngFor="let stat of pokemon.stats">
+          {{stat.name}} : {{stat.base_stat}}
+        </div>
+      </div>
+      <div *ngFor="let move of pokemon.moves">
+        <button>{{move.name}} : {{move.power}}</button>
+      </div>
+    </div>
+  </div>
+</div>

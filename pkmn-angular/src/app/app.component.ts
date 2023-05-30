@@ -13,9 +13,8 @@ export class AppComponent implements OnInit{
   myPokemon: PokemonModel[] = []
   page: string
 
-  public doSomething(child: any): void {
+  public getPokemons(child: any): void {
     this.myPokemon.push(...child.pokemon)
-    console.log(this.myPokemon)
     this.page = child.next
   }
   
