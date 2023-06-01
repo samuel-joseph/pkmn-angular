@@ -79,10 +79,13 @@ export class NewGameComponent implements OnInit{
     this.myPokemons = copyMyPokemons
   }
 
+
+
   toStore() {
     let tempArr = []
     for (const myPokemon of this.myPokemons) {
-    let tempArrMoves: MoveModel[] = []
+      let tempDbMoves: MoveModel[] = []
+      let temp4Moves: MoveModel[] = []
       for (const move of myPokemon.moves) {
         let url = move.move.url
         let learnMethod = move.version_group_details[0].move_learn_method.name
@@ -93,7 +96,7 @@ export class NewGameComponent implements OnInit{
         if (this.moveListArr.includes(parseInt(id)) &&
           learnMethod === 'level-up') {
           let objMove = this.dbMoves.filter(data => data.id === parseInt(id))
-          tempArrMoves.push(...objMove)
+          tempDbMoves.push(...objMove)
         } 
       }
 
@@ -102,7 +105,8 @@ export class NewGameComponent implements OnInit{
         name: myPokemon.name,
         stats: getStats(myPokemon.stats),
         types: getTypes(myPokemon.types),
-        moves: tempArrMoves,
+        moves: temp4Moves,
+        dbMoves: tempDbMoves,
         front_image: myPokemon.sprites.front_default,
         back_image: myPokemon.sprites.back_default
       }

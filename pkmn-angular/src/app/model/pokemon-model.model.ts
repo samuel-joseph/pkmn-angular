@@ -6,6 +6,7 @@ export interface PokemonModel {
   stats: Array<StatsModel>,
   types: Type,
   moves: Array<MoveModel>, 
+  dbMoves: Array<MoveModel>,
   front_image: string,
   back_image: string
 }

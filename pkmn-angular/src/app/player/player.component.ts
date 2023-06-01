@@ -11,7 +11,21 @@ export class PlayerComponent implements OnInit{
   constructor(
   ) { }
   @Input() myPokemons: PokemonModel[] = []
-  newMoves: MoveModel[] = []
+
+  modifyMove(idMove: number, idPokemon: number, str: string) {
+    console.log(idMove, idPokemon, str)
+    let indexPokemon = this.myPokemons.findIndex(pokemon => pokemon.id === idPokemon)
+    let indexMove = this.myPokemons[indexPokemon].dbMoves.findIndex(move => move.id === idMove)
+    let myPokemon = this.myPokemons[indexPokemon]
+    if (str === 'add') {
+    myPokemon.moves.push(myPokemon.dbMoves[indexMove])
+    myPokemon.dbMoves.splice(indexMove, 1)
+    } else {
+    myPokemon.dbMoves.push(myPokemon.moves[indexMove])
+    myPokemon.moves.splice(indexMove, 1)
+    }
+    console.log(myPokemon)
+  }
 
   ngOnInit(): void {}
 }
