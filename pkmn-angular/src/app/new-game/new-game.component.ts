@@ -24,6 +24,7 @@ export class NewGameComponent implements OnInit{
     'sinnoh',
     'unova',
     'kalos',
+    'alola'
   ]
   myPokemons: any[] = []
   regionPokemons: RegionPokemon[] = []
@@ -64,6 +65,7 @@ export class NewGameComponent implements OnInit{
     if(isUnique.length<1 || isUnique == undefined){
       this.pokemon = this.http.getPokemon(id).subscribe((data) => {
         this.pokemon = data
+        console.log(data)
         this.myPokemons.push(data)
         if (this.myPokemons.length == 6) {
           this.toStore()
@@ -84,6 +86,7 @@ export class NewGameComponent implements OnInit{
   toStore() {
     let tempArr = []
     for (const myPokemon of this.myPokemons) {
+      console.log(myPokemon)
       let tempDbMoves: MoveModel[] = []
       let temp4Moves: MoveModel[] = []
       for (const move of myPokemon.moves) {

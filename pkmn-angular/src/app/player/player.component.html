@@ -1,4 +1,5 @@
 <h1>PLAYER</h1>
+<button (click)="check()">CHECKING</button>
 <div>
   <div *ngIf="myPokemons"> 
     <div *ngFor="let pokemon of myPokemons">
@@ -8,9 +9,9 @@
           {{stat.name}} : {{stat.base_stat}}
         </div>
       </div>
-      <div *ngIf="pokemon.moves.length == 4;else dbMoves">
+      <div *ngIf="pokemon.moves.length == 4||pokemon.dbMoves.length == 0;else dbMoves">
         <div *ngFor="let move of pokemon.moves">
-          <button style="background-color: red;">{{move.name}} : {{move.power}}</button>
+          <button style="background-color: red;" (click)="modifyMove(move.id, pokemon.id,'subtract')">{{move.name}} : {{move.power}}</button>
         </div>
       </div>
       <ng-template #dbMoves>

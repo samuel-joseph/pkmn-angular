@@ -37,8 +37,13 @@ import { regionPokemonsImage } from "./region-helper"
          break
        case 'kalos':
          firstPokemon = 650
-         lastPokemon = 719
+         lastPokemon = 721
          break
+       case 'alola':
+         firstPokemon = 722
+         lastPokemon = 807
+         break
+         
      }
      for (let i = firstPokemon; i <= lastPokemon; i++){
        this.regionPokemons.push(regionPokemonsImage(`${i}`))
