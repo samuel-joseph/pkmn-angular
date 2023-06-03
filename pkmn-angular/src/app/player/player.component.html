@@ -9,16 +9,19 @@
           {{stat.name}} : {{stat.base_stat}}
         </div>
       </div>
-      <div *ngIf="pokemon.moves.length == 4||pokemon.dbMoves.length == 0;else dbMoves">
-        <div *ngFor="let move of pokemon.moves">
+      <!-- <div *ngIf="pokemon.moves.length == 4||pokemon.dbMoves.length == 0;else dbMoves"> -->
+      <div *ngIf="pokemon.moves">
+        <span *ngFor="let move of pokemon.moves">
           <button style="background-color: red;" (click)="modifyMove(move.id, pokemon.id,'subtract')">{{move.name}} : {{move.power}}</button>
-        </div>
+        </span>
       </div>
-      <ng-template #dbMoves>
+      <!-- <ng-template #dbMoves> -->
+      <div *ngIf="pokemon.moves.length<4">
         <div *ngFor="let move of pokemon.dbMoves">
           <button style="background-color: blue;" (click)="modifyMove(move.id, pokemon.id,'add')">{{move.name}} : {{move.power}}</button>
         </div>
-      </ng-template>
+      </div>
+      <!-- </ng-template> -->
     </div>
   </div>
 </div>
