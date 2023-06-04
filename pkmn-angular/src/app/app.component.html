@@ -1,5 +1,20 @@
 <div [ngSwitch]="page">
-  <app-new-game *ngSwitchCase="'newGame'" (pokemonSubmit)="getPokemons($event)"></app-new-game>
-  <app-player [myPokemons]="myPokemon" *ngSwitchCase="'player'"></app-player>
+  <app-new-game 
+    *ngSwitchCase="'newGame'" 
+    (pokemonSubmit)="transition($event)"
+    >
+  </app-new-game>
+  <app-player 
+    [myPokemons]="myPokemon" 
+    *ngSwitchCase="'player'" 
+    (pokemonSubmit)="transition($event)"
+    >
+  </app-player>
+  <app-pre-battle
+    [myPokemons]="myPokemon"
+    *ngSwitchCase="'pre-battle'"
+    (pokemonSubmit)="transition($event)"
+    >
+  </app-pre-battle>
 </div>
 

@@ -1,6 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { PokemonModel } from '../model/pokemon-model.model';
-import { MoveModel } from '../model/move-model.model';
 
 @Component({
   selector: 'app-player',
@@ -8,12 +7,17 @@ import { MoveModel } from '../model/move-model.model';
   styleUrls: ['./player.component.scss']
 })
 export class PlayerComponent implements OnInit{
-  constructor(
-  ) { }
+  constructor( ) { }
   @Input() myPokemons: PokemonModel[] = []
+  @Output() pokemonSubmit = new EventEmitter();
+  movesAllReady = false
 
-  check() {
-    console.log(this.myPokemons)
+  battleReady(response: any) {
+    this.movesAllReady = response
+    console.log("Checking response ", response)
+    if (response) {
+      this.pokemonSubmit.emit({ pokemon: this.myPokemons, next:'pre-battle'})
+    }
   }
 
   modifyMove(idMove: number, idPokemon: number, str: string) {
@@ -37,6 +41,15 @@ export class PlayerComponent implements OnInit{
       if(firstPokemon){
         this.myPokemons.push(firstPokemon)
       }
+    }
+
+    this.allMovesReady()
+  }
+
+  allMovesReady(){
+    let checker = this.myPokemons.filter(pokemon => pokemon.moves.length < 4||pokemon.dbMoves.length==0)
+    if (checker.length == 0) {
+      this.movesAllReady = true
     }
   }
 
