@@ -40,3 +40,7 @@ export const getTypes = (type: any) => {
     typeOne: type[0].type.name
   }
 }
+
+export const getRandNum = (min: number, max: number) => {
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}

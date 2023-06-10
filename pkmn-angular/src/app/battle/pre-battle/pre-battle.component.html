@@ -1,1 +1,17 @@
-<p>pre-battle works!</p>
+<p>pre-battle !</p>
+<div *ngIf="this.pokemon">
+  <img [src]="this.currentGymBadge" />
+  <div *ngFor="let pokemon of this.pokemon">
+    <img [src]="pokemon.front_image" />
+    <div *ngFor="let move of pokemon.moves">
+      <button>{{move.name}}</button>
+    </div>
+  </div>
+  <h1>VS</h1>
+  <div *ngFor="let pokemon of this.myPokemons">
+    <img [src]="pokemon.front_image" />
+    <div *ngFor="let move of pokemon.moves">
+      <button>{{move.name}}</button>
+    </div>
+  </div>
+</div>

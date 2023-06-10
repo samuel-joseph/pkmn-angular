@@ -1,9 +1,112 @@
 export const environment = {
   gymLeaders: [
     {
-      gymImage: '',
-      gymBadge: '',
-      
+      gymBadge: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/1.png',
+      gymLose: false,
+      gymPokemons: [
+        {
+          pokemonId: 76,
+          moves: [
+            523,
+            33,
+            350
+          ]
+        },
+        {
+          pokemonId: 38,
+          moves: [
+            33,
+            53,
+            326
+          ]
+        },
+        {
+          pokemonId: 457,
+          moves: [
+            33,
+            55,
+            352
+          ]
+        },
+        {
+          pokemonId: 95,
+          moves: [
+            523,
+            33,
+            350
+          ]
+        },
+        {
+          pokemonId: 169,
+          moves: [
+            305,
+            314,
+            440
+          ]
+        },
+        {
+          pokemonId: 208,
+          moves: [
+            231,
+            444,
+            21
+          ]
+        }
+      ]
+    },
+    {
+      gymBadge: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/2.png',
+      gymLose: false,
+      gymPokemons: [
+        {
+          pokemonId: 76,
+          moves: [
+            523,
+            33,
+            350
+          ]
+        },
+        {
+          pokemonId: 38,
+          moves: [
+            33,
+            53,
+            326
+          ]
+        },
+        {
+          pokemonId: 457,
+          moves: [
+            33,
+            55,
+            352
+          ]
+        },
+        {
+          pokemonId: 95,
+          moves: [
+            523,
+            33,
+            350
+          ]
+        },
+        {
+          pokemonId: 169,
+          moves: [
+            305,
+            314,
+            440
+          ]
+        },
+        {
+          pokemonId: 208,
+          moves: [
+            231,
+            444,
+            21
+          ]
+        }
+      ]
     }
   ],
   region: [

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PokemonService } from './_services/pokemon/pokemon.service';
 
 import { PokemonModel } from './model/pokemon-model.model';
+import { MoveModel } from './model/move-model.model';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,11 +12,17 @@ export class AppComponent implements OnInit{
   title = 'pkmn-angular';
   constructor(private http: PokemonService) { }
   myPokemon: PokemonModel[] = []
+  dbMove: MoveModel[] = []
   page: string
 
   public transition(child: any): void {
-    console.log(child)
+    if (this.myPokemon.length > 0) {
+      this.myPokemon = []
+    }
     this.myPokemon.push(...child.pokemon)
+    if(child.dbMoves){
+      this.dbMove.push(...child.dbMoves)
+    }
     this.page = child.next
   }
   
