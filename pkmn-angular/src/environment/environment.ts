@@ -1,4 +1,5 @@
 export const environment = {
+  pokeballImg: 'https://www.freeiconspng.com/thumbs/pokeball-png/pokemon-ball-png-1.png',
   gymLeaders: [
     {
       gymBadge: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/1.png',
