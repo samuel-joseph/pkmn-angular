@@ -8,6 +8,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class PopUpComponent {
   @Input() movesAllReady: boolean
   @Output() battlePrep = new EventEmitter();
+  @Output() goBattle = new EventEmitter();
 
   isReady(response: boolean) {
     this.battlePrep.emit(response)

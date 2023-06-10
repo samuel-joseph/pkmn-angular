@@ -5,6 +5,7 @@ import { PokemonModel } from 'src/app/model/pokemon-model.model';
 import { PokemonService } from 'src/app/_services/pokemon/pokemon.service';
 import { environment } from 'src/environment/environment';
 import { MoveModel } from 'src/app/model/move-model.model';
+import { timeout } from 'rxjs';
 
 @Component({
   selector: 'app-pre-battle',
@@ -12,20 +13,28 @@ import { MoveModel } from 'src/app/model/move-model.model';
   styleUrls: ['./pre-battle.component.scss']
 })
 export class PreBattleComponent implements OnInit {
-  @Input() myPokemons: PokemonModel[] = []
   @Input() dbMoves: MoveModel[] = []
   gymLeaders = environment.gymLeaders
-  gymPokemons: PokemonModel[] = []
+
+  @Input() myPokemons: PokemonModel[] = []
+  copyMyPokemons: PokemonModel[] = []
+
   gymPokemonsTemp: any[]=[]
-  pokemon: any
+  gymPokemons: any
+  copyGymPokemons: any
+
   currentGymLeader: any[] = []
   currentGymBadge: string
+  pokeball = environment.pokeballImg
+
+  player1: PokemonModel[] = []
+  player2: PokemonModel[] = []
   
   constructor(private http: PokemonService){}
 
   ngOnInit() {
-    console.log(this.myPokemons)
     this.currentGymLeader = this.checkLeaders()
+    this.copyMyPokemons = this.myPokemons
     this.getPokemon()
   }
 
@@ -40,8 +49,35 @@ export class PreBattleComponent implements OnInit {
     }
   }
 
-  getMove() {
+  player2Chosen(pokemon: PokemonModel): void {
+    this.player2.push(pokemon)
+  }
+
+
+  gymChoose() {
+    while (this.player2.length<3) {
+      let randIndex = getRandNum(0, this.currentGymLeader.length - 1)
+      let chosen = this.gymPokemons[randIndex]
+      this.gymPokemons.splice(randIndex, 1)
+      this.player2Chosen(chosen)
+    }
+  }
+
+  battleReady(response: boolean) {
+    if (response) {
+      console.log("to battle")
+    } else {
+      let i = 0
+      while (this.player1.length!=0) {
+        this.remove(this.player1[i])
+        i++
+      }
+    }
+  }
+
+  async getMove() {
     let tempArr = []
+    let tempArrCopy = []
     for (let i = 0; i < this.gymPokemonsTemp.length; i++) {
       let tempMoves: MoveModel[] = []
       const filtered = this.currentGymLeader.filter(tempData => tempData.pokemonId == this.gymPokemonsTemp[i].id)
@@ -60,12 +96,31 @@ export class PreBattleComponent implements OnInit {
         front_image: this.gymPokemonsTemp[i].sprites.front_default,
         back_image: this.gymPokemonsTemp[i].sprites.back_default
       }
+      let copyGymPokemons = {
+        front_image: this.gymPokemonsTemp[i].sprites.front_default
+      }
       tempArr.push(pokemon)
+      tempArrCopy.push(copyGymPokemons)
     }
-    console.log(...tempArr)
-    this.pokemon = tempArr
+    this.gymPokemons = tempArr
+    this.copyGymPokemons = tempArrCopy
+    this.gymChoose()
   }
 
+  remove(pokemon: PokemonModel) {
+    const index = this.player1.findIndex(val => val == pokemon)
+    const removed = this.player1.splice(index,1)
+    this.copyMyPokemons.push(...removed)
+  }
+
+  
+  player1Chosen(pokemon: PokemonModel) {
+    if(this.player1.length<3){
+      this.player1.push(pokemon)
+      const index = this.copyMyPokemons.findIndex(val => val == pokemon)
+      this.copyMyPokemons.splice(index, 1)
+    }
+  }
 
 
   checkLeaders() {

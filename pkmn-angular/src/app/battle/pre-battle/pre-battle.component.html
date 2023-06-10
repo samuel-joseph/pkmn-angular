@@ -1,17 +1,89 @@
-<p>pre-battle !</p>
-<div *ngIf="this.pokemon">
-  <img [src]="this.currentGymBadge" />
-  <div *ngFor="let pokemon of this.pokemon">
-    <img [src]="pokemon.front_image" />
-    <div *ngFor="let move of pokemon.moves">
-      <button>{{move.name}}</button>
+<div style="
+display: flex; 
+flex-direction: column; 
+flex-wrap: wrap; 
+justify-self: center; 
+width: 100vw;"
+>
+  <div 
+  *ngIf="this.myPokemons"
+  style="
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 40vh;
+    align-items: center;
+    "
+  >
+    <div *ngIf="this.player1.length>0"
+      style="
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      justify-content: center;"
+      >
+      <div *ngFor="let pokemon of this.player1">
+        <img [src]="this.pokeball" (click)="this.remove(pokemon)"
+        style="width: 5vw;"
+         />
+      </div>
+    </div>
+    <div style=
+    "display: flex; 
+    flex-direction: row; 
+    flex-wrap: wrap; 
+    width: 90vw; 
+    justify-content: center;"
+    >
+      <div *ngFor="let pokemon of this.myPokemons">
+        <img (click)="this.player1Chosen(pokemon)" [src]="pokemon.front_image" />
+      </div>
     </div>
   </div>
-  <h1>VS</h1>
-  <div *ngFor="let pokemon of this.myPokemons">
-    <img [src]="pokemon.front_image" />
-    <div *ngFor="let move of pokemon.moves">
-      <button>{{move.name}}</button>
+  <div style="padding: 5vh 0;">
+    <div *ngIf="this.player1.length==3;else versus">
+      <app-pop-up (battlePrep)="battleReady($event)"></app-pop-up>
+    </div>
+    <ng-template #versus>
+      <h1 style="text-align: center;">VS</h1>
+    </ng-template> 
+  </div>
+  <div 
+  *ngIf="this.gymPokemons"
+  style="
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 40vh;
+    align-items: center;
+    "
+  >
+    <div *ngIf="this.player2.length>0"
+      style="
+        display: flex; 
+        flex-direction: 
+        column; align-items: 
+        center; justify-content: center;"
+      >
+      <div *ngFor="let pokemon of this.player2">
+        <img [src]="this.pokeball" 
+        style="width: 5vw;"
+        />
+      </div>
+    </div>
+    <div style="
+    display: flex; 
+    flex-direction: 
+    row; flex-wrap: 
+    wrap; width: 90vw; 
+    justify-content: center;"
+    >
+      <div *ngFor="let pokemon of this.copyGymPokemons">
+        <img [src]="pokemon.front_image" />
+        <!-- <div *ngFor="let move of pokemon.moves">
+          <button>{{move.name}}</button>
+        </div> -->
+      </div>
     </div>
   </div>
 </div>

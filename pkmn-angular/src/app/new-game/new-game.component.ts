@@ -58,13 +58,21 @@ export class NewGameComponent implements OnInit{
     if(isUnique.length<1 || isUnique == undefined){
       this.pokemon = this.http.getPokemon(id).subscribe((data) => {
         this.pokemon = data
-        console.log(data)
         this.myPokemons.push(data)
         if (this.myPokemons.length == 6) {
           this.toStore()
         }
       })
     }
+    this.gotoTop()
+  }
+
+  gotoTop() {
+    window.scroll({ 
+      top: 0, 
+      left: 0, 
+      behavior: 'smooth' 
+    });
   }
 
   removePokemon(id:any) {
@@ -79,7 +87,6 @@ export class NewGameComponent implements OnInit{
   toStore() {
     let tempArr = []
     for (const myPokemon of this.myPokemons) {
-      console.log(myPokemon)
       let tempDbMoves: MoveModel[] = []
       let temp4Moves: MoveModel[] = []
       for (const move of myPokemon.moves) {
@@ -109,7 +116,7 @@ export class NewGameComponent implements OnInit{
       tempArr.push(pokemon)
 
       if (tempArr.length == 6) {
-        this.pokemonSubmit.emit({ pokemon: tempArr, next:'player'});
+        this.pokemonSubmit.emit({ pokemon: tempArr, next:'player', dbMoves: this.dbMoves});
       }
     }
   }
