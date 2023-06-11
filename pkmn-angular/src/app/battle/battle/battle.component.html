@@ -4,7 +4,7 @@ display: flex;
 justify-content: flex-end;
 "
 >
-  <img [src]="this.player2[0].front_image" 
+  <img [src]="this.currentPlayer2[0].front_image" 
   style="
   height: 50vw;
   " 
@@ -16,20 +16,51 @@ display: flex;
 justify-content: flex-start;
 "
 >
-  <img [src]="this.player1[0].back_image" 
+  <img [src]="this.currentPlayer1[0].back_image" 
   style="
   height: 50vw;
   " 
   />
 </div>
-<div style="display: flex; flex-direction: column; justify-content: center;">
-  <div
-  style="
-  display: flex;
-  justify-content: center;
-  margin-bottom: 5px;
-  "
-   *ngFor="let move of this.player1[0].moves">
-    <button style="width: 40vw;">{{move.name}}</button>
+<div [ngSwitch]="playerOption"
+ style="display: flex; flex-direction: column; justify-content: center;">
+ <div *ngSwitchCase="'fight'">
+    <div
+    style="
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+    "
+    *ngFor="let move of this.currentPlayer1[0].moves">
+      <button style="width: 40vw;">{{move.name}}</button>
+    </div>
+    <div (click)="this.decisionOption('default')"
+    style="text-align: center;"
+    >back</div>
+  </div>
+  <div *ngSwitchCase="'default'">
+    <div
+    style="
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 5px;
+    align-items: center;
+    ">
+    <button (click)="this.decisionOption('fight')" style="width: 40vw;">Fight</button>
+    <button (click)="this.decisionOption('swap')" style="width: 40vw;">Swap</button>
+    </div>
+  </div>
+  <div *ngSwitchCase="'swap'">
+    <div 
+    style="
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+    align-items: center;
+    "
+    *ngFor="let pokemon of this.player1">
+    <button (click)="this.swapOption(pokemon)" style="width: 40vw;">{{pokemon.name}}</button>
+  </div>
   </div>
 </div>
