@@ -14,7 +14,7 @@ import { timeout } from 'rxjs';
 })
 export class PreBattleComponent implements OnInit {
   @Input() dbMoves: MoveModel[] = []
-  gymLeaders = environment.gymLeaders
+  @Input() gymLeaders: any[] = []
 
   @Input() myPokemons: PokemonModel[] = []
   copyMyPokemons: PokemonModel[] = []
@@ -29,10 +29,13 @@ export class PreBattleComponent implements OnInit {
 
   player1: PokemonModel[] = []
   player2: PokemonModel[] = []
+
+  battlePhase: string
   
   constructor(private http: PokemonService){}
 
   ngOnInit() {
+    this.battlePhase = 'pre-battle'
     this.currentGymLeader = this.checkLeaders()
     this.copyMyPokemons = this.myPokemons
     this.getPokemon()
@@ -65,7 +68,7 @@ export class PreBattleComponent implements OnInit {
 
   battleReady(response: boolean) {
     if (response) {
-      console.log("to battle")
+      this.battlePhase = 'in-battle'
     } else {
       let i = 0
       while (this.player1.length!=0) {

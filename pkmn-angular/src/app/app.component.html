@@ -13,6 +13,7 @@
   <app-pre-battle
     [myPokemons]="myPokemon"
     [dbMoves]="dbMove"
+    [gymLeaders]="gymLeaders"
     *ngSwitchCase="'pre-battle'"
     (pokemonSubmit)="transition($event)"
     >

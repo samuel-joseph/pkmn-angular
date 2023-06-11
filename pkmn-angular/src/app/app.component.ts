@@ -3,6 +3,7 @@ import { PokemonService } from './_services/pokemon/pokemon.service';
 
 import { PokemonModel } from './model/pokemon-model.model';
 import { MoveModel } from './model/move-model.model';
+import { environment } from 'src/environment/environment';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -14,6 +15,7 @@ export class AppComponent implements OnInit{
   myPokemon: PokemonModel[] = []
   dbMove: MoveModel[] = []
   page: string
+  gymLeaders: any[] = []
 
   public transition(child: any): void {
     if (this.myPokemon.length > 0) {
@@ -30,5 +32,6 @@ export class AppComponent implements OnInit{
     if (this.myPokemon.length < 1) {
       this.page = 'newGame'
     }
+    this.gymLeaders = environment.gymLeaders
   }
 }

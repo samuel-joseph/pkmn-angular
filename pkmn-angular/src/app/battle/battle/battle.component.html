@@ -1,1 +1,35 @@
-<p>battle works!</p>
+<div  *ngIf="this.player2"
+style="
+display: flex;
+justify-content: flex-end;
+"
+>
+  <img [src]="this.player2[0].front_image" 
+  style="
+  height: 50vw;
+  " 
+  />
+</div>
+<div *ngIf="this.player1"
+style="
+display: flex;
+justify-content: flex-start;
+"
+>
+  <img [src]="this.player1[0].back_image" 
+  style="
+  height: 50vw;
+  " 
+  />
+</div>
+<div style="display: flex; flex-direction: column; justify-content: center;">
+  <div
+  style="
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+  "
+   *ngFor="let move of this.player1[0].moves">
+    <button style="width: 40vw;">{{move.name}}</button>
+  </div>
+</div>
