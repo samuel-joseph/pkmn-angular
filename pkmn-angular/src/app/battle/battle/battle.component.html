@@ -13,7 +13,7 @@ justify-content: flex-end;
   />
 </span>
 </div>
-<div *ngIf="this.player1"
+<div *ngIf="this.currentPlayer1.length>0"
 style="
 display: flex;
 justify-content: flex-start;
@@ -40,7 +40,7 @@ justify-content: flex-start;
     *ngFor="let move of this.currentPlayer1[0].moves">
       <button (click)="this.chosenMove(move)" style="width: 40vw;">{{move.name}}</button>
     </div>
-    <div (click)="this.decisionOption('default')"
+    <div *ngIf="this.currentPlayer1" (click)="this.decisionOption('default')"
     style="text-align: center;"
     >back</div>
   </div>
@@ -66,7 +66,10 @@ justify-content: flex-start;
     align-items: center;
     "
     *ngFor="let pokemon of this.player1">
-    <button (click)="this.swapOption(pokemon)" style="width: 40vw;">{{pokemon.name}}</button>
-  </div>
+      <button (click)="this.swapOption(pokemon)" style="width: 40vw;">{{pokemon.name}}</button>
+    </div>
+    <div *ngIf="this.currentPlayer1" (click)="this.decisionOption('default')"
+    style="text-align: center;"
+    >back</div>
   </div>
 </div>
