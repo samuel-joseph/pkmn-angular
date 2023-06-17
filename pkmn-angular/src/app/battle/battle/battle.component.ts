@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { calculateDamage, typeAdvantage } from 'src/app/helper/pokemon-helper';
+import { MoveModel } from 'src/app/model/move-model.model';
 import { PokemonModel } from 'src/app/model/pokemon-model.model';
 
 @Component({
@@ -22,8 +24,89 @@ export class BattleComponent implements OnInit{
   }
 
   decisionOption(response: string) {
-    console.log("CHECKING")
     this.playerOption = response
+  }
+
+  attackSequence(attacker: PokemonModel, defender: PokemonModel, move: MoveModel,player:string) {
+    let damage = 0
+      if (move.type === 'attack') {
+        damage = calculateDamage(
+          move.power,
+          attacker.stats[1].base_stat,
+          defender.stats[2].base_stat,
+          attacker.types,
+          move.type,
+          defender.types
+        )
+      } else {
+        damage = calculateDamage(
+          move.power,
+          attacker.stats[3].base_stat,
+          defender.stats[4].base_stat,
+          attacker.types,
+          move.type,
+          defender.types
+        )
+      }
+    console.log(`${move.name} damage of ${damage} to ${defender.name}`)
+    defender.currentHp = defender.currentHp - damage
+    if (defender.currentHp <= 0) {
+      if (player === 'player') {
+        this.currentPlayer2 = []
+        this.currentPlayer2 = this.player2.splice(0,1)
+      } else {
+        this.currentPlayer1 = []
+        this.currentPlayer1 = this.player1.splice(0,1)
+      }
+    }
+  }
+
+  chosenMove(move: MoveModel) {
+    let player = this.currentPlayer1[0]
+    let npc = this.currentPlayer2[0]
+    let playerMove = move
+    let npcMove = this.npcMove()
+
+    if (
+      playerMove.priority > npcMove[0].priority ||
+      player.stats[5].base_stat > npc.stats[5].base_stat ||
+      player.stats[5].base_stat == npc.stats[5].base_stat
+    ) {
+      this.attackSequence(player, npc, playerMove,'player')
+      this.attackSequence(npc, player, npcMove[0], 'npc')
+    } else {
+      this.attackSequence(npc, player, npcMove[0], 'npc')
+      this.attackSequence(player,npc,playerMove,'player')
+    }
+  }
+
+  pokemonFainted() {
+    
+  }
+
+  npcMove() {
+    let TYPE = 0;
+    let typeArr = this.currentPlayer1[0].types
+    let chosenNpcMove: MoveModel[] = []
+    for (let move of this.currentPlayer2[0].moves) {
+      let newType
+      if (typeArr.typeTwo) {
+        newType = typeAdvantage(move.type,typeArr.typeOne)*typeAdvantage(move.type,typeArr.typeTwo)
+        if (TYPE < newType) {
+          TYPE = newType
+          chosenNpcMove = []
+          chosenNpcMove.push(move) 
+        }
+      } else {
+        newType = typeAdvantage(move.type, typeArr.typeOne)
+        if (TYPE < newType) {
+          TYPE = newType
+          chosenNpcMove = []
+          chosenNpcMove.push(move)
+        }
+      }
+    }
+    return chosenNpcMove
   }
 
   swapOption(pokemon: PokemonModel) {

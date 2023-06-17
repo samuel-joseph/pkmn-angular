@@ -8,7 +8,9 @@ export interface PokemonModel {
   moves: Array<MoveModel>, 
   dbMoves: Array<MoveModel>,
   front_image: string,
-  back_image: string
+  back_image: string,
+  maxHp: number,
+  currentHp: number
 }
 
 export interface RegionPokemon {

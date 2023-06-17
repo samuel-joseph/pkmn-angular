@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { getRandNum, getStats, getTypes } from 'src/app/helper/pokemon-helper';
+import { calculateHp, getRandNum, getStats, getTypes } from 'src/app/helper/pokemon-helper';
 import { PokemonModel } from 'src/app/model/pokemon-model.model';
 
 import { PokemonService } from 'src/app/_services/pokemon/pokemon.service';
@@ -89,6 +89,9 @@ export class PreBattleComponent implements OnInit {
         let move = this.dbMoves.filter(data => data.id == moveSet[j])
         tempMoves.push(...move)
       }
+
+      const maxHp = calculateHp(this.gymPokemonsTemp[i].stats[0].base_stat)
+
       let pokemon = {
         id: this.gymPokemonsTemp[i].id,
         name: this.gymPokemonsTemp[i].name,
@@ -97,7 +100,9 @@ export class PreBattleComponent implements OnInit {
         moves: tempMoves,
         dbMoves: tempMoves,
         front_image: this.gymPokemonsTemp[i].sprites.front_default,
-        back_image: this.gymPokemonsTemp[i].sprites.back_default
+        back_image: this.gymPokemonsTemp[i].sprites.back_default,
+        maxHp,
+        currentHp: maxHp,
       }
       let copyGymPokemons = {
         front_image: this.gymPokemonsTemp[i].sprites.front_default

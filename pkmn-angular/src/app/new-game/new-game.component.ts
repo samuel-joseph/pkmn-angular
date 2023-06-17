@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { PokemonService } from '../_services/pokemon/pokemon.service';
 import { PokemonModel, RegionPokemon } from '../model/pokemon-model.model';
-import { getStats, getMove, getTypes } from '../helper/pokemon-helper';
+import { getStats, getMove, getTypes, calculateHp } from '../helper/pokemon-helper';
 import { Pokemon } from '../helper/pokemon.class';
 import { MoveModel } from '../model/move-model.model';
 import { environment } from 'src/environment/environment';
@@ -103,6 +103,8 @@ export class NewGameComponent implements OnInit{
         } 
       }
 
+      const maxHp = calculateHp(myPokemon.stats[0].base_stat)
+
       let pokemon = {
         id: myPokemon.id,
         name: myPokemon.name,
@@ -111,7 +113,9 @@ export class NewGameComponent implements OnInit{
         moves: temp4Moves,
         dbMoves: tempDbMoves,
         front_image: myPokemon.sprites.front_default,
-        back_image: myPokemon.sprites.back_default
+        back_image: myPokemon.sprites.back_default,
+        maxHp,
+        currentHp: maxHp
       }
       tempArr.push(pokemon)
 

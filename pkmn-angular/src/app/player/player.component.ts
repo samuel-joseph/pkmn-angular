@@ -14,7 +14,6 @@ export class PlayerComponent implements OnInit{
 
   battleReady(response: any) {
     this.movesAllReady = response
-    console.log("Checking response ", response)
     if (response) {
       this.pokemonSubmit.emit({ pokemon: this.myPokemons, next:'pre-battle'})
     }

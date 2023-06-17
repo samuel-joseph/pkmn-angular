@@ -12,6 +12,7 @@
       <div *ngFor="let stat of pokemon.stats">
         {{stat.name}} : {{stat.base_stat}}
       </div>
+      <div>{{pokemon.currentHp}}/{{pokemon.maxHp}}</div>
     </div>
     <div *ngIf="pokemon.moves">
       <span *ngFor="let move of pokemon.moves">
