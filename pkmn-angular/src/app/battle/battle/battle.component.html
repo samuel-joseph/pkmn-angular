@@ -54,7 +54,7 @@ justify-content: flex-start;
     align-items: center;
     ">
     <button (click)="this.decisionOption('fight')" style="width: 40vw;">Fight</button>
-    <button (click)="this.decisionOption('swap')" style="width: 40vw;">Swap</button>
+    <button *ngIf="this.player1.length!==0" (click)="this.decisionOption('swap')" style="width: 40vw;">Swap</button>
     </div>
   </div>
   <div *ngSwitchCase="'swap'">

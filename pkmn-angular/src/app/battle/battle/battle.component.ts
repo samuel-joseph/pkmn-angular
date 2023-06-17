@@ -97,7 +97,8 @@ export class BattleComponent implements OnInit{
 
   currentPlayer2Fainted() {
     this.currentPlayer2 = []
-    this.currentPlayer2 = this.player2.splice(0,1)
+    this.currentPlayer2 = this.player2.splice(0, 1)
+    this.playerOption = 'default'
   }
 
   npcMove() {
@@ -126,30 +127,26 @@ export class BattleComponent implements OnInit{
   }
 
   swapOption(pokemon: PokemonModel) {
-    console.log(pokemon)
-    // let player = this.currentPlayer1[0]
-    // let npc = this.currentPlayer2[0]
-    // let npcMove = this.npcMove()
-
-    if (this.player1) {
+    if (this.currentPlayer1.length > 0) {
+      let npc = this.currentPlayer2[0]
+      let npcMove = this.npcMove()
       this.player1.push(...this.currentPlayer1)
-      
-      const index = this.player1.findIndex(val => val == pokemon)
-      
-      this.currentPlayer1=[]
-      this.player1.splice(index, 1)
-      this.currentPlayer1.push(pokemon)
+      this.currentPlayer1.pop()
+      this.attackSequence(npc, pokemon, npcMove[0])
+    }
+    
+    const index = this.player1.findIndex(val => val == pokemon)
+    this.player1.splice(index, 1)
+    
+    this.currentPlayer1.push(pokemon)
 
-      // this.attackSequence(npc, pokemon, npcMove[0])
-      
-      // this.currentPlayer1.push(pokemon)
-      // if (player.currentHp <= 0) {
-      //   console.log('player fainted')
-      //   this.currentPlayer1 = []
-      //   this.playerOption = 'swap'
-      // } else{
-      //   this.playerOption = 'default'
-      // }
+    let player = this.currentPlayer1[0]
+    if (player.currentHp <= 0) {
+      console.log('player fainted')
+      this.currentPlayer1 = []
+      this.playerOption = 'swap'
+    } else{
+      this.playerOption = 'default'
     }
   }
 }
