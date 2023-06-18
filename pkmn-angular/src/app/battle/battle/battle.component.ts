@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { calculateDamage, typeAdvantage } from 'src/app/helper/pokemon-helper';
 import { MoveModel } from 'src/app/model/move-model.model';
 import { PokemonModel } from 'src/app/model/pokemon-model.model';
@@ -11,6 +11,7 @@ import { PokemonModel } from 'src/app/model/pokemon-model.model';
 export class BattleComponent implements OnInit{
   @Input() player1: PokemonModel[] = []
   @Input() player2: PokemonModel[] = []
+  
 
   currentPlayer1: PokemonModel[] = []
   currentPlayer2: PokemonModel[] = []

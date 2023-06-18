@@ -18,12 +18,25 @@ export class AppComponent implements OnInit{
   gymLeaders: any[] = []
 
   public transition(child: any): void {
-    if (this.myPokemon.length > 0) {
-      this.myPokemon = []
-    }
-    this.myPokemon.push(...child.pokemon)
-    if(child.dbMoves){
-      this.dbMove.push(...child.dbMoves)
+    // if (this.myPokemon.length > 0) {
+    //   this.myPokemon = []
+    // }
+    // this.myPokemon.push(...child.pokemon)
+    // if(child.dbMoves){
+    //   this.dbMove.push(...child.dbMoves)
+    // }
+    // this.page = child.next
+    switch (child.next) {
+      case "player":
+        console.log("Am I in switch case")
+        this.myPokemon = []
+        this.myPokemon.push(...child.pokemon)
+        this.dbMove.push(...child.dbMoves)
+        break
+      case "pre-batlle":
+        this.myPokemon = []
+        this.myPokemon.push(...child.pokemon)
+        break
     }
     this.page = child.next
   }
