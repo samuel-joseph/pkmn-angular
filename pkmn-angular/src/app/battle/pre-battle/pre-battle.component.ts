@@ -43,7 +43,7 @@ export class PreBattleComponent implements OnInit {
 
   getPokemon() {
     for (const data of this.currentGymLeader) {
-      this.http.getPokemon(data.pokemonId).subscribe(data => {
+      this.http.getPokemon(data.name).subscribe(data => {
         this.gymPokemonsTemp.push(data)
         if (this.gymPokemonsTemp.length == 6) {
           this.getMove()
@@ -78,12 +78,12 @@ export class PreBattleComponent implements OnInit {
     }
   }
 
-  async getMove() {
+  getMove() {
     let tempArr = []
     let tempArrCopy = []
     for (let i = 0; i < this.gymPokemonsTemp.length; i++) {
       let tempMoves: MoveModel[] = []
-      const filtered = this.currentGymLeader.filter(tempData => tempData.pokemonId == this.gymPokemonsTemp[i].id)
+      const filtered = this.currentGymLeader.filter(tempData => tempData.name == this.gymPokemonsTemp[i].name)
       let moveSet = filtered[0].moves
       for (let j = 0; j < moveSet.length; j++){
         let move = this.dbMoves.filter(data => data.id == moveSet[j])
@@ -135,9 +135,35 @@ export class PreBattleComponent implements OnInit {
     for (const gymLeader of this.gymLeaders) {
       if (!gymLeader.gymLose) {
         this.currentGymBadge = gymLeader.gymBadge
+        console.log(gymLeader.gymPokemons)
         return gymLeader.gymPokemons
       } 
     }
     return []
+  }
+
+  async outcomeBattle(event: string) {
+    if(event==="win"){
+      for (let gymLeader of this.gymLeaders) {
+        if (!gymLeader.gymLose) {
+          this.resetBattle()
+          gymLeader.gymLose = true
+          this.battlePhase = 'pre-battle'
+          this.currentGymLeader = await this.checkLeaders()
+          await this.getPokemon()
+          break
+        }
+      }
+    }
+  }
+
+  resetBattle() {
+    console.log("What is myPokemons ",this)
+    this.copyMyPokemons = this.myPokemons
+    this.copyGymPokemons = []
+    this.player1 = []
+    this.player2 = []
+    this.gymPokemonsTemp = []
+    this.currentGymLeader = []
   }
 }

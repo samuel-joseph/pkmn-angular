@@ -6,7 +6,7 @@ export const environment = {
       gymLose: false,
       gymPokemons: [
         {
-          pokemonId: 76,
+          name: 'golem',
           moves: [
             523,
             33,
@@ -14,7 +14,7 @@ export const environment = {
           ]
         },
         {
-          pokemonId: 38,
+          name: 'ninetales',
           moves: [
             33,
             53,
@@ -22,7 +22,7 @@ export const environment = {
           ]
         },
         {
-          pokemonId: 457,
+          name: 'lumineon',
           moves: [
             33,
             55,
@@ -30,7 +30,7 @@ export const environment = {
           ]
         },
         {
-          pokemonId: 95,
+          name: 'onix',
           moves: [
             523,
             33,
@@ -38,7 +38,7 @@ export const environment = {
           ]
         },
         {
-          pokemonId: 169,
+          name: 'crobat',
           moves: [
             305,
             314,
@@ -46,7 +46,7 @@ export const environment = {
           ]
         },
         {
-          pokemonId: 208,
+          name: 'steelix',
           moves: [
             231,
             444,
@@ -60,51 +60,51 @@ export const environment = {
       gymLose: false,
       gymPokemons: [
         {
-          pokemonId: 76,
+          name: 'dewgong',
           moves: [
-            523,
-            33,
-            350
+            352,
+            58,
+            62
           ]
         },
         {
-          pokemonId: 38,
+          name: 'clawitzer',
           moves: [
-            33,
-            53,
-            326
+            352,
+            58,
+            399
           ]
         },
         {
-          pokemonId: 457,
+          name: 'golduck',
           moves: [
-            33,
-            55,
+            60,
+            93,
+            61
+          ]
+        },
+        {
+          name: 'togetic',
+          moves: [
+            17,
+            17,
+            583
+          ]
+        },
+        {
+          name: 'starmie',
+          moves: [
+            129,
+            93,
+            61
+          ]
+        },
+        {
+          name: 'gyarados',
+          moves: [
+            63,
+            44,
             352
-          ]
-        },
-        {
-          pokemonId: 95,
-          moves: [
-            523,
-            33,
-            350
-          ]
-        },
-        {
-          pokemonId: 169,
-          moves: [
-            305,
-            314,
-            440
-          ]
-        },
-        {
-          pokemonId: 208,
-          moves: [
-            231,
-            444,
-            21
           ]
         }
       ]
