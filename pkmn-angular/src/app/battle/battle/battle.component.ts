@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { calculateDamage, typeAdvantage } from 'src/app/helper/pokemon-helper';
 import { MoveModel } from 'src/app/model/move-model.model';
 import { PokemonModel } from 'src/app/model/pokemon-model.model';
@@ -11,8 +11,9 @@ import { PokemonModel } from 'src/app/model/pokemon-model.model';
 export class BattleComponent implements OnInit{
   @Input() player1: PokemonModel[] = []
   @Input() player2: PokemonModel[] = []
-  
 
+  @Output() outcomeSubmit = new EventEmitter();
+  
   currentPlayer1: PokemonModel[] = []
   currentPlayer2: PokemonModel[] = []
 
@@ -93,13 +94,21 @@ export class BattleComponent implements OnInit{
 
   currentPlayer1Fainted() {
     this.currentPlayer1 = []
-    this.playerOption = 'swap'
+    if (this.player1.length === 0) {
+      this.battleEnd('lose')
+    } else{
+      this.playerOption = 'swap'
+    }
   }
 
   currentPlayer2Fainted() {
     this.currentPlayer2 = []
-    this.currentPlayer2 = this.player2.splice(0, 1)
-    this.playerOption = 'default'
+    if (this.player2.length === 0) {
+      this.battleEnd('win')
+    } else {
+      this.currentPlayer2 = this.player2.splice(0, 1)
+      this.playerOption = 'default'
+    }
   }
 
   npcMove() {
@@ -143,11 +152,14 @@ export class BattleComponent implements OnInit{
 
     let player = this.currentPlayer1[0]
     if (player.currentHp <= 0) {
-      console.log('player fainted')
-      this.currentPlayer1 = []
-      this.playerOption = 'swap'
+      this.currentPlayer1Fainted()
     } else{
       this.playerOption = 'default'
     }
+  }
+
+  battleEnd(outcome: string) {
+    console.log("battle ends in child")
+    this.outcomeSubmit.emit(outcome)
   }
 }

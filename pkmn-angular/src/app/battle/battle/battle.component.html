@@ -1,17 +1,17 @@
-<div  *ngIf="this.player2"
+<div  *ngIf="this.player2.length>0||this.currentPlayer2.length>0"
 style="
 display: flex;
 justify-content: flex-end;
 "
 >
-<span>
-  <span>{{this.currentPlayer2[0].currentHp}}/{{this.currentPlayer2[0].maxHp}}</span>
-  <img [src]="this.currentPlayer2[0].front_image" 
-  style="
-  height: 50vw;
-  " 
-  />
-</span>
+  <span>
+    <span>{{this.currentPlayer2[0].currentHp}}/{{this.currentPlayer2[0].maxHp}}</span>
+    <img [src]="this.currentPlayer2[0].front_image" 
+    style="
+    height: 50vw;
+    " 
+    />
+  </span>
 </div>
 <div *ngIf="this.currentPlayer1.length>0"
 style="
