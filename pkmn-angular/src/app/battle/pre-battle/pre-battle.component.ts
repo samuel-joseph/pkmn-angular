@@ -59,7 +59,7 @@ export class PreBattleComponent implements OnInit {
 
   gymChoose() {
     while (this.player2.length<3) {
-      let randIndex = getRandNum(0, this.currentGymLeader.length - 1)
+      let randIndex = getRandNum(0, this.gymPokemons.length - 1)
       let chosen = this.gymPokemons[randIndex]
       this.gymPokemons.splice(randIndex, 1)
       this.player2Chosen(chosen)
@@ -86,7 +86,7 @@ export class PreBattleComponent implements OnInit {
       const filtered = this.currentGymLeader.filter(tempData => tempData.name == this.gymPokemonsTemp[i].name)
       let moveSet = filtered[0].moves
       for (let j = 0; j < moveSet.length; j++){
-        let move = this.dbMoves.filter(data => data.id == moveSet[j])
+        let move = this.dbMoves.filter(move => move.name == moveSet[j])
         tempMoves.push(...move)
       }
 
@@ -142,23 +142,45 @@ export class PreBattleComponent implements OnInit {
     return []
   }
 
-  async outcomeBattle(event: string) {
-    if(event==="win"){
-      for (let gymLeader of this.gymLeaders) {
-        if (!gymLeader.gymLose) {
+  async outcomeBattle(event: any) {
+    console.log(event)
+    if (event.outcome === "win") {
+      for (let i = 0; i < this.gymLeaders.length; i++){
+        if (!this.gymLeaders[i].gymLose&&i!==this.gymLeaders.length-1) {
+          this.myPokemons.push(...this.player1)
+          this.myPokemons.push(...event.returnPokemonPlayer1)
           this.resetBattle()
-          gymLeader.gymLose = true
+          this.gymLeaders[i].gymLose = true
           this.battlePhase = 'pre-battle'
           this.currentGymLeader = await this.checkLeaders()
-          await this.getPokemon()
+          this.getPokemon()
+          break
+        } else if(i==this.gymLeaders.length-1) {
+          this.battlePhase = 'new-champion'
           break
         }
       }
+      // for (let gymLeader of this.gymLeaders) {
+      //   if (!gymLeader.gymLose) {
+      //     this.myPokemons.push(...this.player1)
+      //     this.myPokemons.push(...event.returnPokemonPlayer1)
+      //     this.resetBattle()
+      //     gymLeader.gymLose = true
+      //     this.battlePhase = 'pre-battle'
+      //     this.currentGymLeader = await this.checkLeaders()
+      //     this.getPokemon()
+      //     break
+      //   } 
+      // }
+      // if(event.outcome&&this.battlePhase!=='pre-battle'){
+        // this.battlePhase = 'new-champion'
+      // }
+    } else {
+      this.battlePhase = 'game-over'
     }
   }
 
   resetBattle() {
-    console.log("What is myPokemons ",this)
     this.copyMyPokemons = this.myPokemons
     this.copyGymPokemons = []
     this.player1 = []

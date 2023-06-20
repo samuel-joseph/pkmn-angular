@@ -17,6 +17,9 @@ export class BattleComponent implements OnInit{
   currentPlayer1: PokemonModel[] = []
   currentPlayer2: PokemonModel[] = []
 
+  faintedPokemonPlayer1: PokemonModel[] = []
+  faintedPokemonPlayer2: PokemonModel[] = []
+
   playerOption: string
 
   ngOnInit(): void {
@@ -93,7 +96,11 @@ export class BattleComponent implements OnInit{
   }
 
   currentPlayer1Fainted() {
-    this.currentPlayer1 = []
+    const faintedPokemon = this.currentPlayer1.pop()
+    if (faintedPokemon) {
+      faintedPokemon.currentHp = faintedPokemon.maxHp
+      this.faintedPokemonPlayer1.push(faintedPokemon)
+    }
     if (this.player1.length === 0) {
       this.battleEnd('lose')
     } else{
@@ -102,7 +109,11 @@ export class BattleComponent implements OnInit{
   }
 
   currentPlayer2Fainted() {
-    this.currentPlayer2 = []
+    const faintedPokemon = this.currentPlayer2.pop()
+    if (faintedPokemon) { 
+      faintedPokemon.currentHp = faintedPokemon.maxHp
+      this.faintedPokemonPlayer2.push(faintedPokemon)
+    }
     if (this.player2.length === 0) {
       this.battleEnd('win')
     } else {
@@ -118,11 +129,11 @@ export class BattleComponent implements OnInit{
     for (let move of this.currentPlayer2[0].moves) {
       let newType
       if (typeArr.typeTwo) {
-        newType = typeAdvantage(move.type,typeArr.typeOne)*typeAdvantage(move.type,typeArr.typeTwo)
+        newType = typeAdvantage(move.type, typeArr.typeOne) * typeAdvantage(move.type, typeArr.typeTwo)
         if (TYPE < newType) {
           TYPE = newType
           chosenNpcMove = []
-          chosenNpcMove.push(move) 
+          chosenNpcMove.push(move)
         }
       } else {
         newType = typeAdvantage(move.type, typeArr.typeOne)
@@ -159,7 +170,21 @@ export class BattleComponent implements OnInit{
   }
 
   battleEnd(outcome: string) {
-    console.log("battle ends in child")
-    this.outcomeSubmit.emit(outcome)
+    const returnPokemonPlayer1: PokemonModel [] = []
+    const returnPokemonPlayer2: PokemonModel[] = []
+    if(outcome === 'win'){
+      this.currentPlayer1[0].currentHp = this.currentPlayer1[0].maxHp
+    }
+    returnPokemonPlayer1.push(...this.faintedPokemonPlayer1)
+    returnPokemonPlayer1.push(...this.currentPlayer1)
+
+    returnPokemonPlayer2.push(...this.faintedPokemonPlayer2)
+    returnPokemonPlayer2.push(...this.currentPlayer2)
+    console.log(returnPokemonPlayer1)
+    this.outcomeSubmit.emit({
+      outcome,
+      returnPokemonPlayer1,
+      returnPokemonPlayer2
+    })
   }
 }

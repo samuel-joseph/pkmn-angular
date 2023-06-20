@@ -1,5 +1,5 @@
 export interface GymLeader {
   gymBadge: string,
   gymLose: boolean,
-  gymPokemons: Array<number>
+  gymPokemons: Array<Object>
 }

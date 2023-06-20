@@ -94,4 +94,10 @@
   *ngSwitchCase="'in-battle'"
   >
   </app-battle>
+  <div *ngSwitchCase="'new-champion'">
+    <h1>YOU ARE THE CHAMPION</h1>
+  </div>
+  <div *ngSwitchCase="'game-over'">
+    <app-root></app-root>
+  </div>
 </div>

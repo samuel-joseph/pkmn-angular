@@ -67,248 +67,251 @@ export const calculateDamage = (
     TYPE = typeAdvantage(moveType, receiverType.typeOne)
   }
 
+  console.log(`${TYPE>=2?'Super effective':TYPE}`)
+
   return Math.floor(((((((2*100)/5)+2)*damage*(attackerStat/receiverStat))/50)+2)*STAB*TYPE)
 }
 
-export const typeAdvantage = (moveType:string, receiverType: string) => {
+export const typeAdvantage = (moveType: string, receiverType: string) => {
+  console.log(moveType,' ',receiverType)
   switch (moveType) {
-    case "Dragon":
+    case "dragon":
       switch (receiverType) {
-        case "Dragon":
+        case "dragon":
           return 2;
         default:
           return 1;
       }
-    case "Ghost":
+    case "ghost":
       switch (receiverType) {
-        case "Normal":
+        case "normal":
           return 0;
-        case "Psychic":
+        case "psychic":
           return 0;
-        case "Ghost":
+        case "ghost":
           return 2;
         default:
           return 1;
       }
-    case "Rock":
+    case "rock":
       switch (receiverType) {
-        case "Fire":
+        case "fire":
           return 2;
-        case "Ice":
+        case "ice":
           return 0.5;
-        case "Fighting":
+        case "fighting":
           return 0.5;
-        case "Flying":
+        case "flying":
           return 2;
-        case "Ground":
+        case "ground":
           return 0.5;
-        case "Ghost":
+        case "ghost":
           return 0.5;
         default:
           return 1;
       }
-    case "Bug":
+    case "bug":
       switch (receiverType) {
-        case "Fire":
+        case "fire":
           return 0.5;
-        case "Grass":
+        case "grass":
           return 2;
-        case "Fighting":
+        case "fighting":
           return 0.5;
-        case "Poison":
+        case "poison":
           return 2;
-        case "Flying":
+        case "flying":
           return 0.5;
-        case "Psychic":
+        case "psychic":
           return 2;
-        case "Ghost":
+        case "ghost":
           return 0.5;
         default:
           return 1;
       }
-    case "Psychic":
+    case "psychic":
       switch (receiverType) {
-        case "Fighting":
+        case "fighting":
           return 2;
-        case "Poison":
+        case "poison":
           return 2;
-        case "Psychic":
+        case "psychic":
           return 0.5;
         default:
           return 1;
       }
-    case "Flying":
+    case "flying":
       switch (receiverType) {
-        case "Electric":
+        case "electric":
           return 0.5;
-        case "Grass":
+        case "grass":
           return 2;
-        case "Fighting":
+        case "fighting":
           return 2;
-        case "Bug":
+        case "bug":
           return 2;
-        case "Ghost":
+        case "ghost":
           return 0.5;
         default:
           return 1;
       }
-    case "Ground":
+    case "ground":
       switch (receiverType) {
-        case "Fire":
+        case "fire":
           return 2;
-        case "Electric":
+        case "electric":
           return 2;
-        case "Grass":
+        case "grass":
           return 0.5;
-        case "Poison":
+        case "poison":
           return 2;
-        case "Flying":
+        case "flying":
           return 0;
-        case "Bug":
+        case "bug":
           return 0.5;
-        case "Rock":
+        case "rock":
           return 2;
         default:
           return 1;
       }
-    case "Poison":
+    case "poison":
       switch (receiverType) {
-        case "Grass":
+        case "grass":
           return 2;
-        case "Ice":
+        case "ice":
           return 2;
-        case "Grass":
+        case "grass":
           return 0.5;
-        case "Poison":
+        case "poison":
           return 0.5;
-        case "Ground":
+        case "ground":
           return 0.5;
-        case "Bug":
+        case "bug":
           return 2;
-        case "Rock":
+        case "rock":
           return 0.5;
-        case "Ghost":
+        case "ghost":
           return 0.5;
         default:
           return 1;
       }
-    case "Fighting":
+    case "fighting":
       switch (receiverType) {
-        case "Normal":
+        case "normal":
           return 2;
-        case "Ice":
+        case "ice":
           return 2;
-        case "Grass":
+        case "grass":
           return 0.5;
-        case "Poison":
+        case "poison":
           return 0.5;
-        case "Psychic":
+        case "psychic":
           return 0.5;
-        case "Flying":
+        case "flying":
           return 0.5;
-        case "Bug":
+        case "bug":
           return 0.5;
-        case "Rock":
+        case "rock":
           return 2;
-        case "Ghost":
+        case "ghost":
           return 0;
         default:
           return 1;
       }
-    case "Ice":
+    case "ice":
       switch (receiverType) {
-        case "Water":
+        case "water":
           return 0.5;
-        case "Grass":
+        case "grass":
           return 2;
-        case "Ice":
+        case "ice":
           return 0.5;
-        case "Ground":
+        case "ground":
           return 2;
-        case "Flying":
+        case "flying":
           return 2;
-        case "Dragon":
+        case "dragon":
           return 2;
         default:
           return 1;
       }
-    case "Grass":
+    case "grass":
       switch (receiverType) {
-        case "Fire":
+        case "fire":
           return 0.5;
-        case "Water":
+        case "water":
           return 2;
-        case "Grass":
+        case "grass":
           return 0.5;
-        case "Poison":
+        case "poison":
           return 0.5;
-        case "Ground":
+        case "ground":
           return 2;
-        case "Flying":
+        case "flying":
           return 0.5;
-        case "Dragon":
+        case "dragon":
           return 0.5;
         default:
           return 1;
       }
-    case "Electric":
+    case "electric":
       switch (receiverType) {
-        case "Water":
+        case "water":
           return 2;
-        case "Electric":
+        case "electric":
           return 0.5;
-        case "Grass":
+        case "grass":
           return 0.5;
-        case "Ground":
+        case "ground":
           return 0;
-        case "Flying":
+        case "flying":
           return 2;
-        case "Dragon":
+        case "dragon":
           return 0.5;
         default:
           return 1;
       }
-    case "Water":
+    case "water":
       switch (receiverType) {
-        case "Fire":
+        case "fire":
           return 2;
-        case "Water":
+        case "water":
           return 0.5;
-        case "Grass":
+        case "grass":
           return 0.5;
-        case "Ground":
+        case "ground":
           return 2;
-        case "Rock":
+        case "rock":
           return 2;
-        case "Dragon":
+        case "dragon":
           return 0.5;
         default:
           return 1;
       }
-    case "Fire":
+    case "fire":
       switch (receiverType) {
-        case "Fire":
+        case "fire":
           return 0.5;
-        case "Water":
+        case "water":
           return 0.5;
-        case "Grass":
+        case "grass":
           return 2;
-        case "Ice":
+        case "ice":
           return 2;
-        case "Bug":
+        case "bug":
           return 2;
-        case "Rock":
+        case "rock":
           return 0.5;
-        case "Dragon":
+        case "dragon":
           return 0.5;
         default:
           return 1;
       }
-    case "Normal":
+    case "normal":
       switch (receiverType) {
-        case "Rock":
+        case "rock":
           return 0.5;
-        case "Ghost":
+        case "ghost":
           return 0;
         default:
           return 1;
