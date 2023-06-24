@@ -118,7 +118,6 @@ export class NewGameComponent implements OnInit{
         currentHp: maxHp
       }
       tempArr.push(pokemon)
-
       if (tempArr.length == 6) {
         this.pokemonSubmit.emit({ pokemon: tempArr, next:'player', dbMoves: this.dbMoves});
       }

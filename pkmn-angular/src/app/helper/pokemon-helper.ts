@@ -72,6 +72,7 @@ export const calculateDamage = (
   return Math.floor(((((((2*100)/5)+2)*damage*(attackerStat/receiverStat))/50)+2)*STAB*TYPE)
 }
 
+
 export const typeAdvantage = (moveType: string, receiverType: string) => {
   console.log(moveType,' ',receiverType)
   switch (moveType) {

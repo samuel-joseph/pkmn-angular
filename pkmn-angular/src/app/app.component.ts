@@ -16,19 +16,11 @@ export class AppComponent implements OnInit{
   dbMove: MoveModel[] = []
   page: string
   gymLeaders: any[] = []
+  pokemonObj = {}
 
   public transition(child: any): void {
-    // if (this.myPokemon.length > 0) {
-    //   this.myPokemon = []
-    // }
-    // this.myPokemon.push(...child.pokemon)
-    // if(child.dbMoves){
-    //   this.dbMove.push(...child.dbMoves)
-    // }
-    // this.page = child.next
     switch (child.next) {
       case "player":
-        console.log("Am I in switch case")
         this.myPokemon = []
         this.myPokemon.push(...child.pokemon)
         this.dbMove.push(...child.dbMoves)
@@ -39,6 +31,11 @@ export class AppComponent implements OnInit{
         break
     }
     this.page = child.next
+    this.pokemonObj = {
+      pokemon: this.myPokemon,
+      gymLeaders: this.gymLeaders,
+      dbMove: this.dbMove
+    }
   }
   
   ngOnInit(): void {

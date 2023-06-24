@@ -1,75 +1,105 @@
-<div  *ngIf="this.currentPlayer2.length>0||this.player2.length>0"
-style="
-display: flex;
-justify-content: flex-end;
-"
->
-  <span>
-    <span>{{this.currentPlayer2[0].currentHp}}/{{this.currentPlayer2[0].maxHp}}</span>
-    <img [src]="this.currentPlayer2[0].front_image" 
-    style="
-    height: 50vw;
-    " 
-    />
-  </span>
-</div>
-<div *ngIf="this.currentPlayer1.length>0"
-style="
-display: flex;
-justify-content: flex-start;
-"
->
-  <span>
-    <img [src]="this.currentPlayer1[0].back_image" 
-    style="
-    height: 50vw;
-    " 
-    />
-    <span>{{this.currentPlayer1[0].currentHp}}/{{this.currentPlayer1[0].maxHp}}</span>
-  </span>
-</div>
-<div [ngSwitch]="playerOption"
- style="display: flex; flex-direction: column; justify-content: center;">
- <div *ngSwitchCase="'fight'">
-    <div
+<div [ngSwitch]="battlePhase">
+  <div *ngSwitchCase="'on-going'">
+    <div *ngIf="this.currentPlayer2.length>0||this.player2.length>0"
     style="
     display: flex;
-    justify-content: center;
-    margin-bottom: 5px;
+    justify-content: flex-end;
     "
-    *ngFor="let move of this.currentPlayer1[0].moves">
-      <button (click)="this.chosenMove(move)" style="width: 40vw;">{{move.name}}</button>
+    >
+      <span>
+        <span>{{this.currentPlayer2[0].currentHp}}/{{this.currentPlayer2[0].maxHp}}</span>
+        <img [src]="this.currentPlayer2[0].front_image" 
+        style="
+        height: 50vw;
+        " 
+        />
+      </span>
     </div>
-    <div *ngIf="this.currentPlayer1" (click)="this.decisionOption('default')"
-    style="text-align: center;"
-    >back</div>
-  </div>
-  <div *ngSwitchCase="'default'">
-    <div
+    <div *ngIf="this.currentPlayer1.length>0"
     style="
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-bottom: 5px;
-    align-items: center;
-    ">
-    <button (click)="this.decisionOption('fight')" style="width: 40vw;">Fight</button>
-    <button *ngIf="this.player1.length!==0" (click)="this.decisionOption('swap')" style="width: 40vw;">Swap</button>
+    justify-content: flex-start;
+    "
+    >
+      <span>
+        <img [src]="this.currentPlayer1[0].back_image" 
+        style="
+        height: 50vw;
+        " 
+        />
+        <span>{{this.currentPlayer1[0].currentHp}}/{{this.currentPlayer1[0].maxHp}}</span>
+      </span>
+    </div>
+    <div [ngSwitch]="playerOption"
+    style="display: flex; flex-direction: column; justify-content: center;">
+    <div *ngSwitchCase="'fight'">
+        <div
+        style="
+        display: flex;
+        justify-content: center;
+        margin-bottom: 5px;
+        "
+        *ngFor="let move of this.currentPlayer1[0].moves">
+          <button (click)="this.chosenMove(move)" style="width: 40vw;">{{move.name}}</button>
+        </div>
+        <div *ngIf="this.currentPlayer1" (click)="this.decisionOption('default')"
+        style="text-align: center;"
+        >back</div>
+      </div>
+      <div *ngSwitchCase="'default'">
+        <div
+        style="
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-bottom: 5px;
+        align-items: center;
+        ">
+        <button (click)="this.decisionOption('fight')" style="width: 40vw;">Fight</button>
+        <button *ngIf="this.player1.length!==0" (click)="this.decisionOption('swap')" style="width: 40vw;">Swap</button>
+        </div>
+      </div>
+      <div *ngSwitchCase="'swap'">
+        <div 
+        style="
+        display: flex;
+        justify-content: center;
+        margin-bottom: 5px;
+        align-items: center;
+        "
+        *ngFor="let pokemon of this.player1">
+          <button (click)="this.swapOption(pokemon)" style="width: 40vw;">{{pokemon.name}}</button>
+        </div>
+        <div *ngIf="this.currentPlayer1" (click)="this.decisionOption('default')"
+        style="text-align: center;"
+        >back</div>
+      </div>
     </div>
   </div>
-  <div *ngSwitchCase="'swap'">
+
+  <div *ngSwitchCase="'battle-done'">
     <div 
-    style="
-    display: flex;
-    justify-content: center;
-    margin-bottom: 5px;
-    align-items: center;
-    "
-    *ngFor="let pokemon of this.player1">
-      <button (click)="this.swapOption(pokemon)" style="width: 40vw;">{{pokemon.name}}</button>
+    [ngClass]="outcome =='win'?'pokemonImageFade': ''"
+    *ngIf="this.tempPokemonContainer2.length!==0;
+    else other"
+    >
+      <span 
+      *ngFor="let pokemon of this.tempPokemonContainer2"
+      >
+        <img
+        [src]="pokemon.front_image" />
+      </span>
     </div>
-    <div *ngIf="this.currentPlayer1" (click)="this.decisionOption('default')"
-    style="text-align: center;"
-    >back</div>
+    <div 
+    *ngIf="this.tempPokemonContainer1.length!==0;else other"
+    [ngClass]="outcome =='win'?'': 'pokemonImageFade'">
+      <span *ngFor="let pokemon of this.tempPokemonContainer1">
+        <img
+         [src]="pokemon.front_image" />
+      </span>
+    </div>
+    <ng-template #other>
+      <h1>{{this.outcome}}</h1>
+    </ng-template>
   </div>
 </div>

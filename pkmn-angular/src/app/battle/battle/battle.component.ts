@@ -17,13 +17,21 @@ export class BattleComponent implements OnInit{
   currentPlayer1: PokemonModel[] = []
   currentPlayer2: PokemonModel[] = []
 
+  tempPokemonContainer1: PokemonModel[]=[]
+  tempPokemonContainer2: PokemonModel[]=[]
+
   faintedPokemonPlayer1: PokemonModel[] = []
   faintedPokemonPlayer2: PokemonModel[] = []
 
   playerOption: string
+  battlePhase: string
+  outcome: string
+
+  cross = 'https://static.vecteezy.com/system/resources/previews/017/178/056/original/red-cross-mark-on-transparent-background-free-png.png'
 
   ngOnInit(): void {
     this.playerOption = 'default'
+    this.battlePhase = 'on-going'
     this.currentPlayer1 = this.player1.splice(0,1)
     this.currentPlayer2 = this.player2.splice(0,1)
   }
@@ -98,7 +106,7 @@ export class BattleComponent implements OnInit{
   currentPlayer1Fainted() {
     const faintedPokemon = this.currentPlayer1.pop()
     if (faintedPokemon) {
-      faintedPokemon.currentHp = faintedPokemon.maxHp
+      // faintedPokemon.currentHp = faintedPokemon.maxHp
       this.faintedPokemonPlayer1.push(faintedPokemon)
     }
     if (this.player1.length === 0) {
@@ -111,7 +119,7 @@ export class BattleComponent implements OnInit{
   currentPlayer2Fainted() {
     const faintedPokemon = this.currentPlayer2.pop()
     if (faintedPokemon) { 
-      faintedPokemon.currentHp = faintedPokemon.maxHp
+      // faintedPokemon.currentHp = faintedPokemon.maxHp
       this.faintedPokemonPlayer2.push(faintedPokemon)
     }
     if (this.player2.length === 0) {
@@ -175,16 +183,46 @@ export class BattleComponent implements OnInit{
     if(outcome === 'win'){
       this.currentPlayer1[0].currentHp = this.currentPlayer1[0].maxHp
     }
-    returnPokemonPlayer1.push(...this.faintedPokemonPlayer1)
-    returnPokemonPlayer1.push(...this.currentPlayer1)
+    returnPokemonPlayer1.push(
+      ...this.faintedPokemonPlayer1,
+      ...this.currentPlayer1
+    )
 
-    returnPokemonPlayer2.push(...this.faintedPokemonPlayer2)
-    returnPokemonPlayer2.push(...this.currentPlayer2)
-    console.log(returnPokemonPlayer1)
-    this.outcomeSubmit.emit({
+    returnPokemonPlayer2.push(
+      ...this.faintedPokemonPlayer2,
+      ...this.currentPlayer2
+    )
+
+    this.tempPokemonContainer1.push(...returnPokemonPlayer1,...this.player1)
+    this.tempPokemonContainer2.push(...returnPokemonPlayer2,...this.player2)
+
+    this.outcome = outcome
+
+    setTimeout(() => {
+      if(outcome == 'win'){
+        this.tempPokemonContainer2 = []
+      } else {
+        this.tempPokemonContainer1 = []
+      }
+
+      let i = 0;
+
+      while (i != 3) {
+        returnPokemonPlayer1[i].currentHp = returnPokemonPlayer1[i].maxHp
+        returnPokemonPlayer2[i].currentHp = returnPokemonPlayer2[i].maxHp
+        i++
+      }
+
+    },1500)
+
+    setTimeout(() => {
+      this.outcomeSubmit.emit({
       outcome,
       returnPokemonPlayer1,
       returnPokemonPlayer2
-    })
+      })
+    }, 5000)
+    this.battlePhase = 'battle-done'
+    console.log(this)
   }
 }

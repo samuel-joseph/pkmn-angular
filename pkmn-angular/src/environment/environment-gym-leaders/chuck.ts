@@ -1,7 +1,7 @@
 import { GymLeader } from "src/app/model/gym-leader-model.model";
 
 export const chuck: GymLeader = {
-  gymBadge: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/1.png',
+  gymBadge: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/4.png',
   gymLose: false,
   gymPokemons: [
     {

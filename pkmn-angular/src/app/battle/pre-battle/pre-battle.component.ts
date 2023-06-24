@@ -15,6 +15,7 @@ import { timeout } from 'rxjs';
 export class PreBattleComponent implements OnInit {
   @Input() dbMoves: MoveModel[] = []
   @Input() gymLeaders: any[] = []
+  @Input() pokemonObj={}
 
   @Input() myPokemons: PokemonModel[] = []
   copyMyPokemons: PokemonModel[] = []
@@ -160,23 +161,15 @@ export class PreBattleComponent implements OnInit {
           break
         }
       }
-      // for (let gymLeader of this.gymLeaders) {
-      //   if (!gymLeader.gymLose) {
-      //     this.myPokemons.push(...this.player1)
-      //     this.myPokemons.push(...event.returnPokemonPlayer1)
-      //     this.resetBattle()
-      //     gymLeader.gymLose = true
-      //     this.battlePhase = 'pre-battle'
-      //     this.currentGymLeader = await this.checkLeaders()
-      //     this.getPokemon()
-      //     break
-      //   } 
-      // }
-      // if(event.outcome&&this.battlePhase!=='pre-battle'){
-        // this.battlePhase = 'new-champion'
-      // }
     } else {
-      this.battlePhase = 'game-over'
+      this.myPokemons.push(...this.player1)
+      this.myPokemons.push(...event.returnPokemonPlayer1)
+      this.gymPokemons.push(...this.player2)
+      this.gymPokemons.push(...event.returnPokemonPlayer2)
+      this.resetBattle()
+      this.battlePhase = 'pre-battle'
+      this.currentGymLeader = await this.checkLeaders()
+      this.getPokemon()
     }
   }
 
