@@ -1,38 +1,83 @@
 <div [ngSwitch]="battlePhase">
-  <div *ngSwitchCase="'on-going'">
-    <div *ngIf="this.currentPlayer2.length>0||this.player2.length>0"
+  <div
+  class="on-going"
+   *ngSwitchCase="'on-going'">
+    <div *ngIf="this.currentPlayer2.length>0"
     style="
     display: flex;
     justify-content: flex-end;
     "
     >
-      <span>
-        <span>{{this.currentPlayer2[0].currentHp}}/{{this.currentPlayer2[0].maxHp}}</span>
-        <img [src]="this.currentPlayer2[0].front_image" 
+    <div [ngStyle]="{
+      'background-color':'green',
+      'height':'2vh',
+      'position': 'fixed',
+      'width': this.npcHpPercentage
+    }"></div>
+    <span>
+      <div *ngIf="this.currentPlayer2[0].currentHp>=0;else faintedNpc">
+        <img
+        alt=""
+          [ngClass]="this.npcAttackMotion?'npcPokemon':''"
+          [src]="this.currentPlayer2[0].front_image" 
         style="
         height: 50vw;
         " 
         />
-      </span>
+    </div>
+    <ng-template #faintedNpc>
+      <img
+        alt=""
+        class="faintedPokemon"
+        [src]="this.currentPlayer2[0].front_image" 
+      style="
+      height: 50vw;
+      " 
+      />
+    </ng-template>
+    </span>
     </div>
     <div *ngIf="this.currentPlayer1.length>0"
     style="
     display: flex;
     justify-content: flex-start;
+    flex-direction: column;
     "
     >
       <span>
-        <img [src]="this.currentPlayer1[0].back_image" 
+        <div *ngIf="this.currentPlayer1[0].currentHp>0;else faintedPlayer">
+          <img
+          alt=""
+          [ngClass]="this.playerAttackMotion?'playerPokemon':''"
+          [src]="this.currentPlayer1[0].back_image" 
+          style="
+          height: 50vw;
+          " 
+          />
+      </div>
+      <ng-template #faintedPlayer>
+        <img
+        alt=""
+        class="faintedPokemon"
+        [src]="this.currentPlayer1[0].back_image" 
         style="
         height: 50vw;
         " 
         />
-        <span>{{this.currentPlayer1[0].currentHp}}/{{this.currentPlayer1[0].maxHp}}</span>
+      </ng-template>
       </span>
+      <div [ngStyle]="{
+        'background-color':'green',
+        'height':'2vh',
+        'position': 'relative',
+        'width': this.playerHpPercentage
+      }"></div>
     </div>
     <div [ngSwitch]="playerOption"
     style="display: flex; flex-direction: column; justify-content: center;">
     <div *ngSwitchCase="'fight'">
+      <div         
+      *ngIf="!this.npcAttackMotion&&!this.playerAttackMotion">
         <div
         style="
         display: flex;
@@ -41,13 +86,15 @@
         "
         *ngFor="let move of this.currentPlayer1[0].moves">
           <button (click)="this.chosenMove(move)" style="width: 40vw;">{{move.name}}</button>
+          </div>
+          <div *ngIf="this.currentPlayer1" (click)="this.decisionOption('default')"
+          style="text-align: center;"
+          >back</div>
         </div>
-        <div *ngIf="this.currentPlayer1" (click)="this.decisionOption('default')"
-        style="text-align: center;"
-        >back</div>
       </div>
       <div *ngSwitchCase="'default'">
         <div
+        *ngIf="!this.npcAttackMotion&&!this.playerAttackMotion"
         style="
         display: flex;
         flex-direction: column;
@@ -77,29 +124,58 @@
     </div>
   </div>
 
-  <div *ngSwitchCase="'battle-done'">
-    <div 
-    [ngClass]="outcome =='win'?'pokemonImageFade': ''"
-    *ngIf="this.tempPokemonContainer2.length!==0;
-    else other"
-    >
+  <div
+  class="battleDone"
+   *ngSwitchCase="'battle-done'">
+    <div class="parent">
       <span 
       *ngFor="let pokemon of this.tempPokemonContainer2"
       >
-        <img
-        [src]="pokemon.front_image" />
-      </span>
-    </div>
-    <div 
-    *ngIf="this.tempPokemonContainer1.length!==0;else other"
-    [ngClass]="outcome =='win'?'': 'pokemonImageFade'">
-      <span *ngFor="let pokemon of this.tempPokemonContainer1">
-        <img
+        <img 
+        alt=""
+        *ngIf="pokemon.currentHp<=0"
+        class="loseOutcome"
+        src="https://static.vecteezy.com/system/resources/previews/017/178/056/original/red-cross-mark-on-transparent-background-free-png.png"
+         />
+         <img
+         alt=""
+         class="pokemonImage"
          [src]="pokemon.front_image" />
       </span>
     </div>
-    <ng-template #other>
-      <h1>{{this.outcome}}</h1>
+    <div class="parent">
+      <span *ngFor="let pokemon of this.tempPokemonContainer1">
+        <img 
+          alt=""
+          *ngIf="pokemon.currentHp<=0"
+          class="loseOutcome"
+          src="https://static.vecteezy.com/system/resources/previews/017/178/056/original/red-cross-mark-on-transparent-background-free-png.png"
+           />
+           <img
+           alt=""
+           class="pokemon"
+            [src]="pokemon.front_image" />
+      </span>
+    </div>
+    <div 
+    *ngIf="this.outcome=='win';else lose"
+    class="outcomeBanner"
+    >
+      <div>
+        <h2>Congratulations you have defeated {{this.leaderInfo.name}}!</h2>
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <img
+          alt=""
+          src={{this.leaderInfo.gymBadge}}
+          />
+          <h2>You received a badge!!!</h2>
+        </div>
+      </div>
+    </div>
+    <ng-template
+    class="outcomeBanner"
+     #lose>
+      <h2>You lost!!!</h2>
     </ng-template>
   </div>
 </div>

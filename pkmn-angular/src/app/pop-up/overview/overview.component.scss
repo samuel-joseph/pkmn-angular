@@ -1,0 +1,41 @@
+img{
+  width: 30vw;
+  height: 10vh;
+}
+
+.fadeBadge{
+  animation: badgeShowing 5s;
+  opacity: 1;
+  position: fixed;
+}
+
+.fadeImage{
+  animation: imageFading 5s;
+  opacity: 0;
+}
+
+.parent{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  height: 70vh;
+  justify-content: center;
+}
+
+@keyframes badgeShowing {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes imageFading {
+  0% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 0;
+  }
+}

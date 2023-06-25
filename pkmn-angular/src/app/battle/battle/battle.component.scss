@@ -1,21 +1,115 @@
-.pokemonImage {
+.pokemonImage{
+  width: 30vw;
 }
 
-.pokemonImageFade {
-  animation: fadeOut 1.5s;
+.on-going{
+  .npcPokemon{
+    animation: npcMove 1s;
+  }
+
+  .playerPokemon{
+    animation: playerMove 1s;
+  }
+
+  .faintedPokemon{
+    animation: fainted .8s;
+    opacity: 0;
+  }
 }
 
-@keyframes fadeOut {
+@keyframes fainted {
+  0%{
+    opacity: 1;
+  }
+  50%{
+    opacity: .5;
+  }
+  100%{
+    opacity: 0;
+  }
+}
+
+@keyframes npcMove {
+  30%{
+    padding-right: 50px;
+  }
+  100%{
+    padding-right: 0px;
+  }
+}
+
+@keyframes playerMove {
+  30%{
+    padding-left: 50px;
+  }
+  100%{
+    padding-left: 0px;
+  }
+}
+
+
+.battleDone{
+  display: flex;
+  flex-direction: column;
+  height: 70vh;
+  align-items: center;
+  justify-content: center;
+
+  img{
+    width: 30vw;
+  }
+
+  .parent{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .loseOutcome{
+    opacity: 1;
+    position: fixed;
+    animation: showCross 5s;
+    width: 30vw;
+  }
+
+  .outcomeBanner{
+    opacity: 1;
+    position: fixed;
+    display: flex;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.75);
+    justify-content: center;
+    animation: bannerShow 10s;
+
+    h2{
+      color: white;
+      text-align: center;
+    }
+  }
+}
+
+@keyframes showCross {
   0% {
     opacity: 0;
   }
-  16% {
+  100%{
     opacity: 1;
   }
-  84% {
-    opacity: 1;
-  }
-  100% {
+}
+
+@keyframes bannerShow {
+  0% {
     opacity: 0;
+  }
+  50%{
+    opacity: 0;
+  }
+  60%{
+    opacity: 1;
+  }
+  100%{
+    opacity: 1;
   }
 }

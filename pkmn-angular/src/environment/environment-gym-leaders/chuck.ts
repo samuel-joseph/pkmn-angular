@@ -1,7 +1,9 @@
 import { GymLeader } from "src/app/model/gym-leader-model.model";
 
 export const chuck: GymLeader = {
+  name: 'Chuck',
   gymBadge: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/4.png',
+  gymImage: 'https://assets.mycast.io/actor_images/actor-chuck-pokemon-599085_large.jpg?1668914836',
   gymLose: false,
   gymPokemons: [
     {

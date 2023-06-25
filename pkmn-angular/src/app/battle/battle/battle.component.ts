@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { calculateDamage, typeAdvantage } from 'src/app/helper/pokemon-helper';
+import { GymLeader } from 'src/app/model/gym-leader-model.model';
 import { MoveModel } from 'src/app/model/move-model.model';
 import { PokemonModel } from 'src/app/model/pokemon-model.model';
 
@@ -11,6 +12,7 @@ import { PokemonModel } from 'src/app/model/pokemon-model.model';
 export class BattleComponent implements OnInit{
   @Input() player1: PokemonModel[] = []
   @Input() player2: PokemonModel[] = []
+  @Input() leaderInfo: GymLeader
 
   @Output() outcomeSubmit = new EventEmitter();
   
@@ -26,6 +28,11 @@ export class BattleComponent implements OnInit{
   playerOption: string
   battlePhase: string
   outcome: string
+  npcAttackMotion = false
+  playerAttackMotion = false
+
+  npcHpPercentage: string
+  playerHpPercentage: string
 
   cross = 'https://static.vecteezy.com/system/resources/previews/017/178/056/original/red-cross-mark-on-transparent-background-free-png.png'
 
@@ -33,7 +40,19 @@ export class BattleComponent implements OnInit{
     this.playerOption = 'default'
     this.battlePhase = 'on-going'
     this.currentPlayer1 = this.player1.splice(0,1)
-    this.currentPlayer2 = this.player2.splice(0,1)
+    this.currentPlayer2 = this.player2.splice(0, 1)
+
+    this.calculatePercentHp()
+  }
+
+  calculatePercentHp() {
+    this.npcHpPercentage = this.getPercentageHp(this.currentPlayer2[0]).toString()+"%"
+    this.playerHpPercentage = this.getPercentageHp(this.currentPlayer1[0]).toString()+"%"
+  }
+
+  getPercentageHp(currentPlayer: PokemonModel) {
+    let response = Math.floor((currentPlayer.currentHp / currentPlayer.maxHp) * 100)
+    return response<0? 0:response
   }
 
   decisionOption(response: string) {
@@ -61,8 +80,8 @@ export class BattleComponent implements OnInit{
           defender.types
         )
       }
-    console.log(`${move.name} damage of ${damage} to ${defender.name}`)
     defender.currentHp = defender.currentHp - damage
+    this.calculatePercentHp()
   }
 
   chosenMove(move: MoveModel) {
@@ -76,41 +95,68 @@ export class BattleComponent implements OnInit{
       player.stats[5].base_stat > npc.stats[5].base_stat ||
       player.stats[5].base_stat == npc.stats[5].base_stat
     ) {
+      this.playerAttackMotion = true
+      setTimeout(() => {
       this.attackSequence(player, npc, playerMove)
-      if (this.currentPlayer2[0].currentHp <= 0) {
-        this.currentPlayer2Fainted()
-      } else {
-        this.attackSequence(npc, player, npcMove[0])
-        if (this.currentPlayer1[0].currentHp <= 0) {
-          this.currentPlayer1Fainted()
-        } else {
-          this.playerOption = 'default'
-        }
-      }
-    } else {
-      this.attackSequence(npc, player, npcMove[0])
-      if (this.currentPlayer1[0].currentHp <= 0) {
-        this.currentPlayer1Fainted()
-        this.playerOption = 'swap'
-      }else{
-        this.attackSequence(player, npc, playerMove)
+      },700)
+      setTimeout(() => {
         if (this.currentPlayer2[0].currentHp <= 0) {
-          this.currentPlayer2Fainted()
+          setTimeout(() => {
+            this.currentPlayer2Fainted()
+            },1000)
         } else {
-          this.playerOption = 'default'
+          this.npcAttackMotion = true
+          setTimeout(()=>{
+            this.attackSequence(npc, player, npcMove[0])},700)
+          setTimeout(() => {
+            if (this.currentPlayer1[0].currentHp <= 0) {
+              setTimeout(() => {
+                this.currentPlayer1Fainted()
+                },1000)
+            } else {
+              this.playerOption = 'default'
+            }
+          },1500)
         }
-      }
+      },1500)
+    } else {
+      this.npcAttackMotion = true
+      setTimeout(()=>{
+        this.attackSequence(npc, player, npcMove[0])},700)
+      setTimeout(() => {
+        if (this.currentPlayer1[0].currentHp <= 0) {
+          setTimeout(() => {
+            this.currentPlayer1Fainted()
+            },1000)
+        } else {
+          this.playerAttackMotion = true
+          setTimeout(()=>{
+            this.attackSequence(player, npc, playerMove)},700)
+          setTimeout(() => {
+            if (this.currentPlayer2[0].currentHp <= 0) {
+              setTimeout(() => {
+              this.currentPlayer2Fainted()
+              },1000)
+            } else {
+              this.playerOption = 'default'
+            }
+          },1500)
+        }
+      },1500)
     }
+    setTimeout(() => {
+      this.playerAttackMotion = false
+      this.npcAttackMotion = false
+    }, 4200);
   }
 
   currentPlayer1Fainted() {
     const faintedPokemon = this.currentPlayer1.pop()
     if (faintedPokemon) {
-      // faintedPokemon.currentHp = faintedPokemon.maxHp
       this.faintedPokemonPlayer1.push(faintedPokemon)
     }
     if (this.player1.length === 0) {
-      this.battleEnd('lose')
+        this.battleEnd('lose')
     } else{
       this.playerOption = 'swap'
     }
@@ -119,13 +165,13 @@ export class BattleComponent implements OnInit{
   currentPlayer2Fainted() {
     const faintedPokemon = this.currentPlayer2.pop()
     if (faintedPokemon) { 
-      // faintedPokemon.currentHp = faintedPokemon.maxHp
       this.faintedPokemonPlayer2.push(faintedPokemon)
     }
     if (this.player2.length === 0) {
-      this.battleEnd('win')
+        this.battleEnd('win')
     } else {
       this.currentPlayer2 = this.player2.splice(0, 1)
+      this.calculatePercentHp()
       this.playerOption = 'default'
     }
   }
@@ -161,17 +207,24 @@ export class BattleComponent implements OnInit{
       let npcMove = this.npcMove()
       this.player1.push(...this.currentPlayer1)
       this.currentPlayer1.pop()
-      this.attackSequence(npc, pokemon, npcMove[0])
+      this.npcAttackMotion = true
+      setTimeout(() => {
+        this.attackSequence(npc, pokemon, npcMove[0])
+        this.npcAttackMotion = false
+        this.calculatePercentHp()
+      },2000)
     }
     
     const index = this.player1.findIndex(val => val == pokemon)
     this.player1.splice(index, 1)
     
     this.currentPlayer1.push(pokemon)
-
+    this.calculatePercentHp()
     let player = this.currentPlayer1[0]
     if (player.currentHp <= 0) {
+    setTimeout(() => {
       this.currentPlayer1Fainted()
+      },1000)
     } else{
       this.playerOption = 'default'
     }
@@ -185,26 +238,22 @@ export class BattleComponent implements OnInit{
     }
     returnPokemonPlayer1.push(
       ...this.faintedPokemonPlayer1,
-      ...this.currentPlayer1
+      ...this.currentPlayer1,
+      ...this.player1
     )
 
     returnPokemonPlayer2.push(
       ...this.faintedPokemonPlayer2,
-      ...this.currentPlayer2
+      ...this.currentPlayer2,
+      ...this.player2
     )
 
-    this.tempPokemonContainer1.push(...returnPokemonPlayer1,...this.player1)
-    this.tempPokemonContainer2.push(...returnPokemonPlayer2,...this.player2)
+    this.tempPokemonContainer1.push(...returnPokemonPlayer1)
+    this.tempPokemonContainer2.push(...returnPokemonPlayer2)
 
     this.outcome = outcome
 
     setTimeout(() => {
-      if(outcome == 'win'){
-        this.tempPokemonContainer2 = []
-      } else {
-        this.tempPokemonContainer1 = []
-      }
-
       let i = 0;
 
       while (i != 3) {
@@ -213,16 +262,12 @@ export class BattleComponent implements OnInit{
         i++
       }
 
-    },1500)
-
-    setTimeout(() => {
       this.outcomeSubmit.emit({
       outcome,
       returnPokemonPlayer1,
       returnPokemonPlayer2
       })
-    }, 5000)
+    }, 10000)
     this.battlePhase = 'battle-done'
-    console.log(this)
   }
 }

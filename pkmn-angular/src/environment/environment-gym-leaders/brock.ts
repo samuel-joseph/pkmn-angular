@@ -1,7 +1,9 @@
 import { GymLeader } from "src/app/model/gym-leader-model.model";
 
 export const brock: GymLeader = {
+  name: 'Brock',
   gymBadge: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/1.png',
+  gymImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjf-vRz9ryAGNJhTb_-3vdOHjT7EhaZubQZQ&usqp=CAU',
   gymLose: false,
   gymPokemons: [
     {

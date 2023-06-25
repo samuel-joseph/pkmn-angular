@@ -5,7 +5,7 @@ import { PokemonModel } from 'src/app/model/pokemon-model.model';
 import { PokemonService } from 'src/app/_services/pokemon/pokemon.service';
 import { environment } from 'src/environment/environment';
 import { MoveModel } from 'src/app/model/move-model.model';
-import { timeout } from 'rxjs';
+import { GymLeader } from 'src/app/model/gym-leader-model.model';
 
 @Component({
   selector: 'app-pre-battle',
@@ -15,7 +15,7 @@ import { timeout } from 'rxjs';
 export class PreBattleComponent implements OnInit {
   @Input() dbMoves: MoveModel[] = []
   @Input() gymLeaders: any[] = []
-  @Input() pokemonObj={}
+  @Input() pokemonObj = {}
 
   @Input() myPokemons: PokemonModel[] = []
   copyMyPokemons: PokemonModel[] = []
@@ -25,7 +25,8 @@ export class PreBattleComponent implements OnInit {
   copyGymPokemons: any
 
   currentGymLeader: any[] = []
-  currentGymBadge: string
+  leaderInfo: GymLeader
+
   pokeball = environment.pokeballImg
 
   player1: PokemonModel[] = []
@@ -36,10 +37,18 @@ export class PreBattleComponent implements OnInit {
   constructor(private http: PokemonService){}
 
   ngOnInit() {
-    this.battlePhase = 'pre-battle'
-    this.currentGymLeader = this.checkLeaders()
-    this.copyMyPokemons = this.myPokemons
-    this.getPokemon()
+    this.battlePhase = 'overview'
+    this.initialBattlePhase()
+  }
+
+  initialBattlePhase() {
+    this.resetBattle()
+    setTimeout(() => {
+      this.battlePhase = 'pre-battle'
+      this.currentGymLeader = this.checkLeaders()
+      this.copyMyPokemons = this.myPokemons
+      this.getPokemon()
+    },3000)
   }
 
   getPokemon() {
@@ -135,8 +144,11 @@ export class PreBattleComponent implements OnInit {
   checkLeaders() {
     for (const gymLeader of this.gymLeaders) {
       if (!gymLeader.gymLose) {
-        this.currentGymBadge = gymLeader.gymBadge
-        console.log(gymLeader.gymPokemons)
+        this.leaderInfo = {
+          gymBadge: gymLeader.gymBadge,
+          gymImage: gymLeader.gymImage,
+          name: gymLeader.name
+        }
         return gymLeader.gymPokemons
       } 
     }
@@ -148,13 +160,8 @@ export class PreBattleComponent implements OnInit {
     if (event.outcome === "win") {
       for (let i = 0; i < this.gymLeaders.length; i++){
         if (!this.gymLeaders[i].gymLose&&i!==this.gymLeaders.length-1) {
-          this.myPokemons.push(...this.player1)
           this.myPokemons.push(...event.returnPokemonPlayer1)
-          this.resetBattle()
           this.gymLeaders[i].gymLose = true
-          this.battlePhase = 'pre-battle'
-          this.currentGymLeader = await this.checkLeaders()
-          this.getPokemon()
           break
         } else if(i==this.gymLeaders.length-1) {
           this.battlePhase = 'new-champion'
@@ -166,11 +173,9 @@ export class PreBattleComponent implements OnInit {
       this.myPokemons.push(...event.returnPokemonPlayer1)
       this.gymPokemons.push(...this.player2)
       this.gymPokemons.push(...event.returnPokemonPlayer2)
-      this.resetBattle()
-      this.battlePhase = 'pre-battle'
-      this.currentGymLeader = await this.checkLeaders()
-      this.getPokemon()
     }
+    this.battlePhase = 'overview'
+    this.initialBattlePhase()
   }
 
   resetBattle() {

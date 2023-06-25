@@ -90,6 +90,7 @@
   <app-battle 
   [player1]="player1" 
   [player2]="player2"
+  [leaderInfo]="leaderInfo"
   (outcomeSubmit)="outcomeBattle($event)"
   *ngSwitchCase="'in-battle'"
   >
@@ -99,5 +100,8 @@
   </div>
   <div *ngSwitchCase="'game-over'">
     <app-root></app-root>
+  </div>
+  <div *ngSwitchCase="'overview'">
+    <app-overview></app-overview>
   </div>
 </div>
