@@ -16,8 +16,9 @@ export class PreBattleComponent implements OnInit {
   @Input() dbMoves: MoveModel[] = []
   @Input() gymLeaders: any[] = []
   @Input() pokemonObj = {}
-
   @Input() myPokemons: PokemonModel[] = []
+  
+  dataObj: any
   copyMyPokemons: PokemonModel[] = []
 
   gymPokemonsTemp: any[]=[]
@@ -43,12 +44,11 @@ export class PreBattleComponent implements OnInit {
 
   initialBattlePhase() {
     this.resetBattle()
-    setTimeout(() => {
-      this.battlePhase = 'pre-battle'
+    // setTimeout(() => {
       this.currentGymLeader = this.checkLeaders()
       this.copyMyPokemons = this.myPokemons
       this.getPokemon()
-    },3000)
+    // },3000)
   }
 
   getPokemon() {
@@ -56,6 +56,19 @@ export class PreBattleComponent implements OnInit {
       this.http.getPokemon(data.name).subscribe(data => {
         this.gymPokemonsTemp.push(data)
         if (this.gymPokemonsTemp.length == 6) {
+          this.dataObj = {
+            player1: {
+              pokemons: this.myPokemons
+            },
+            player2: {
+              pokemons: this.gymPokemonsTemp,
+              gymImage: this.leaderInfo.gymImage,
+              leaderName: this.leaderInfo.name
+            }
+          }
+          // this.battlePhase = "versus"
+          this.battlePhase = 'pre-battle'
+          // setTimeout(()=>{this.battlePhase = 'pre-battle'},3000)
           this.getMove()
         }
       })
@@ -156,7 +169,6 @@ export class PreBattleComponent implements OnInit {
   }
 
   async outcomeBattle(event: any) {
-    console.log(event)
     if (event.outcome === "win") {
       for (let i = 0; i < this.gymLeaders.length; i++){
         if (!this.gymLeaders[i].gymLose&&i!==this.gymLeaders.length-1) {

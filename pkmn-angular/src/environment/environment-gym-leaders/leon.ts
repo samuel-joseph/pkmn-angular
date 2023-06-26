@@ -7,11 +7,11 @@ export const leon: GymLeader = {
   gymLose: false,
   gymPokemons: [
     {
-      name: 'aegislash',
+      name: 'seismitoad',
       moves: [
-        'sacred-sword',
-        'shadow-ball',
-        'flash-cannon'
+        'weather-ball',
+        'mud-shot',
+        'gastro-acid'
       ]
     },
     {

@@ -1,0 +1,11 @@
+<div class="parent">
+  <div class="avatarParent">
+    <h2>{{this.dataObj.player2.leaderName}}</h2>
+    <img class="avatar" alt="" [src]="this.dataObj.player2.gymImage" />
+  </div>
+  <div class="pokemonHolder">
+    <div *ngFor="let pokemon of this.dataObj.player2.pokemons">
+      <img alt="" src='{{"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+pokemon.id+".png"}}' />
+    </div>
+  </div>
+</div>

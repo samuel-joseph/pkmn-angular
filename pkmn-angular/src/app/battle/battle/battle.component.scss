@@ -2,9 +2,31 @@
   width: 30vw;
 }
 
+
 .on-going{
   .npcPokemon{
     animation: npcMove 1s;
+  }
+
+  .pokemonFade{
+    animation: faded 1;
+    opacity: 0;
+  }
+
+
+  .npcPokemonMelee{
+    width: 30vw;
+    opacity: 0;
+    animation: faded 1;
+  }
+
+  @keyframes faded {
+    0%{
+      opacity: 1;
+    }
+    100%{
+      opacity: 0;
+    }
   }
 
   .playerPokemon{

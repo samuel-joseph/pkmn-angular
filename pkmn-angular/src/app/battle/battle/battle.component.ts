@@ -31,6 +31,9 @@ export class BattleComponent implements OnInit{
   npcAttackMotion = false
   playerAttackMotion = false
 
+  npcAttackClass: string
+  playerAttackClass: string
+
   npcHpPercentage: string
   playerHpPercentage: string
 
@@ -84,6 +87,29 @@ export class BattleComponent implements OnInit{
     this.calculatePercentHp()
   }
 
+  animationAttack(player: string, moveType: string) {
+    console.log(player+" "+moveType)
+    if (player == 'player') {
+      this.playerAttackMotion = true
+      // setTimeout(() => {
+        
+        this.playerAttackClass = moveType
+      // }, 200)
+      setTimeout(() => {
+      this.playerAttackMotion = false
+      },1700)
+    } else if (player == 'npc') {
+      this.npcAttackMotion = true
+      // setTimeout(() => {
+        
+        this.npcAttackClass = moveType
+      // }, 200)
+      setTimeout(() => {
+        this.npcAttackMotion = false
+        },1700)
+    }
+  }
+
   chosenMove(move: MoveModel) {
     let player = this.currentPlayer1[0]
     let npc = this.currentPlayer2[0]
@@ -95,7 +121,8 @@ export class BattleComponent implements OnInit{
       player.stats[5].base_stat > npc.stats[5].base_stat ||
       player.stats[5].base_stat == npc.stats[5].base_stat
     ) {
-      this.playerAttackMotion = true
+      this.animationAttack('player',playerMove.damageClass)
+      // this.playerAttackMotion = true
       setTimeout(() => {
       this.attackSequence(player, npc, playerMove)
       },700)
@@ -105,7 +132,8 @@ export class BattleComponent implements OnInit{
             this.currentPlayer2Fainted()
             },1000)
         } else {
-          this.npcAttackMotion = true
+          // this.npcAttackMotion = true
+          this.animationAttack('npc',npcMove[0].damageClass)
           setTimeout(()=>{
             this.attackSequence(npc, player, npcMove[0])},700)
           setTimeout(() => {
@@ -120,7 +148,8 @@ export class BattleComponent implements OnInit{
         }
       },1500)
     } else {
-      this.npcAttackMotion = true
+      // this.npcAttackMotion = true
+      this.animationAttack('npc',npcMove[0].damageClass)
       setTimeout(()=>{
         this.attackSequence(npc, player, npcMove[0])},700)
       setTimeout(() => {
@@ -129,7 +158,8 @@ export class BattleComponent implements OnInit{
             this.currentPlayer1Fainted()
             },1000)
         } else {
-          this.playerAttackMotion = true
+          // this.playerAttackMotion = true
+          this.animationAttack('player',playerMove.damageClass)
           setTimeout(()=>{
             this.attackSequence(player, npc, playerMove)},700)
           setTimeout(() => {
@@ -144,10 +174,6 @@ export class BattleComponent implements OnInit{
         }
       },1500)
     }
-    setTimeout(() => {
-      this.playerAttackMotion = false
-      this.npcAttackMotion = false
-    }, 4200);
   }
 
   currentPlayer1Fainted() {
@@ -217,7 +243,6 @@ export class BattleComponent implements OnInit{
     
     const index = this.player1.findIndex(val => val == pokemon)
     this.player1.splice(index, 1)
-    
     this.currentPlayer1.push(pokemon)
     this.calculatePercentHp()
     let player = this.currentPlayer1[0]
@@ -268,6 +293,7 @@ export class BattleComponent implements OnInit{
       returnPokemonPlayer2
       })
     }, 10000)
+
     this.battlePhase = 'battle-done'
   }
 }

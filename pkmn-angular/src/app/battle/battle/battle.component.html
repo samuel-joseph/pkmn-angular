@@ -48,7 +48,10 @@
         <div *ngIf="this.currentPlayer1[0].currentHp>0;else faintedPlayer">
           <img
           alt=""
-          [ngClass]="this.playerAttackMotion?'playerPokemon':''"
+          [ngClass]="{
+            'pokemonFade':this.playerAttackMotion&&this.playerAttackClass=='physical',
+            'playerPokemon':this.playerAttackClass==='special'
+          }"
           [src]="this.currentPlayer1[0].back_image" 
           style="
           height: 50vw;

@@ -20,7 +20,6 @@ export class PlayerComponent implements OnInit{
   }
 
   modifyMove(idMove: number, idPokemon: number, str: string) {
-    console.log(idMove, idPokemon, str)
     let indexPokemon = this.myPokemons.findIndex(pokemon => pokemon.id === idPokemon)
     let myPokemon = this.myPokemons[indexPokemon]
     let indexMove
@@ -35,7 +34,7 @@ export class PlayerComponent implements OnInit{
       myPokemon.moves.splice(indexMove, 1)
     }
 
-    if (myPokemon.moves.length == 4) {
+    if (myPokemon.moves.length == 4||myPokemon.dbMoves.length==0) {
       const firstPokemon = this.myPokemons.shift()
       if(firstPokemon){
         this.myPokemons.push(firstPokemon)
@@ -46,8 +45,8 @@ export class PlayerComponent implements OnInit{
   }
 
   allMovesReady(){
-    let checker = this.myPokemons.filter(pokemon => pokemon.moves.length < 4||pokemon.dbMoves.length==0)
-    if (checker.length == 0) {
+    let checker = this.myPokemons.filter(pokemon => pokemon.moves.length == 4||pokemon.dbMoves.length==0)
+    if (checker.length == 6) {
       this.movesAllReady = true
     }
   }

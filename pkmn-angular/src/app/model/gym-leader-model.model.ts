@@ -3,5 +3,11 @@ export interface GymLeader {
   gymLose?: boolean,
   gymImage: string,
   name: string,
-  gymPokemons?: Array<Object>
+  gymPokemons?: any
 }
+
+export interface GymPokemon {
+  name: string,
+  moves: Array<string>
+}
+

@@ -13,6 +13,7 @@ import { PopUpComponent } from './pop-up/pop-up/pop-up.component';
 import { BattleComponent } from './battle/battle/battle.component';
 import { PreBattleComponent } from './battle/pre-battle/pre-battle.component';
 import { OverviewComponent } from './pop-up/overview/overview.component';
+import { VersusComponent } from './pop-up/versus/versus.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { OverviewComponent } from './pop-up/overview/overview.component';
     PopUpComponent,
     BattleComponent,
     PreBattleComponent,
-    OverviewComponent
+    OverviewComponent,
+    VersusComponent
   ],
   imports: [
     BrowserModule,

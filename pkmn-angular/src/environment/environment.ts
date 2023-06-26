@@ -5,6 +5,8 @@ import { chuck } from "./environment-gym-leaders/chuck";
 import { clay } from "./environment-gym-leaders/clay";
 import { cynthia } from "./environment-gym-leaders/cynthia";
 import { grimsley } from "./environment-gym-leaders/grimsley";
+import { iris } from "./environment-gym-leaders/iris";
+import { leon } from "./environment-gym-leaders/leon";
 import { misty } from "./environment-gym-leaders/misty";
 
 export const environment = {
@@ -15,6 +17,8 @@ export const environment = {
     clay,
     chuck,
     grimsley,
+    leon,
+    iris,
     cynthia,
     ash
   ],
