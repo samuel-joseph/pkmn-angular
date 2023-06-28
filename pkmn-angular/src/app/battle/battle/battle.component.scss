@@ -13,6 +13,88 @@
     opacity: 0;
   }
 
+  .playerPhysical{
+    height: 50vw;
+    position: fixed;
+    z-index: 99;
+    margin-left: 80px;
+    margin-top: 100px;
+    animation: playerPhysicalAttack 1.5s;
+    opacity: 0;
+  }
+
+  .attackFx{
+    position: fixed;
+    z-index: 99;
+    animation: fx 1.5s;
+    opacity: 0;
+  }
+
+  @keyframes fx {
+    50%{
+      opacity: 1;
+    }
+    90%{
+      opacity: 1;
+    }
+  }
+
+  .npcPhysical{
+    height: 50vw;
+    position: fixed;
+    z-index: 99;
+    margin-left: 100px;
+    margin-top: -90px;
+    animation: npcPhysicalAttack 1.5s;
+    opacity: 0;
+  }
+
+  @keyframes npcPhysicalAttack {
+    10%{
+      opacity: 1;
+    }
+    50%{
+      opacity: 1;
+    }
+    60%{
+      opacity: 1;
+      transform: rotateZ(-5deg);
+    }
+    80%{
+      opacity: 1;
+      margin-left: 80px;
+      margin-top: -70px;
+      transform: rotateZ(-25deg);
+    }
+    85%{
+      opacity: 1;
+      transform: rotateZ(0deg);
+    }
+  }
+
+  @keyframes playerPhysicalAttack {
+    10%{
+      opacity: 1;
+    }
+    50%{
+      opacity: 1;
+    }
+    60%{
+      opacity: 1;
+      transform: rotateZ(5deg);
+    }
+    80%{
+      opacity: 1;
+      margin-left: 120px;
+      margin-top: 5px;
+      transform: rotateZ(10deg);
+    }
+    85%{
+      opacity: 1;
+      transform: rotateZ(0deg);
+    }
+  }
+
 
   .npcPokemonMelee{
     width: 30vw;

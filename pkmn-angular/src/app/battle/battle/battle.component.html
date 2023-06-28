@@ -2,6 +2,12 @@
   <div
   class="on-going"
    *ngSwitchCase="'on-going'">
+    <img
+    *ngIf="this.playerAttackMotion&&this.playerAttackClass=='physical'"
+    alt=""
+    class="playerPhysical"
+      [src]="this.currentPlayer1[0].back_image" 
+    />
     <div *ngIf="this.currentPlayer2.length>0"
     style="
     display: flex;
@@ -14,11 +20,19 @@
       'position': 'fixed',
       'width': this.npcHpPercentage
     }"></div>
-    <span>
       <div *ngIf="this.currentPlayer2[0].currentHp>=0;else faintedNpc">
         <img
+        *ngIf="this.playerAttackMotion"
+        class="attackFx"
         alt=""
-          [ngClass]="this.npcAttackMotion?'npcPokemon':''"
+        [src]="this.playerAttackClass==='physical'?'https://www.freeiconspng.com/thumbs/x-png/x-png-18.png':'https://i.gifer.com/origin/d7/d7ac4f38b77abe73165d85edf2cbdb9e_w200.gif'"
+        />
+        <img
+        alt=""
+          [ngClass]="{
+            'pokemonFade':this.npcAttackMotion&&this.npcAttackClass=='physical',
+            'npcPokemon':this.npcAttackMotion&&this.npcAttackClass==='special'
+          }"
           [src]="this.currentPlayer2[0].front_image" 
         style="
         height: 50vw;
@@ -35,8 +49,13 @@
       " 
       />
     </ng-template>
-    </span>
     </div>
+    <img
+    *ngIf="this.npcAttackMotion&&this.npcAttackClass=='physical'"
+    alt=""
+    class="npcPhysical"
+      [src]="this.currentPlayer2[0].front_image" 
+    />
     <div *ngIf="this.currentPlayer1.length>0"
     style="
     display: flex;
@@ -44,19 +63,24 @@
     flex-direction: column;
     "
     >
-      <span>
-        <div *ngIf="this.currentPlayer1[0].currentHp>0;else faintedPlayer">
-          <img
-          alt=""
-          [ngClass]="{
-            'pokemonFade':this.playerAttackMotion&&this.playerAttackClass=='physical',
-            'playerPokemon':this.playerAttackClass==='special'
-          }"
-          [src]="this.currentPlayer1[0].back_image" 
-          style="
-          height: 50vw;
-          " 
-          />
+      <div *ngIf="this.currentPlayer1[0].currentHp>0;else faintedPlayer">
+        <img
+        *ngIf="this.npcAttackMotion"
+        class="attackFx"
+        alt=""
+        [src]="this.npcAttackClass==='physical'?'https://www.freeiconspng.com/thumbs/x-png/x-png-18.png':'https://i.gifer.com/origin/d7/d7ac4f38b77abe73165d85edf2cbdb9e_w200.gif'"
+        />
+        <img
+        alt=""
+        [ngClass]="{
+          'pokemonFade':this.playerAttackMotion&&this.playerAttackClass=='physical',
+          'playerPokemon':this.playerAttackMotion&&this.playerAttackClass==='special'
+        }"
+        [src]="this.currentPlayer1[0].back_image" 
+        style="
+        height: 50vw;
+        " 
+        />
       </div>
       <ng-template #faintedPlayer>
         <img
@@ -68,7 +92,6 @@
         " 
         />
       </ng-template>
-      </span>
       <div [ngStyle]="{
         'background-color':'green',
         'height':'2vh',
