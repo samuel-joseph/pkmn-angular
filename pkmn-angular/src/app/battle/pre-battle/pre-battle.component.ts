@@ -115,10 +115,12 @@ export class PreBattleComponent implements OnInit {
 
       const maxHp = calculateHp(this.gymPokemonsTemp[i].stats[0].base_stat)
 
+      const stats = getStats(this.gymPokemonsTemp[i].stats)
+
       let pokemon = {
         id: this.gymPokemonsTemp[i].id,
         name: this.gymPokemonsTemp[i].name,
-        stats: getStats(this.gymPokemonsTemp[i].stats),
+        stats,
         types: getTypes(this.gymPokemonsTemp[i].types),
         moves: tempMoves,
         dbMoves: tempMoves,
@@ -126,6 +128,9 @@ export class PreBattleComponent implements OnInit {
         back_image: this.gymPokemonsTemp[i].sprites.back_default,
         maxHp,
         currentHp: maxHp,
+        others: {
+          stats
+        }
       }
       let copyGymPokemons = {
         front_image: this.gymPokemonsTemp[i].sprites.front_default

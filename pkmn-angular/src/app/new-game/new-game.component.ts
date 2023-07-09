@@ -28,6 +28,41 @@ export class NewGameComponent implements OnInit{
   ngOnInit(): void {
     for (let pokemon of this.moveListArr) {
       this.http.getPokemonMove(`${pokemon}`).subscribe((move) => {
+
+        let moveFx
+        let stat_changes, ailment, hits, crit_rate
+
+        if (move.damage_class.name === 'special') {
+          moveFx = 'https://i.gifer.com/origin/d7/d7ac4f38b77abe73165d85edf2cbdb9e_w200.gif'
+        } else {
+          moveFx = 'https://www.freeiconspng.com/thumbs/x-png/x-png-18.png'
+        }
+
+        // if (move.stat_changes.length > 0) {
+        //   for (let stat_change of move.stat_changes) {
+        //     let tempObj = {
+        //       change: stat_change.change,
+        //       name: stat_change.stat.name
+        //     }
+        //     stat_change.push(tempObj)
+        //   }
+        // }
+
+        if (move.meta) {
+          ailment = {
+            name: move.meta.ailment['name'],
+            category: move.meta.category['name'],
+            chance: move.meta.ailment_chance
+          }
+          hits = {
+            min_hits: move.meta.min_hits != null ? move.meta.min_hits : undefined,
+            max_hits: move.meta.max_hits != null ? move.meta.max_hits : undefined
+          }
+          crit_rate = move.meta.crit_rate
+          
+        }
+
+        // bubble   https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/3162952/bubbles-clipart-md.png
         this.dbMoves.push({
           id: move.id,
           name: move.name,
@@ -35,13 +70,16 @@ export class NewGameComponent implements OnInit{
           pp: move.pp,
           type: move.type.name,
           accuracy: move.accuracy,
-          damageClass: move.damage_class.name,
-          priority: move.priority,
-          hits: {
-            min_hits: move.meta.min_hits != null ? move.meta.min_hits : undefined,
-            max_hits: move.meta.max_hits != null ? move.meta.max_hits : undefined
+          damageClass: {
+            name: move.damage_class.name,
+            ailment
           },
-          crit_rate: move.meta.crit_rate
+          stat_changes: move.stat_changes,
+          priority: move.priority,
+          hits,
+          crit_rate,
+          moveFx,
+          target: move.target.name,
         })
       })
     }
@@ -85,6 +123,7 @@ export class NewGameComponent implements OnInit{
 
 
   toStore() {
+    console.log(this.dbMoves)
     let tempArr = []
     for (const myPokemon of this.myPokemons) {
       let tempDbMoves: MoveModel[] = []
@@ -97,25 +136,31 @@ export class NewGameComponent implements OnInit{
         const id = url.substring(index + "2/move/".length)
 
         if (this.moveListArr.includes(parseInt(id)) &&
-          learnMethod === 'level-up') {
-          let objMove = this.dbMoves.filter(data => data.id === parseInt(id))
-          tempDbMoves.push(...objMove)
+          learnMethod == 'level-up') {
+          let index = this.dbMoves.findIndex(val => val.id == id)
+          console.log(index)
+          tempDbMoves.push(this.dbMoves[index])
         } 
       }
 
       const maxHp = calculateHp(myPokemon.stats[0].base_stat)
+      const stats = getStats(myPokemon.stats)
 
       let pokemon = {
         id: myPokemon.id,
         name: myPokemon.name,
-        stats: getStats(myPokemon.stats),
+        stats,
         types: getTypes(myPokemon.types),
         moves: temp4Moves,
         dbMoves: tempDbMoves,
         front_image: myPokemon.sprites.front_default,
         back_image: myPokemon.sprites.back_default,
         maxHp,
-        currentHp: maxHp
+        currentHp: maxHp,
+        others: {
+          stats,
+          condition: ''
+        }
       }
       tempArr.push(pokemon)
       if (tempArr.length == 6) {

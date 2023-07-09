@@ -10,7 +10,13 @@ export interface PokemonModel {
   front_image: string,
   back_image: string,
   maxHp: number,
-  currentHp: number
+  currentHp: number,
+  others: Meta
+}
+
+export interface Meta {
+  stats: Array<StatsModel>,
+  condition: string
 }
 
 export interface RegionPokemon {

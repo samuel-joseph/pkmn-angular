@@ -2,15 +2,78 @@
   width: 30vw;
 }
 
+.changeBackground{
+  -webkit-transition: background-color 2000ms linear;
+  -ms-transition: background-color 2000ms linear;
+  transition: background-color 2000ms linear;
+}
+
+.changeToNormal{
+}
+
+
 
 .on-going{
+  display: flex;
+  flex-direction: column;
+
+  .powerupfx{
+    animation: aura 2s;
+    opacity: 1;
+  }
+
+  @keyframes aura {
+    80%{
+      opacity: 1;
+      transform: rotateY(0deg);
+    }
+    85%{
+      opacity: .2;
+      transform: rotateY(30deg);
+    }
+    90%{
+      opacity: 1;
+      transform: rotateY(0deg);
+    }
+    95%{
+      opacity: .2;
+    }
+    98%{
+      opacity: 1;
+      transform: rotateY(30deg);
+    }
+    100%{
+      opacity: .2;
+      transform: rotateY(0deg);
+    }
+  }
+
+  .buffFx{
+    animation: buff 2s;
+  }
+
+  @keyframes buff {
+    40%{
+      margin-bottom: 0px;
+    }
+    50%{
+      transform: rotateY(0deg);
+      margin-bottom: 100px;
+    }
+    100%{
+      margin-bottom: 100px;
+      transform: rotateY(180deg);
+    }
+  }
+
+
   .npcPokemon{
     animation: npcMove 1s;
   }
 
   .pokemonFade{
-    animation: faded 1;
-    opacity: 0;
+    opacity: 1;
+    animation: faded 2s;
   }
 
   .playerPhysical{
@@ -44,13 +107,13 @@
     position: fixed;
     z-index: 99;
     margin-left: 100px;
-    margin-top: -90px;
+    margin-top: 100px;
     animation: npcPhysicalAttack 1.5s;
     opacity: 0;
   }
 
   @keyframes npcPhysicalAttack {
-    10%{
+    5%{
       opacity: 1;
     }
     50%{
@@ -63,51 +126,67 @@
     80%{
       opacity: 1;
       margin-left: 80px;
-      margin-top: -70px;
+      margin-top: 80px;
       transform: rotateZ(-25deg);
     }
     85%{
       opacity: 1;
       transform: rotateZ(0deg);
     }
+    100%{
+      opacity: 1;
+    }
   }
 
   @keyframes playerPhysicalAttack {
-    10%{
+    5%{
       opacity: 1;
     }
     50%{
       opacity: 1;
+      transform: rotateZ(0deg);
     }
-    60%{
+    55%{
       opacity: 1;
-      transform: rotateZ(5deg);
-    }
-    80%{
-      opacity: 1;
+      transform: rotateZ(45deg);
       margin-left: 120px;
       margin-top: 5px;
-      transform: rotateZ(10deg);
     }
-    85%{
-      opacity: 1;
+    70%{
+      margin-left: 120px;
+      margin-top: 5px;
+    }
+    80%{
       transform: rotateZ(0deg);
+      opacity: 1;
+    }
+    100%{
+      opacity: 1;
     }
   }
 
 
   .npcPokemonMelee{
     width: 30vw;
-    opacity: 0;
-    animation: faded 1;
+    opacity: 1;
+    animation: faded 2s;
   }
 
   @keyframes faded {
-    0%{
-      opacity: 1;
+    10%{
+      opacity: .5;
+    }
+    20%{
+      opacity: 0;
+    }
+    79%{
+      opacity: 0;
+    }
+    99%{
+      opacity: 0;
     }
     100%{
-      opacity: 0;
+      opacity: 0.5;
     }
   }
 
@@ -116,8 +195,9 @@
   }
 
   .faintedPokemon{
-    animation: fainted .8s;
+    animation: fainted 2s;
     opacity: 0;
+    height: 50vw;
   }
 }
 
@@ -126,6 +206,9 @@
     opacity: 1;
   }
   50%{
+    opacity: 1;
+  }
+  70%{
     opacity: .5;
   }
   100%{
@@ -136,6 +219,10 @@
 @keyframes npcMove {
   30%{
     padding-right: 50px;
+    transform: rotateZ(-25deg);
+  }
+  35%{
+    transform: rotateZ(0deg);
   }
   100%{
     padding-right: 0px;
@@ -143,11 +230,53 @@
 }
 
 @keyframes playerMove {
+  25%{
+    transform: rotateZ(0deg)
+  }
   30%{
-    padding-left: 50px;
+    padding-left: 60px;
+    transform: rotateZ(10deg);
+  }
+  75%{
+    padding-left: 60px;
+    transform: rotateZ(10deg);
   }
   100%{
     padding-left: 0px;
+    transform: rotateZ(0deg)
+  }
+  
+}
+
+.damageReceived{
+  width: 100vw;
+  text-align: center;
+  -webkit-transform: rotate(-45deg); 
+  -moz-transform: rotate(-45deg); 
+   -ms-transform: rotate(-45deg); 
+    -o-transform: rotate(-45deg); 
+       transform: rotate(-45deg);
+ -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.7071067811865482, M12=0.7071067811865466, M21=-0.7071067811865466, M22=0.7071067811865482, SizingMethod='auto expand')";
+ filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.7071067811865482, M12=0.7071067811865466, M21=-0.7071067811865466, M22=0.7071067811865482, SizingMethod='auto expand');
+
+ display: block;
+ position: absolute;
+ font-weight: bolder;
+ font-size: xx-large;
+ color: red;
+ animation: fallingText 1s;
+ opacity: 0;
+}
+
+
+@keyframes fallingText {
+  0%{
+    margin-top: 0px;
+    opacity: 1;
+  }
+  100%{
+    margin-top: 50px;
+    opacity: 1;
   }
 }
 

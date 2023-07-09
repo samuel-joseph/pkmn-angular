@@ -1,3 +1,5 @@
+// import { moveFxRecords } from "src/environment/environment-constants"
+// import { MoveModel } from "../model/move-model.model"
 import { Type } from "../model/pokemon-model.model"
 
 export const getMove = (move:any)=>{
@@ -19,6 +21,24 @@ export const getMove = (move:any)=>{
       },
     crit_rate: move.meta? move.meta.crit_rate : 0
   }
+}
+
+export const multiplier = (stage: number): number => {
+  switch (stage) {
+    case 1:
+      return .5
+    case 2:
+      return 1
+    case 3:
+      return 1.5
+    case 4:
+      return 2
+    case 5:
+      return 2.5
+    case 6:
+      return 3
+  }
+  return 0
 }
 
 export const getStats = (stats: Array<any>) => {
@@ -51,6 +71,18 @@ export const calculateHp = (hpStat: number) => {
   return Math.floor(.01*(2*hpStat+30+Math.floor(.25*150))*100)+100+10
 }
 
+export const getStab = (attackerType: Type, moveType: string): number => {
+  return attackerType.typeOne == moveType || attackerType.typeTwo == moveType ? 2 : 1
+}
+
+export const isSuperEffective = (attackerType: Type, moveType: string, receiverType: Type): boolean => {
+  return getStab(attackerType, moveType) == 2 &&
+    receiverType.typeTwo ?
+    typeAdvantage(moveType, receiverType.typeOne) * typeAdvantage(moveType, receiverType.typeTwo) > 1 :
+    typeAdvantage(moveType, receiverType.typeOne) > 1
+    
+}
+
 export const calculateDamage = (
   damage: number,
   attackerStat: number,
@@ -59,7 +91,8 @@ export const calculateDamage = (
   moveType: string,
   receiverType: Type
 ) => {
-  const STAB = attackerType.typeOne == moveType || attackerType.typeTwo == moveType ? 2 : 1
+  console.log('Attack stat ',attackerStat)
+  const STAB = getStab(attackerType, moveType)
   let TYPE
   if(receiverType.typeTwo){
     TYPE = typeAdvantage(moveType, receiverType.typeOne) * typeAdvantage(moveType, receiverType.typeTwo)
@@ -67,10 +100,20 @@ export const calculateDamage = (
     TYPE = typeAdvantage(moveType, receiverType.typeOne)
   }
 
-  console.log(`${TYPE>=2?'Super effective':TYPE}`)
-
-  return Math.floor(((((((2*100)/5)+2)*damage*(attackerStat/receiverStat))/50)+2)*STAB*TYPE)
+  return Math.floor(((((((2 * 100) / 5) + 2) * damage * (attackerStat / receiverStat)) / 50) + 2) * STAB * TYPE)
 }
+
+//        to be continued
+// export const setMoveFx=(move: MoveModel)=>{
+//   switch (move.type) {
+//     case 'water':
+//       if (move.damageClass == 'special') {
+//         if (move.power <= 50) {
+//           return moveFxRecords.waterSpecialLow;
+//         }
+//       }
+//   }
+// }
 
 
 export const typeAdvantage = (moveType: string, receiverType: string) => {
