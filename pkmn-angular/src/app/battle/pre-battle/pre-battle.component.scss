@@ -1,0 +1,43 @@
+.parent-prebattle{
+  display: flex; 
+  flex-direction: column; 
+  flex-wrap: wrap; 
+  justify-self: center;
+
+  .pokeballImg{
+    width: 10vw;
+  }
+
+  .subparent{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 40vh;
+    align-items: center;
+  }
+
+  .pokeball-container{
+    display: flex; 
+    flex-direction: row; 
+    align-items: center; 
+    width: 100%;
+    justify-content:space-evenly;
+  }
+
+  .pokemon-container{
+    display: flex; 
+      flex-direction: row; 
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 0 5vw;
+  }
+}
+
+
+@media screen and (min-width: 480px) {
+  .parent-prebattle{
+    .pokeballImg{
+      width: 2.5vw;
+    }
+  }
+}

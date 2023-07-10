@@ -1,0 +1,27 @@
+.pokemon-list{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  height: 80vh;
+  overflow-y: scroll;
+}
+
+.idleAnimationPlayer{
+  animation-name: idlenpc;
+  animation-iteration-count: infinite;
+  animation-duration: 2s;
+  -webkit-transition: all 0.9s ease;
+     -moz-transition: all 0.9s ease;
+       -o-transition: all 0.9s ease;
+          transition: all 0.9s ease;
+  animation-direction: alternate;
+}
+
+@keyframes idlenpc {
+  50%{
+    transform: rotateZ(-2deg);
+  }
+  55%{
+    transform: rotateZ(0deg);
+  }
+ }

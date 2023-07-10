@@ -1,11 +1,11 @@
 <div class="parent">
   <div *ngFor="let gym of this.gymLeaders">
     <div *ngIf="gym.gymLose;else other">
-      <img class="fadeBadge" src={{gym.gymBadge}} />
-      <img class="fadeImage" src={{gym.gymImage}} />
+      <img alt="" class="fadeBadge" src={{gym.gymBadge}} />
+      <img alt="" class="fadeImage" src={{gym.gymImage}} />
     </div>
     <ng-template #other>
-      <img src={{gym.gymImage}} />
+      <img alt="" src={{gym.gymImage}} />
     </ng-template>
   </div>
 </div>

@@ -1,0 +1,19 @@
+.parent{
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.sub-parent{
+  height: 90vh;
+  width: 100vw;
+}
+
+
+@media screen and (min-width: 480px) {
+  .sub-parent {
+    width: 450px;
+    overflow-y: scroll;
+  }
+}

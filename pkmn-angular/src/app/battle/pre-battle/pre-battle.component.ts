@@ -106,7 +106,7 @@ export class PreBattleComponent implements OnInit {
     let tempArrCopy = []
     for (let i = 0; i < this.gymPokemonsTemp.length; i++) {
       let tempMoves: MoveModel[] = []
-      const filtered = this.currentGymLeader.filter(tempData => tempData.name == this.gymPokemonsTemp[i].name)
+      let filtered = this.currentGymLeader.filter(tempData => tempData.name == this.gymPokemonsTemp[i].name)
       let moveSet = filtered[0].moves
       for (let j = 0; j < moveSet.length; j++){
         let move = this.dbMoves.filter(move => move.name == moveSet[j])

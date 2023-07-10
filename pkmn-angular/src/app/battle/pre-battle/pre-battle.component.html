@@ -1,49 +1,30 @@
 <div [ngSwitch]="battlePhase">
   <div 
   *ngSwitchCase="'pre-battle'"
-  style="
-  display: flex; 
-  flex-direction: column; 
-  flex-wrap: wrap; 
-  justify-self: center; 
-  width: 100vw;"
+  class="parent-prebattle"
   >
     <div 
-    *ngIf="this.myPokemons"
-    style="
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      height: 40vh;
-      align-items: center;
-      "
+    *ngIf="this.gymPokemons"
+    class="subparent"
     >
-      <div *ngIf="this.player1.length>0"
-        style="
-        display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        justify-content: center;"
+      <div class="pokemon-container"
+      >
+        <div *ngFor="let pokemon of this.copyGymPokemons">
+          <img
+            alt=""
+            [src]="pokemon.front_image" />
+        </div>
+      </div>
+      <div *ngIf="this.player2.length>0"
+        class="pokeball-container"
         >
-        <div *ngFor="let pokemon of this.player1">
-          <img [src]="this.pokeball" (click)="this.remove(pokemon)"
-          style="width: 5vw;"
+        <div *ngFor="let pokemon of this.player2">
+          <img alt="" class="pokeballImg" [src]="this.pokeball"
           />
         </div>
       </div>
-      <div style=
-      "display: flex; 
-      flex-direction: row; 
-      flex-wrap: wrap; 
-      width: 90vw; 
-      justify-content: center;"
-      >
-        <div *ngFor="let pokemon of this.myPokemons">
-          <img (click)="this.player1Chosen(pokemon)" [src]="pokemon.front_image" />
-        </div>
-      </div>
     </div>
-    <div style="padding: 5vh 0;">
+    <div>
       <div *ngIf="this.player1.length==3;else versus">
         <app-pop-up (battlePrep)="battleReady($event)"></app-pop-up>
       </div>
@@ -52,37 +33,25 @@
       </ng-template> 
     </div>
     <div 
-    *ngIf="this.gymPokemons"
-    style="
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      height: 40vh;
-      align-items: center;
-      "
+    *ngIf="this.myPokemons"
+    class="subparent"
     >
-      <div *ngIf="this.player2.length>0"
-        style="
-          display: flex; 
-          flex-direction: 
-          column; align-items: 
-          center; justify-content: center;"
+      <div *ngIf="this.player1.length>0"
+        class="pokeball-container"
         >
-        <div *ngFor="let pokemon of this.player2">
-          <img [src]="this.pokeball" 
-          style="width: 5vw;"
+        <div *ngFor="let pokemon of this.player1">
+          <img
+          alt=""
+          class="pokeballImg"
+           [src]="this.pokeball" 
+          (click)="this.remove(pokemon)"
           />
         </div>
       </div>
-      <div style="
-      display: flex; 
-      flex-direction: 
-      row; flex-wrap: 
-      wrap; width: 90vw; 
-      justify-content: center;"
+      <div class="pokemon-container"
       >
-        <div *ngFor="let pokemon of this.copyGymPokemons">
-          <img [src]="pokemon.front_image" />
+        <div *ngFor="let pokemon of this.myPokemons">
+          <img alt="" (click)="this.player1Chosen(pokemon)" [src]="pokemon.front_image" />
         </div>
       </div>
     </div>

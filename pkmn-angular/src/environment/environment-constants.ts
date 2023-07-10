@@ -6,9 +6,11 @@ export const regions = [
   'hoenn',
   'sinnoh',
   'unova',
-  'kalos',
   'alola'
 ]
+
+
+// 'kalos',
 
 export const powerup = {
   attack: 'https://cdn-icons-png.flaticon.com/128/8193/8193165.png',

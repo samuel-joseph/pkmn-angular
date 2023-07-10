@@ -1,15 +1,20 @@
-<div *ngIf="myPokemons">
-  <span *ngFor="let pokemon of myPokemons">
-    <img [src]="pokemon.sprites.front_default" (click)="removePokemon(pokemon.id)"/>
-  </span>
-</div>
-
-<span *ngFor="let region of regionArr">
-  <button (click)="getRegion(region)">{{region}}</button>
-</span>
-
-<div *ngIf="regionPokemons">
-  <span *ngFor="let pokemon of regionPokemons">
-      <img [src]="pokemon.url" (click)="chosenPokemon(pokemon.id)" />
-  </span>
+<div>
+  <div *ngIf="myPokemons">
+    <span *ngFor="let pokemon of myPokemons">
+      <img class="idleAnimationPlayer" style="width: 15%;" [src]="pokemon.sprites.front_default" (click)="removePokemon(pokemon.id)"/>
+    </span>
+  </div>
+  <form style="display: flex; justify-content: center;">
+    <input style="width: 40vw; border:none; text-align: center; height: 5vh;" placeholder="Enter pokemon name here" type="text">
+  </form>
+  <div style="display: flex; flex-direction: row; justify-content: center;">
+    <div *ngFor="let region of regionArr">
+      <button (click)="getRegion(region)">{{region}}</button>
+    </div>
+  </div>
+  <div class="pokemon-list" *ngIf="regionPokemons">
+    <span *ngFor="let pokemon of regionPokemons">
+        <img [src]="pokemon.url" (click)="chosenPokemon(pokemon.id)" />
+    </span>
+  </div>
 </div>

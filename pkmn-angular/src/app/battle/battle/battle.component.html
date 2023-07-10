@@ -25,7 +25,7 @@
       'width': this.npcHpPercentage
     }">
     <p
-    style="width: 100vw; position: fixed; text-align: center; font-size: x-large;"
+    style="position: fixed; font-size: x-large;"
     >
       {{this.currentPlayer2[0].currentHp}}/{{this.currentPlayer2[0].maxHp}}
     </p>
@@ -44,14 +44,13 @@
         <img
         *ngIf="this.currentPlayer2[0].currentHp>0"
         alt=""
-          [ngClass]="{
-            'pokemonFade':this.npcAttackMotion&&this.npcAttackClass=='physical',
-            'npcPokemon':this.npcAttackMotion&&this.npcAttackClass==='special',
-            'powerupfx': this.playerbuffOn
-          }"
+        [ngClass]="
+        this.npcAttackMotion&&this.npcAttackClass==='physical'?'pokemonFade':
+        this.npcAttackMotion&&this.npcAttackClass==='special'?'npcPokemon':
+        this.npcbuffOn?'powerupfx':'idleAnimationNpc'
+        "
           [src]="this.currentPlayer2[0].front_image" 
-        style="
-        height: 50vw;
+        style="height: 25vh;
         " 
         />
         <img
@@ -109,13 +108,13 @@
         <img
         *ngIf="this.currentPlayer1[0].currentHp>0"
         alt=""
-        [ngClass]="{
-          'pokemonFade':this.playerAttackMotion&&this.playerAttackClass=='physical',
-          'playerPokemon':this.playerAttackMotion&&this.playerAttackClass==='special',
-          'powerupfx': this.playerbuffOn
-        }"
+        [ngClass]="
+        this.playerAttackMotion&&this.playerAttackClass==='physical'?'pokemonFade':
+        this.playerAttackMotion&&this.playerAttackClass==='special'?'playerPokemon':
+        this.playerbuffOn?'powerupfx':'idleAnimationPlayer'
+        "
         [src]="this.currentPlayer1[0].back_image" 
-        style="height: 50vw;"
+        style="height: 25vh;"
         />
         <img
         *ngIf="this.currentPlayer1[0].currentHp<=0"
@@ -133,7 +132,7 @@
         'width': this.playerHpPercentage
       }">
       <p
-      style="width: 100vw; position: fixed; text-align: center; font-size: x-large;"
+      style="position: fixed; text-align: center; font-size: x-large;"
       >
       {{this.currentPlayer1[0].currentHp}}/{{this.currentPlayer1[0].maxHp}}
       </p>
@@ -155,7 +154,7 @@
         margin-bottom: 5px;
         "
         *ngFor="let move of this.currentPlayer1[0].moves">
-          <button (click)="this.chosenMove(move)" style="width: 40vw;">{{move.name}}</button>
+          <button (click)="this.chosenMove(move)" style="">{{move.name}}</button>
           </div>
           <div *ngIf="this.currentPlayer1" (click)="this.decisionOption('default')"
           style="text-align: center;"
@@ -172,7 +171,7 @@
         margin-bottom: 5px;
         align-items: center;
         ">
-        <button (click)="this.decisionOption('fight')" style="width: 40vw;">Fight</button>
+        <button (click)="this.decisionOption('fight')" style="">Fight</button>
         <button *ngIf="this.player1.length!==0" (click)="this.decisionOption('swap')" style="width: 40vw;">Swap</button>
         </div>
       </div>
@@ -185,7 +184,7 @@
         align-items: center;
         "
         *ngFor="let pokemon of this.player1">
-          <button (click)="this.swapOption(pokemon)" style="width: 40vw;">{{pokemon.name}}</button>
+          <button (click)="this.swapOption(pokemon)" style="">{{pokemon.name}}</button>
         </div>
         <div *ngIf="this.currentPlayer1" (click)="this.decisionOption('default')"
         style="text-align: center;"
@@ -198,7 +197,7 @@
   class="battleDone"
    *ngSwitchCase="'battle-done'">
     <div class="parent">
-      <span 
+      <div 
       *ngFor="let pokemon of this.tempPokemonContainer2"
       >
         <img 
@@ -211,10 +210,10 @@
          alt=""
          class="pokemonImage"
          [src]="pokemon.front_image" />
-      </span>
+      </div>
     </div>
     <div class="parent">
-      <span *ngFor="let pokemon of this.tempPokemonContainer1">
+      <div *ngFor="let pokemon of this.tempPokemonContainer1">
         <img 
           alt=""
           *ngIf="pokemon.currentHp<=0"
@@ -223,9 +222,9 @@
            />
            <img
            alt=""
-           class="pokemon"
+           class="pokemonImage"
             [src]="pokemon.front_image" />
-      </span>
+      </div>
     </div>
     <div 
     *ngIf="this.outcome=='win';else lose"
