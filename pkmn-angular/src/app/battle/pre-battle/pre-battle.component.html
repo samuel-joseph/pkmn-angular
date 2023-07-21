@@ -7,20 +7,20 @@
     *ngIf="this.gymPokemons"
     class="subparent"
     >
-      <div class="pokemon-container"
-      >
-        <div *ngFor="let pokemon of this.copyGymPokemons">
-          <img
-            alt=""
-            [src]="pokemon.front_image" />
-        </div>
-      </div>
       <div *ngIf="this.player2.length>0"
         class="pokeball-container"
         >
         <div *ngFor="let pokemon of this.player2">
           <img alt="" class="pokeballImg" [src]="this.pokeball"
           />
+        </div>
+      </div>
+      <div class="pokemon-container"
+      >
+        <div *ngFor="let pokemon of this.copyGymPokemons">
+          <img
+            alt=""
+            [src]="pokemon.front_image" />
         </div>
       </div>
     </div>

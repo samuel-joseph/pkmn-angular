@@ -25,6 +25,18 @@ export const getMove = (move:any)=>{
 
 export const multiplier = (stage: number): number => {
   switch (stage) {
+    case -6:
+      return .25
+    case -4:
+      return .33
+    case -3:
+      return .4
+    case -2:
+      return .5
+    case -1:
+      return .66
+    case 0:
+      return 1
     case 1:
       return .5
     case 2:

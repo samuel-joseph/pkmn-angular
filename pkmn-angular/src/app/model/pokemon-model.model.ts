@@ -11,7 +11,8 @@ export interface PokemonModel {
   back_image: string,
   maxHp: number,
   currentHp: number,
-  others: Meta
+  others: Meta,
+  status?: string
 }
 
 export interface Meta {

@@ -1,8 +1,6 @@
-<div style="display: flex; justify-content: center;">
-  <div>
-    <h2>Proceed to battle?</h2>
-    <div style="display: flex;justify-content: space-around;">
-      <button (click)="isReady(true)">Yes</button><button (click)="isReady(false)">No</button>
-    </div>
+<div style="position: fixed; z-index: 99; padding: 8vh; background-color: rgba(0, 0, 0, 0.602); display: flex; flex-direction: row; justify-content: center; color: white;">
+  <h2>Proceed to battle?</h2>
+  <div style="display: flex;justify-content: space-between;">
+    <button style="border-radius: 20px; width: 10vw;" (click)="isReady(true)">Yes</button><button style="border-radius: 20px; width: 10vw;" (click)="isReady(false)">No</button>
   </div>
 </div>

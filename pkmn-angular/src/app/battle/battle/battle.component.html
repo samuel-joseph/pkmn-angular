@@ -30,13 +30,17 @@
       {{this.currentPlayer2[0].currentHp}}/{{this.currentPlayer2[0].maxHp}}
     </p>
     <p
-    *ngIf="this.npcDamageReceive>0"
+    *ngIf="this.playerAttackMotion&&this.npcDamageReceive>0"
     class="damageReceived"
     >-{{this.npcDamageReceive}}</p>
+    <p
+    *ngIf="this.playerAttackMotion&&this.npcDamageReceive==0"
+    class="damageReceived"
+    >MISS</p>
     </div>
       <div style="display: flex; justify-content: flex-end;">
         <img
-        *ngIf="this.playerAttackMotion"
+        *ngIf="this.playerAttackMotion&&this.npcDamageReceive>0"
         class="attackFx"
         alt=""
         [src]="this.playerCurrentMoveFx"
@@ -76,7 +80,7 @@
     >
       <div>
         <img
-        *ngIf="this.npcAttackMotion"
+        *ngIf="this.npcAttackMotion&&this.playerDamageReceive>0"
         class="attackFx"
         alt=""
         [src]="this.npcCurrentMoveFx"
@@ -137,9 +141,13 @@
       {{this.currentPlayer1[0].currentHp}}/{{this.currentPlayer1[0].maxHp}}
       </p>
       <p
-      *ngIf="this.playerDamageReceive>0"
+      *ngIf="this.npcAttackMotion&&this.playerDamageReceive>0"
       class="damageReceived"
       >-{{this.playerDamageReceive}}</p>
+      <p
+      *ngIf="this.npcAttackMotion&&this.playerDamageReceive==0"
+      class="damageReceived"
+      >MISS</p>
       </div>
     </div>
     <div [ngSwitch]="playerOption"

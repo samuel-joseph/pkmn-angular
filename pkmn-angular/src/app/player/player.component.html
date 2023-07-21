@@ -1,28 +1,59 @@
-<h1>PLAYER</h1>
-<div *ngIf="movesAllReady;else movesNotReady">
+<!-- <div *ngIf="movesAllReady;else movesNotReady">
   <app-pop-up [movesAllReady]="movesAllReady" (battlePrep)="battleReady($event)"></app-pop-up>
   <div *ngFor="let pokemon of myPokemons">
     <img alt="" [src]="pokemon.front_image"/>
   </div>
-</div>
-<ng-template #movesNotReady> 
-  <div *ngFor="let pokemon of myPokemons">
-    <div>
+</div> -->
+<div>
+  <app-pop-up *ngIf="movesAllReady" [movesAllReady]="movesAllReady" (battlePrep)="battleReady($event)"></app-pop-up>
+  <div 
+    style="
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    " 
+    *ngFor="let pokemon of myPokemons"
+    >
+    <h2 style="text-align: center;">{{pokemon.name.toLocaleUpperCase()}}</h2>
+    <div
+      style="display: flex; flex-direction: row;"
+    >
       <img alt="" [src]="pokemon.front_image"/>
-      <div *ngFor="let stat of pokemon.stats">
-        {{stat.name}} : {{stat.base_stat}}
+      <div style="">
+        <div *ngFor="let stat of pokemon.stats">
+          {{stat.name}}
+          <div
+          [style]="{
+            'background-color': 'green',
+            'height': '1vh',
+            'position': 'relative',
+            'width': ((stat.base_stat/180)*100).toString()+'%'
+          }
+          "
+        >
+        </div>
       </div>
-      <div>{{pokemon.currentHp}}/{{pokemon.maxHp}}</div>
+      </div>
     </div>
-    <div *ngIf="pokemon.moves">
-      <span *ngFor="let move of pokemon.moves">
-        <button style="background-color: red;" (click)="modifyMove(move.id, pokemon.id,'subtract')">{{move.name}} : {{move.power}}</button>
-      </span>
-    </div>
-    <div *ngIf="pokemon.moves.length<4">
-      <div *ngFor="let move of pokemon.dbMoves">
-        <button style="background-color: blue;" (click)="modifyMove(move.id, pokemon.id,'add')">{{move.name}} : {{move.power}}</button>
+    <div
+      style="display: flex; flex-direction: row;"
+    >
+      <div *ngIf="pokemon.moves.length<4">
+        <h6>Available moves</h6>
+        <div style="overflow-y: scroll; height: 40vh;">
+          <div *ngFor="let move of pokemon.dbMoves">
+            <button style="background-color: blue; border-radius: 20px; margin: 2px 0; color: white;" (click)="modifyMove(move.id, pokemon.id,'add')">{{move.name}} : {{move.power!=null?move.power:'N/A'}}</button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="pokemon.moves">
+        <h6>Moves learned</h6>
+        <div *ngFor="let move of pokemon.moves">
+          <button style="background-color: red; border-radius: 20px; margin: 2px 0; color: white;" (click)="modifyMove(move.id, pokemon.id,'subtract')">{{move.name}} : {{move.power!=null?move.power:'N/A'}}</button>
+        </div>
       </div>
     </div>
   </div>
-</ng-template>
+</div>

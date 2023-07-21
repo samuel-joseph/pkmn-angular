@@ -5,6 +5,12 @@ import { MoveModel, StatModel } from 'src/app/model/move-model.model';
 import { PokemonModel } from 'src/app/model/pokemon-model.model';
 import { powerup } from 'src/environment/environment-constants';
 
+
+
+//  Did - Implemented debuff attack animation and stat debuff
+//  To do - Implement debuff fx
+
+
 @Component({
   selector: 'app-battle',
   templateUrl: './battle.component.html',
@@ -126,8 +132,8 @@ export class BattleComponent implements OnInit{
   playerbuff: string[] = []
   playerbuffOn = false
 
-  npcDamageReceive = 0
-  playerDamageReceive = 0
+  npcDamageReceive: number
+  playerDamageReceive: number
 
   ngOnInit(): void {
     this.playerOption = 'default'
@@ -232,6 +238,20 @@ export class BattleComponent implements OnInit{
         )
       }
     }
+
+    if (move.damageClass.ailment) {
+      let attacker = receiver == 'npc'? 'player-move' : 'npc-move'
+      if (move.stat_changes && move.damageClass.ailment.category === 'damage+raise' && move.target === 'selected-pokemon') {
+        console.log(this.currentPlayer1[0].others.stats)
+          if (move.stat_changes[0].change > 0) {
+            this.powerUp(move,attacker)
+          } else {
+            this.powerUp(move,attacker)
+          }
+
+        console.log(this.currentPlayer1[0].others.stats)
+      }
+    }
     
     if (move.hits?.min_hits!==undefined) {
       multiplier = getRandNum(move.hits.min_hits, move.hits.max_hits)
@@ -242,6 +262,8 @@ export class BattleComponent implements OnInit{
     } else {
       this.playerDamageReceive = damage
     }
+
+
 
     defender.currentHp = defender.currentHp - damage
     this.calculatePercentHp()
@@ -268,7 +290,7 @@ export class BattleComponent implements OnInit{
   }
 
   moveAccurateOrMiss = (accuracy: number):boolean => {
-    return getRandNum(1, accuracy)<=accuracy? true : false
+    return accuracy==null? true : getRandNum(1, accuracy)<=accuracy? true : false
   }
 
   //battle sequence
@@ -298,13 +320,13 @@ export class BattleComponent implements OnInit{
           case 'net-good-stats':
             switch (playerMove.target) {
               case 'user':
-                this.buff(playerMove, 'player-move')
+                this.powerUp(playerMove, 'player-move')
                 break
               case 'all-opponents':
-                this.debuff(playerMove,'player-move')
+                this.powerUp(playerMove,'player-move')
                 break
               case 'selected-pokemon':
-                this.debuff(playerMove,'player-move')
+                this.powerUp(playerMove,'player-move')
                 break
             }
           break
@@ -314,7 +336,7 @@ export class BattleComponent implements OnInit{
         setTimeout(() => {
           this.attackSequence(player, npc, playerMove, 'npc')
           //reduce hp npc
-        }, 2000)
+        }, 1500)
       }
       setTimeout(() => {
         if (this.currentPlayer2[0].currentHp <= 0) {
@@ -331,13 +353,13 @@ export class BattleComponent implements OnInit{
               case 'net-good-stats':
                 switch (npcMove[0].target) {
                   case 'user':
-                    this.buff(npcMove[0], 'npc-move')
+                    this.powerUp(npcMove[0], 'npc-move')
                     break
                   case 'all-opponents':
-                    this.debuff(npcMove[0],'npc-move')
+                    this.powerUp(npcMove[0],'npc-move')
                     break
                   case 'selected-pokemon':
-                    this.debuff(npcMove[0],'npc-move')
+                    this.powerUp(npcMove[0],'npc-move')
                     break
                 }
               break
@@ -348,7 +370,7 @@ export class BattleComponent implements OnInit{
             this.attackSequence(npc, player, npcMove[0], 'player')
           },
           //reduce hp player
-          2000)
+          1500)
           setTimeout(() => {
             if (this.currentPlayer1[0].currentHp <= 0) {
               setTimeout(() => {
@@ -372,13 +394,13 @@ export class BattleComponent implements OnInit{
           case 'net-good-stats':
             switch (npcMove[0].target) {
               case 'user':
-                this.buff(npcMove[0],'npc-move')
+                this.powerUp(npcMove[0],'npc-move')
                 break
               case 'all-opponents':
-                this.debuff(npcMove[0],'npc-move')
+                this.powerUp(npcMove[0],'npc-move')
                 break
               case 'selected-pokemon':
-                this.debuff(npcMove[0],'npc-move')
+                this.powerUp(npcMove[0],'npc-move')
                 break
             }
             break
@@ -389,7 +411,7 @@ export class BattleComponent implements OnInit{
           this.attackSequence(npc, player, npcMove[0], 'player')
         },
         //reduce hp
-        2000)
+        1500)
       }
       setTimeout(() => {
         if (this.currentPlayer1[0].currentHp <= 0) {
@@ -407,13 +429,13 @@ export class BattleComponent implements OnInit{
               case 'net-good-stats':
                 switch (playerMove.target) {
                   case 'user':
-                    this.buff(playerMove, 'player-move')
+                    this.powerUp(playerMove, 'player-move')
                     break
                   case 'all-opponents':
-                    this.debuff(playerMove, 'player-move')
+                    this.powerUp(playerMove, 'player-move')
                     break
                   case 'selected-pokemon':
-                    this.debuff(playerMove, 'player-move')
+                    this.powerUp(playerMove, 'player-move')
                     break
                 }
                 break
@@ -424,7 +446,7 @@ export class BattleComponent implements OnInit{
               this.attackSequence(player, npc, playerMove, 'npc')
             },
             //reduce hp player
-              2000)
+              1500)
           }
           setTimeout(() => {
             if (this.currentPlayer2[0].currentHp <= 0) {
@@ -445,53 +467,75 @@ export class BattleComponent implements OnInit{
 
     setTimeout(() => {
       this.ongoingBattle = false
-      this.npcDamageReceive = 0
-      this.playerDamageReceive = 0
+      this.npcDamageReceive = -1
+      this.playerDamageReceive = -1
     }, 7000)
   }
 
-  debuff(move: MoveModel, playermove: string) {
-    let trainer: PokemonModel = playermove === 'player-move' ? this.currentPlayer1[0] : this.currentPlayer2[0]
+  // powerUp(move: MoveModel, playermove: string) {
+  //   let trainer: PokemonModel = playermove === 'player-move' ? this.currentPlayer2[0] : this.currentPlayer1[0]
+  //   let player = playermove === 'player-move' ? 'player' : 'npc'
+  //   if(move.stat_changes){
+  //     for (let stat_buff of move.stat_changes) {
+  //       let indexStat = trainer.stats.findIndex(req => req.name == stat_buff.stat.name)
+  //       console.log("before stat of",trainer.others.stats[indexStat].base_stat)
+  //       trainer.others.stats[indexStat].base_stat = Math.floor(trainer.others.stats[indexStat].base_stat - (trainer.others.stats[indexStat].base_stat * multiplier(stat_buff.change)))
+  //       console.log("after debuff ", trainer.others.stats[indexStat].base_stat)
+  //     }
+  //   }
 
-    if(move.stat_changes){
-      for (let stat_buff of move.stat_changes) {
-        let indexStat = trainer.stats.findIndex(req => req.name == stat_buff.stat.name)
-        console.log(trainer.others.stats[indexStat].name," ",trainer.others.stats[indexStat].base_stat)
-        trainer.others.stats[indexStat].base_stat = trainer.others.stats[indexStat].base_stat - (trainer.others.stats[indexStat].base_stat * multiplier(stat_buff.change))
-        console.log(trainer.others.stats[indexStat].name," ",trainer.others.stats[indexStat].base_stat)
-      }
-    }
-  }
+  //   this.animationAttack(player, 'special')
+  // }
 
   ailment(move: MoveModel, playermove: string) {
     let trainer: PokemonModel = playermove === 'player-move' ? this.currentPlayer1[0] : this.currentPlayer2[0]
   }
 
-  buff(move: MoveModel, playermove: string) {
+  debuff(base_stat: number, change: number) {
+    console.log(base_stat," then ",Math.floor(base_stat - (base_stat * multiplier(change))))
+    return Math.floor(base_stat - (base_stat * multiplier(change)))
+  }
+
+  buff(base_stat: number, change: number) {
+    console.log(base_stat," then ",base_stat+(base_stat*multiplier(change)))
+    return base_stat+(base_stat*multiplier(change))
+  }
+
+  powerUp(move: MoveModel, playermove: string) {
     let trainer: PokemonModel = playermove === 'player-move' ? this.currentPlayer1[0] : this.currentPlayer2[0]
+    let trainerOpponent: PokemonModel = playermove === 'player-move' ? this.currentPlayer2[0] : this.currentPlayer1[0]
     let stat_changes = []
     if(move.stat_changes){
       for (let stat_buff of move.stat_changes) {
         stat_changes.push(stat_buff.stat.name)
         let indexStat = trainer.stats.findIndex(req => req.name == stat_buff.stat.name)
-        trainer.others.stats[indexStat].base_stat = trainer.others.stats[indexStat].base_stat + (trainer.others.stats[indexStat].base_stat * multiplier(stat_buff.change))
-      }
-    }
-    if (playermove == 'player-move') {
-      if (stat_changes){
-        this.playerbuff = stat_changes
-        this.playerbuffOn = true
-        setTimeout(() => {
-          this.playerbuffOn = false
-        }, 2000)
-      }
-    } else {
-      if (stat_changes){
-        this.npcbuff = stat_changes
-        this.npcbuffOn = true
-        setTimeout(() => {
-          this.npcbuffOn = false
-        }, 2000)
+        if (stat_buff.change > 0) {
+          trainer.others.stats[indexStat].base_stat = this.buff(trainer.others.stats[indexStat].base_stat, stat_buff.change)
+          if (playermove == 'player-move') {
+            if (stat_changes){
+              this.playerbuff = stat_changes
+              this.playerbuffOn = true
+              setTimeout(() => {
+                this.playerbuffOn = false
+              }, 2000)
+            }
+          } else {
+            if (stat_changes){
+              this.npcbuff = stat_changes
+              this.npcbuffOn = true
+              setTimeout(() => {
+                this.npcbuffOn = false
+              }, 2000)
+            }
+          }
+        } else {
+          if (move.target.includes('opponent')) {
+            trainerOpponent.others.stats[indexStat].base_stat = this.debuff(trainerOpponent.others.stats[indexStat].base_stat, stat_buff.change)
+            this.animationAttack(playermove==='player-move'?'player':'npc','special')
+          }else{
+            trainer.others.stats[indexStat].base_stat = this.debuff(trainer.others.stats[indexStat].base_stat, stat_buff.change)
+          }
+        }
       }
     }
   }
