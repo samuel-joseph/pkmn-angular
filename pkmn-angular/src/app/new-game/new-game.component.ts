@@ -125,7 +125,7 @@ export class NewGameComponent implements OnInit{
         let index = url.indexOf('2')
         const id = url.substring(index + "2/move/".length)
 
-        if (this.moveListArr.includes(parseInt(id))) {
+        if (this.moveListArr.includes(parseInt(id))&&learnMethod=='level-up') {
           let index = this.dbMoves.findIndex(val => val.id == id)
           console.log(index)
           tempDbMoves.push(this.dbMoves[index])

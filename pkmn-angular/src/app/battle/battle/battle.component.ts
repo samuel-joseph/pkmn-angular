@@ -137,6 +137,12 @@ export class BattleComponent implements OnInit{
   burnOrToxicPlayer = ''
   paralyzedPlayer = false
 
+  playerCondition = ''
+  npcCondition = ''
+
+  frozenConfusedAsleepCounterPlayer = 0
+  frozenConfusedAsleepCounterNpc = 0
+
 
   npcDamageReceive: number
   playerDamageReceive: number
@@ -317,7 +323,7 @@ export class BattleComponent implements OnInit{
       case 'sleep':
         return 'asleep'
     }
-    return 'normal'
+    return ''
   }
 
   //battle sequence
@@ -327,11 +333,30 @@ export class BattleComponent implements OnInit{
     let npc = this.currentPlayer2[0]
 
     //checking ailment
-    let playerCondition = this.checkingAilment(player.others.condition)
-    let npcCondition = this.checkingAilment(npc.others.condition)
+    if (this.frozenConfusedAsleepCounterPlayer > 0) {
+      let randNum = getRandNum(1, this.frozenConfusedAsleepCounterPlayer)
+      if(randNum !== 1){
+        this.playerCondition = this.checkingAilment(player.others.condition)
+      }
+      if (player.others.condition != 'paralysis') { this.frozenConfusedAsleepCounterPlayer-- }
+      if (this.frozenConfusedAsleepCounterPlayer == 0 && player.others.condition != 'paralysis') {
+        player.others.condition = ''
+      }
+    }
 
-    let playerDisabled = playerCondition == 'paralyzed' || playerCondition == 'confused' || playerCondition == 'frozen' || playerCondition == 'asleep' ? true : false
-    let npcDisabled = npcCondition == 'paralyzed' || npcCondition == 'confused' || npcCondition == 'frozen' || npcCondition == 'asleep' ? true : false
+    if (this.frozenConfusedAsleepCounterNpc > 0) {
+      let randNum = getRandNum(1, this.frozenConfusedAsleepCounterNpc)
+      if(randNum !== 1){
+        this.npcCondition = this.checkingAilment(npc.others.condition)
+      }
+      if (npc.others.condition != 'paralysis') { this.frozenConfusedAsleepCounterNpc-- }
+      if (this.frozenConfusedAsleepCounterNpc == 0 && npc.others.condition != 'paralysis') {
+        npc.others.condition = ''
+      }
+    }
+
+    let playerDisabled = this.playerCondition == 'paralyzed' || this.playerCondition == 'confused' || this.playerCondition == 'frozen' || this.playerCondition == 'asleep' ? true : false
+    let npcDisabled = this.npcCondition == 'paralyzed' || this.npcCondition == 'confused' || this.npcCondition == 'frozen' || this.npcCondition == 'asleep' ? true : false
 
     let playerMove = move
     let npcMove = this.npcMove()
@@ -369,8 +394,8 @@ export class BattleComponent implements OnInit{
           //reduce hp npc
         }, 1500)
       } else {
-        if (playerCondition == 'confused') {
-          this.animationAttack('player', 'physical')
+        if (this.playerCondition == 'confused') {
+          this.animationAttack('player', 'special')
           setTimeout(() => {
             let indexAttackerStat = player.others.stats.findIndex(val => val.name == 'attack')
             let indexDefenderStat = player.others.stats.findIndex(val => val.name == 'defense')
@@ -421,8 +446,8 @@ export class BattleComponent implements OnInit{
               1500)
           } else {
             {
-              if (npcCondition == 'confused') {
-                this.animationAttack('npc', 'physical')
+              if (this.npcCondition == 'confused') {
+                this.animationAttack('npc', 'special')
                 setTimeout(() => {
                   let indexAttackerStat = npc.others.stats.findIndex(val => val.name == 'attack')
                   let indexDefenderStat = npc.others.stats.findIndex(val => val.name == 'defense')
@@ -481,8 +506,8 @@ export class BattleComponent implements OnInit{
         1500)
       } else {
         {
-          if (npcCondition == 'confused') {
-            this.animationAttack('npc', 'physical')
+          if (this.npcCondition == 'confused') {
+            this.animationAttack('npc', 'special')
             setTimeout(() => {
               let indexAttackerStat = npc.others.stats.findIndex(val => val.name == 'attack')
               let indexDefenderStat = npc.others.stats.findIndex(val => val.name == 'defense')
@@ -535,8 +560,8 @@ export class BattleComponent implements OnInit{
               1500)
           } else {
             {
-              if (playerCondition == 'confused') {
-                this.animationAttack('player', 'physical')
+              if (this.playerCondition == 'confused') {
+                this.animationAttack('player', 'special')
                 setTimeout(() => {
                   let indexAttackerStat = player.others.stats.findIndex(val => val.name == 'attack')
                   let indexDefenderStat = player.others.stats.findIndex(val => val.name == 'defense')
@@ -586,8 +611,8 @@ export class BattleComponent implements OnInit{
       this.burnOrToxicPlayer = ''
       this.paralyzedNpc = false
       this.paralyzedNpc = false
-      playerCondition = ''
-      npcCondition = ''
+      this.playerCondition = ''
+      this.npcCondition = ''
       playerDisabled = false
       npcDisabled = false
     }, 7000)
@@ -603,11 +628,12 @@ export class BattleComponent implements OnInit{
       } else if(move.effect_chance&&this.moveAccurateOrMiss(move.effect_chance,accuracyAttacker)){
         trainerOpponent.others.condition = ailment
       }
-    }
+      playermove === 'player-move' ? this.frozenConfusedAsleepCounterNpc = 4 : this.frozenConfusedAsleepCounterPlayer = 4
 
-    if (trainerOpponent.others.condition === 'paralysis') {
-      let indexOfSpeed = trainerOpponent.others.stats.findIndex(val => val.name == 'speed')
-      trainerOpponent.others.stats[indexOfSpeed].base_stat = trainerOpponent.others.stats[indexOfSpeed].base_stat- trainerOpponent.others.stats[indexOfSpeed].base_stat*.25
+      if (trainerOpponent.others.condition === 'paralysis') {
+        let indexOfSpeed = trainerOpponent.others.stats.findIndex(val => val.name == 'speed')
+        trainerOpponent.others.stats[indexOfSpeed].base_stat = trainerOpponent.others.stats[indexOfSpeed].base_stat- trainerOpponent.others.stats[indexOfSpeed].base_stat*.25
+      }
     }
   }
 

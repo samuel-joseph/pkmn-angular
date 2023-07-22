@@ -53,6 +53,7 @@
         alt=""
         [src]="this.playerCurrentMoveFx"
         />
+        <p style="position: absolute;" *ngIf="this.npcCondition!==''">{{this.npcCondition}}</p>
         <img
         *ngIf="this.currentPlayer2[0].currentHp>0"
         alt=""
@@ -117,6 +118,7 @@
             />
           </div>
         </div>
+        <p style="position: absolute;" *ngIf="this.playerCondition!==''">{{this.playerCondition}}</p>
         <img
         *ngIf="this.currentPlayer1[0].currentHp>0"
         alt=""
