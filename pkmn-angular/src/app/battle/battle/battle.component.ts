@@ -132,6 +132,12 @@ export class BattleComponent implements OnInit{
   playerbuff: string[] = []
   playerbuffOn = false
 
+  burnOrToxicNpc = ''
+  paralyzedNpc = false
+  burnOrToxicPlayer = ''
+  paralyzedPlayer = false
+
+
   npcDamageReceive: number
   playerDamageReceive: number
 
@@ -385,7 +391,8 @@ export class BattleComponent implements OnInit{
       }
       setTimeout(() => {
         if (player.others.condition == 'poison' || player.others.condition == 'burn') {
-        player.currentHp -= Math.floor(player.maxHp*.12)
+          this.burnOrToxicPlayer = player.others.condition
+          player.currentHp -= Math.floor(player.maxHp*.12)
       }},1300)
       setTimeout(() => {
         if (this.currentPlayer2[0].currentHp <= 0) {
@@ -436,7 +443,8 @@ export class BattleComponent implements OnInit{
           }
           setTimeout(() => {
             if (npc.others.condition == 'poison' || npc.others.condition == 'burn') {
-            npc.currentHp -= Math.floor(npc.maxHp*.12)
+              this.burnOrToxicNpc = npc.others.condition
+              npc.currentHp -= Math.floor(npc.maxHp*.12)
           }},1300)
           setTimeout(() => {
             if (this.currentPlayer1[0].currentHp <= 0) {
@@ -496,7 +504,8 @@ export class BattleComponent implements OnInit{
       }
       setTimeout(() => {
         if (npc.others.condition == 'poison' || npc.others.condition == 'burn') {
-        npc.currentHp -= Math.floor(npc.maxHp*.12)
+          this.burnOrToxicNpc = npc.others.condition
+          npc.currentHp -= Math.floor(npc.maxHp*.12)
       }},1300)
       setTimeout(() => {
         if (this.currentPlayer1[0].currentHp <= 0) {
@@ -549,7 +558,8 @@ export class BattleComponent implements OnInit{
           }
           setTimeout(() => {
             if (player.others.condition == 'poison' || player.others.condition == 'burn') {
-            player.currentHp -= Math.floor(player.maxHp*.12)
+              this.burnOrToxicPlayer = player.others.condition
+              player.currentHp -= Math.floor(player.maxHp*.12)
           }},1300)
           setTimeout(() => {
             if (this.currentPlayer2[0].currentHp <= 0) {
@@ -572,6 +582,10 @@ export class BattleComponent implements OnInit{
       this.ongoingBattle = false
       this.npcDamageReceive = -1
       this.playerDamageReceive = -1
+      this.burnOrToxicNpc = ''
+      this.burnOrToxicPlayer = ''
+      this.paralyzedNpc = false
+      this.paralyzedNpc = false
       playerCondition = ''
       npcCondition = ''
       playerDisabled = false

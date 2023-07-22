@@ -19,7 +19,10 @@
     "
     >
     <div [ngStyle]="{
-      'background-color':'green',
+      'background-color':
+      this.burnOrToxicNpc == 'burn'? 'red':
+      this.burnOrToxicNpc == 'poison'? 'violet':
+      'green',
       'border': 
       this.currentPlayer2[0].others.condition == 'poison'? '2px solid violet' : 
       this.currentPlayer2[0].others.condition == 'burn' ? '2px solid red' : 
@@ -135,7 +138,10 @@
         </div>
       </div>
       <div [ngStyle]="{
-        'background-color':'green',
+        'background-color':
+        this.burnOrToxicPlayer == 'burn'? 'red':
+        this.burnOrToxicPlayer == 'poison'? 'violet':
+        'green',
         'height':'5vh',
         'position': 'relative',
         'width': this.playerHpPercentage
