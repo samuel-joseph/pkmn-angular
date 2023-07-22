@@ -6,6 +6,7 @@ export interface MoveModel {
   type: string,
   accuracy: number,
   damageClass: DamageClass,
+  effect_chance: number|null,
   stat_changes?: Array<StatChanges>,
   priority: number,
   hits?: MaxHit,

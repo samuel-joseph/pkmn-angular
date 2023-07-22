@@ -20,6 +20,11 @@
     >
     <div [ngStyle]="{
       'background-color':'green',
+      'border': 
+      this.currentPlayer2[0].others.condition == 'poison'? '2px solid violet' : 
+      this.currentPlayer2[0].others.condition == 'burn' ? '2px solid red' : 
+      this.currentPlayer2[0].others.condition == 'paralysis' ? '2px solid yellow': 
+      'none', 
       'height':'5vh',
       'position': 'relative',
       'width': this.npcHpPercentage

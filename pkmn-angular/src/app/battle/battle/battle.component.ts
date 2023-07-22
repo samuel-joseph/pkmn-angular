@@ -207,8 +207,10 @@ export class BattleComponent implements OnInit{
     this.playerOption = response
   }
 
-  attackSequence(attacker: PokemonModel, defender: PokemonModel, move: MoveModel, receiver: string){
-    let isAccurate = this.moveAccurateOrMiss(move.accuracy)
+  attackSequence(attacker: PokemonModel, defender: PokemonModel, move: MoveModel, receiver: string) {
+    let indexAccuracy = attacker.stats.findIndex(val => val.name == 'accuracy')
+    let accuracyAttacker = attacker.stats[indexAccuracy].base_stat
+    let isAccurate = this.moveAccurateOrMiss(move.accuracy,accuracyAttacker)
     let multiplier = 1;
     let damage = 0
     let indexAttackerStat
@@ -242,14 +244,7 @@ export class BattleComponent implements OnInit{
     if (move.damageClass.ailment) {
       let attacker = receiver == 'npc'? 'player-move' : 'npc-move'
       if (move.stat_changes && move.damageClass.ailment.category === 'damage+raise' && move.target === 'selected-pokemon') {
-        console.log(this.currentPlayer1[0].others.stats)
-          if (move.stat_changes[0].change > 0) {
-            this.powerUp(move,attacker)
-          } else {
-            this.powerUp(move,attacker)
-          }
-
-        console.log(this.currentPlayer1[0].others.stats)
+        this.powerUp(move, attacker)
       }
     }
     
@@ -259,8 +254,14 @@ export class BattleComponent implements OnInit{
     damage = damage * multiplier
     if (receiver == 'npc') {
       this.npcDamageReceive = damage
+      if (move.damageClass.ailment&&move.damageClass.ailment.name!='none') {
+        this.ailment(move,'player-move',accuracyAttacker)
+      }
     } else {
       this.playerDamageReceive = damage
+      if (move.damageClass.ailment&&move.damageClass.ailment.name!='none') {
+        this.ailment(move,'npc-move',accuracyAttacker)
+      }
     }
 
 
@@ -289,8 +290,28 @@ export class BattleComponent implements OnInit{
     }
   }
 
-  moveAccurateOrMiss = (accuracy: number):boolean => {
-    return accuracy==null? true : getRandNum(1, accuracy)<=accuracy? true : false
+  moveAccurateOrMiss = (accuracy: number, pokemonAccuracy: number): boolean => {
+    let accurate = false
+    if (accuracy == null||getRandNum(1, pokemonAccuracy) <= accuracy) {
+      accurate = true
+    } 
+    return accurate
+  }
+
+  checkingAilment(condition: string) {
+    switch (condition) {
+      case 'paralysis':
+        if (getRandNum(1, 100) <= 25) return 'paralyzed'
+        break
+      case 'confusion':
+        if (getRandNum(1, 100) <= 50) return 'confused'
+        break
+      case 'freeze':
+        return 'frozen'
+      case 'sleep':
+        return 'asleep'
+    }
+    return 'normal'
   }
 
   //battle sequence
@@ -298,8 +319,20 @@ export class BattleComponent implements OnInit{
     this.ongoingBattle = true
     let player = this.currentPlayer1[0]
     let npc = this.currentPlayer2[0]
+
+    //checking ailment
+    let playerCondition = this.checkingAilment(player.others.condition)
+    let npcCondition = this.checkingAilment(npc.others.condition)
+
+    let playerDisabled = playerCondition == 'paralyzed' || playerCondition == 'confused' || playerCondition == 'frozen' || playerCondition == 'asleep' ? true : false
+    let npcDisabled = npcCondition == 'paralyzed' || npcCondition == 'confused' || npcCondition == 'frozen' || npcCondition == 'asleep' ? true : false
+
     let playerMove = move
     let npcMove = this.npcMove()
+    let indexAccuracyPlayer = player.stats.findIndex(val=>val.name=='accuracy')
+    let indexAccuracyNpc = npc.stats.findIndex(val=>val.name=='accuracy')
+    let playerAccuracy = player.stats[indexAccuracyPlayer].base_stat
+    let npcAccuracy = npc.stats[indexAccuracyNpc].base_stat
 
     this.npcCurrentMoveFx = npcMove[0].moveFx
     this.playerCurrentMoveFx = playerMove.moveFx
@@ -312,32 +345,48 @@ export class BattleComponent implements OnInit{
       player.stats[playerSpeedIndex].base_stat > npc.stats[npcSpeedIndex].base_stat ||
       player.stats[playerSpeedIndex].base_stat == npc.stats[npcSpeedIndex].base_stat
     ) {
-      if (playerMove.damageClass.name == 'status') {
+      if (!playerDisabled&&playerMove.damageClass.name == 'status') {
         switch (playerMove.damageClass.ailment?.category) {
           case 'ailment':
-            this.ailment(playerMove,'player-move')
+            this.ailment(playerMove,'player-move',playerAccuracy)
             break
           case 'net-good-stats':
-            switch (playerMove.target) {
-              case 'user':
-                this.powerUp(playerMove, 'player-move')
-                break
-              case 'all-opponents':
-                this.powerUp(playerMove,'player-move')
-                break
-              case 'selected-pokemon':
-                this.powerUp(playerMove,'player-move')
-                break
+            if (playerMove.target=='user'||playerMove.target=='all-opponents'||'selected-pokemon') {
+              this.powerUp(playerMove, 'player-move')
             }
           break
         }
-      }else{
+      }else if(!playerDisabled){
         this.animationAttack('player', playerMove.damageClass.name)
         setTimeout(() => {
           this.attackSequence(player, npc, playerMove, 'npc')
           //reduce hp npc
         }, 1500)
+      } else {
+        if (playerCondition == 'confused') {
+          this.animationAttack('player', 'physical')
+          setTimeout(() => {
+            let indexAttackerStat = player.others.stats.findIndex(val => val.name == 'attack')
+            let indexDefenderStat = player.others.stats.findIndex(val => val.name == 'defense')
+            let damage = calculateDamage(
+              40,
+              player.others.stats[indexAttackerStat].base_stat,
+              player.others.stats[indexDefenderStat].base_stat,
+              player.types,
+              'normal',
+              player.types
+            )
+  
+            player.currentHp -= damage
+            this.calculatePercentHp()
+            //reduce hp player
+          }, 1500)
+        }
       }
+      setTimeout(() => {
+        if (player.others.condition == 'poison' || player.others.condition == 'burn') {
+        player.currentHp -= Math.floor(player.maxHp*.12)
+      }},1300)
       setTimeout(() => {
         if (this.currentPlayer2[0].currentHp <= 0) {
           setTimeout(() => {
@@ -345,32 +394,50 @@ export class BattleComponent implements OnInit{
             //death timer npc
             },1500)
         } else {
-          if (npcMove[0].damageClass.name == 'status') {
+          if (!npcDisabled && npcMove[0].damageClass.name == 'status') {
             switch (npcMove[0].damageClass.ailment?.category) {
               case 'ailment':
-                this.ailment(npcMove[0],'npc-move')
+                this.ailment(npcMove[0], 'npc-move', npcAccuracy)
                 break
               case 'net-good-stats':
-                switch (npcMove[0].target) {
-                  case 'user':
-                    this.powerUp(npcMove[0], 'npc-move')
-                    break
-                  case 'all-opponents':
-                    this.powerUp(npcMove[0],'npc-move')
-                    break
-                  case 'selected-pokemon':
-                    this.powerUp(npcMove[0],'npc-move')
-                    break
+                if (npcMove[0].target == "user" || npcMove[0].target == "all-opponents" || npcMove[0].target == "selected-pokemon") {
+                  this.powerUp(npcMove[0], 'npc-move')
                 }
-              break
+                break
+            }
+          } else if (!npcDisabled) {
+            this.animationAttack('npc', npcMove[0].damageClass.name)
+            setTimeout(() => {
+              this.attackSequence(npc, player, npcMove[0], 'player')
+            },
+              //reduce hp player
+              1500)
+          } else {
+            {
+              if (npcCondition == 'confused') {
+                this.animationAttack('npc', 'physical')
+                setTimeout(() => {
+                  let indexAttackerStat = npc.others.stats.findIndex(val => val.name == 'attack')
+                  let indexDefenderStat = npc.others.stats.findIndex(val => val.name == 'defense')
+                  let damage = calculateDamage(
+                    40,
+                    npc.others.stats[indexAttackerStat].base_stat,
+                    npc.others.stats[indexDefenderStat].base_stat,
+                    npc.types,
+                    'normal',
+                    npc.types
+                  )
+        
+                  npc.currentHp -= damage
+                  this.calculatePercentHp()
+                }, 1500)
+              }
             }
           }
-          this.animationAttack('npc',npcMove[0].damageClass.name)
-          setTimeout(()=>{
-            this.attackSequence(npc, player, npcMove[0], 'player')
-          },
-          //reduce hp player
-          1500)
+          setTimeout(() => {
+            if (npc.others.condition == 'poison' || npc.others.condition == 'burn') {
+            npc.currentHp -= Math.floor(npc.maxHp*.12)
+          }},1300)
           setTimeout(() => {
             if (this.currentPlayer1[0].currentHp <= 0) {
               setTimeout(() => {
@@ -386,33 +453,51 @@ export class BattleComponent implements OnInit{
         //npc turn to attack
       }, 3000)
     } else {
-      if (npcMove[0].damageClass.name == 'status') {
+      if (!npcDisabled&&npcMove[0].damageClass.name == 'status') {
         switch (npcMove[0].damageClass.ailment?.category) {
           case 'ailment':
-            this.ailment(npcMove[0],'npc-move')
+            this.ailment(npcMove[0],'npc-move', npcAccuracy)
             break
           case 'net-good-stats':
-            switch (npcMove[0].target) {
-              case 'user':
-                this.powerUp(npcMove[0],'npc-move')
-                break
-              case 'all-opponents':
-                this.powerUp(npcMove[0],'npc-move')
-                break
-              case 'selected-pokemon':
-                this.powerUp(npcMove[0],'npc-move')
-                break
+            if (npcMove[0].target == 'user' || npcMove[0].target == 'all-opponents' || npcMove[0].target == 'selected-pokemon') {
+              this.powerUp(npcMove[0],'npc-move')
             }
             break
         }   
-      }else{ 
+      }else if(!npcDisabled){ 
         this.animationAttack('npc', npcMove[0].damageClass.name)
         setTimeout(() => {
           this.attackSequence(npc, player, npcMove[0], 'player')
         },
         //reduce hp
         1500)
+      } else {
+        {
+          if (npcCondition == 'confused') {
+            this.animationAttack('npc', 'physical')
+            setTimeout(() => {
+              let indexAttackerStat = npc.others.stats.findIndex(val => val.name == 'attack')
+              let indexDefenderStat = npc.others.stats.findIndex(val => val.name == 'defense')
+              let damage = calculateDamage(
+                40,
+                npc.others.stats[indexAttackerStat].base_stat,
+                npc.others.stats[indexDefenderStat].base_stat,
+                npc.types,
+                'normal',
+                npc.types
+              )
+    
+              npc.currentHp -= damage
+              this.calculatePercentHp()
+              //reduce hp player
+            }, 1500)
+          }
+        }
       }
+      setTimeout(() => {
+        if (npc.others.condition == 'poison' || npc.others.condition == 'burn') {
+        npc.currentHp -= Math.floor(npc.maxHp*.12)
+      }},1300)
       setTimeout(() => {
         if (this.currentPlayer1[0].currentHp <= 0) {
           setTimeout(() => {
@@ -421,33 +506,51 @@ export class BattleComponent implements OnInit{
           //death timer player
           1500)
         } else {
-          if (playerMove.damageClass.name == 'status') {
+          if (!playerDisabled&&playerMove.damageClass.name == 'status') {
             switch (playerMove.damageClass.ailment?.category) {
               case 'ailment':
-                this.ailment(playerMove, 'player-move')
+                this.ailment(playerMove, 'player-move',playerAccuracy)
                 break
               case 'net-good-stats':
-                switch (playerMove.target) {
-                  case 'user':
+                if (playerMove.target=='user'||playerMove.target=='all-opponents'||'selected-pokemon') {
                     this.powerUp(playerMove, 'player-move')
-                    break
-                  case 'all-opponents':
-                    this.powerUp(playerMove, 'player-move')
-                    break
-                  case 'selected-pokemon':
-                    this.powerUp(playerMove, 'player-move')
-                    break
                 }
                 break
             }
-          }else{
+          }else if(!playerDisabled){
             this.animationAttack('player', playerMove.damageClass.name)
             setTimeout(() => {
               this.attackSequence(player, npc, playerMove, 'npc')
             },
             //reduce hp player
               1500)
+          } else {
+            {
+              if (playerCondition == 'confused') {
+                this.animationAttack('player', 'physical')
+                setTimeout(() => {
+                  let indexAttackerStat = player.others.stats.findIndex(val => val.name == 'attack')
+                  let indexDefenderStat = player.others.stats.findIndex(val => val.name == 'defense')
+                  let damage = calculateDamage(
+                    40,
+                    player.others.stats[indexAttackerStat].base_stat,
+                    player.others.stats[indexDefenderStat].base_stat,
+                    player.types,
+                    'normal',
+                    player.types
+                  )
+        
+                  player.currentHp -= damage
+                  this.calculatePercentHp()
+                  //reduce hp player
+                }, 1500)
+              }
+            }
           }
+          setTimeout(() => {
+            if (player.others.condition == 'poison' || player.others.condition == 'burn') {
+            player.currentHp -= Math.floor(player.maxHp*.12)
+          }},1300)
           setTimeout(() => {
             if (this.currentPlayer2[0].currentHp <= 0) {
               setTimeout(() => {
@@ -469,35 +572,36 @@ export class BattleComponent implements OnInit{
       this.ongoingBattle = false
       this.npcDamageReceive = -1
       this.playerDamageReceive = -1
+      playerCondition = ''
+      npcCondition = ''
+      playerDisabled = false
+      npcDisabled = false
     }, 7000)
   }
 
-  // powerUp(move: MoveModel, playermove: string) {
-  //   let trainer: PokemonModel = playermove === 'player-move' ? this.currentPlayer2[0] : this.currentPlayer1[0]
-  //   let player = playermove === 'player-move' ? 'player' : 'npc'
-  //   if(move.stat_changes){
-  //     for (let stat_buff of move.stat_changes) {
-  //       let indexStat = trainer.stats.findIndex(req => req.name == stat_buff.stat.name)
-  //       console.log("before stat of",trainer.others.stats[indexStat].base_stat)
-  //       trainer.others.stats[indexStat].base_stat = Math.floor(trainer.others.stats[indexStat].base_stat - (trainer.others.stats[indexStat].base_stat * multiplier(stat_buff.change)))
-  //       console.log("after debuff ", trainer.others.stats[indexStat].base_stat)
-  //     }
-  //   }
+  ailment(move: MoveModel, playermove: string, accuracyAttacker:number) {
+    let trainerOpponent: PokemonModel = playermove === 'player-move' ? this.currentPlayer2[0] : this.currentPlayer1[0]
+    if (move.damageClass.ailment&&trainerOpponent.others.condition === '') {
+      let ailment = move.damageClass.ailment.name
+      if (move.damageClass.name == 'status' && this.moveAccurateOrMiss(move.accuracy,accuracyAttacker)) {
+        this.animationAttack(playermove === 'player-move' ? 'player' : 'npc', 'special')
+        trainerOpponent.others.condition = ailment
+      } else if(move.effect_chance&&this.moveAccurateOrMiss(move.effect_chance,accuracyAttacker)){
+        trainerOpponent.others.condition = ailment
+      }
+    }
 
-  //   this.animationAttack(player, 'special')
-  // }
-
-  ailment(move: MoveModel, playermove: string) {
-    let trainer: PokemonModel = playermove === 'player-move' ? this.currentPlayer1[0] : this.currentPlayer2[0]
+    if (trainerOpponent.others.condition === 'paralysis') {
+      let indexOfSpeed = trainerOpponent.others.stats.findIndex(val => val.name == 'speed')
+      trainerOpponent.others.stats[indexOfSpeed].base_stat = trainerOpponent.others.stats[indexOfSpeed].base_stat- trainerOpponent.others.stats[indexOfSpeed].base_stat*.25
+    }
   }
 
   debuff(base_stat: number, change: number) {
-    console.log(base_stat," then ",Math.floor(base_stat - (base_stat * multiplier(change))))
     return Math.floor(base_stat - (base_stat * multiplier(change)))
   }
 
   buff(base_stat: number, change: number) {
-    console.log(base_stat," then ",base_stat+(base_stat*multiplier(change)))
     return base_stat+(base_stat*multiplier(change))
   }
 
@@ -531,7 +635,9 @@ export class BattleComponent implements OnInit{
         } else {
           if (move.target.includes('opponent')) {
             trainerOpponent.others.stats[indexStat].base_stat = this.debuff(trainerOpponent.others.stats[indexStat].base_stat, stat_buff.change)
-            this.animationAttack(playermove==='player-move'?'player':'npc','special')
+            if(move.damageClass.name == 'status'){
+              this.animationAttack(playermove === 'player-move' ? 'player' : 'npc', 'special')
+            }
           }else{
             trainer.others.stats[indexStat].base_stat = this.debuff(trainer.others.stats[indexStat].base_stat, stat_buff.change)
           }
@@ -662,8 +768,10 @@ export class BattleComponent implements OnInit{
       while (i != 3) {
         returnPokemonPlayer1[i].currentHp = returnPokemonPlayer1[i].maxHp
         returnPokemonPlayer1[i].others.stats = returnPokemonPlayer1[i].stats
+        returnPokemonPlayer1[i].others.condition = ''
         returnPokemonPlayer2[i].currentHp = returnPokemonPlayer2[i].maxHp
         returnPokemonPlayer2[i].others.stats = returnPokemonPlayer2[i].stats
+        returnPokemonPlayer2[i].others.condition = ''
         i++
       }
 

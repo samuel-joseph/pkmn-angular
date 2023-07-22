@@ -38,16 +38,6 @@ export class NewGameComponent implements OnInit{
           moveFx = 'https://www.freeiconspng.com/thumbs/x-png/x-png-18.png'
         }
 
-        // if (move.stat_changes.length > 0) {
-        //   for (let stat_change of move.stat_changes) {
-        //     let tempObj = {
-        //       change: stat_change.change,
-        //       name: stat_change.stat.name
-        //     }
-        //     stat_change.push(tempObj)
-        //   }
-        // }
-
         if (move.meta) {
           ailment = {
             name: move.meta.ailment['name'],
@@ -74,6 +64,7 @@ export class NewGameComponent implements OnInit{
             name: move.damage_class.name,
             ailment
           },
+          effect_chance: move.effect_chance,
           stat_changes: move.stat_changes,
           priority: move.priority,
           hits,
@@ -123,7 +114,6 @@ export class NewGameComponent implements OnInit{
 
 
   toStore() {
-    console.log(this.dbMoves)
     let tempArr = []
     for (const myPokemon of this.myPokemons) {
       let tempDbMoves: MoveModel[] = []
@@ -135,8 +125,7 @@ export class NewGameComponent implements OnInit{
         let index = url.indexOf('2')
         const id = url.substring(index + "2/move/".length)
 
-        if (this.moveListArr.includes(parseInt(id)) &&
-          learnMethod == 'level-up') {
+        if (this.moveListArr.includes(parseInt(id))) {
           let index = this.dbMoves.findIndex(val => val.id == id)
           console.log(index)
           tempDbMoves.push(this.dbMoves[index])

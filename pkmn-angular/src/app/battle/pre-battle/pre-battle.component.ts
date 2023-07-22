@@ -129,7 +129,8 @@ export class PreBattleComponent implements OnInit {
         maxHp,
         currentHp: maxHp,
         others: {
-          stats
+          stats,
+          condition: ''
         }
       }
       let copyGymPokemons = {
