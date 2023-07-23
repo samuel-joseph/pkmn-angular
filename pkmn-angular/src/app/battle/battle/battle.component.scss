@@ -129,7 +129,7 @@
     position: fixed;
     z-index: 99;
     margin-left: 80px;
-    margin-top: 100px;
+    margin-top: 150px;
     animation: playerPhysicalAttack 1.5s;
     opacity: 0;
   }
@@ -155,8 +155,8 @@
     height: 25vh;
     position: fixed;
     z-index: 99;
-    margin-left: 100px;
-    margin-top: 100px;
+    margin-left: 110px;
+    margin-top: 80px;
     animation: npcPhysicalAttack 1.5s;
     opacity: 0;
   }
@@ -190,20 +190,22 @@
   @keyframes playerPhysicalAttack {
     5%{
       opacity: 1;
+
     }
     50%{
       opacity: 1;
       transform: rotateZ(0deg);
+      margin-top: 80px;
     }
     55%{
       opacity: 1;
       transform: rotateZ(15deg);
       margin-left: 120px;
-      margin-top: 25px;
+      margin-top: 80px;
     }
     70%{
       margin-left: 120px;
-      margin-top: 25px;
+      margin-top: 80px;
     }
     80%{
       transform: rotateZ(0deg);
