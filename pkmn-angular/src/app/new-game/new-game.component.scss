@@ -6,6 +6,21 @@
   overflow-y: scroll;
 }
 
+.pikachu{
+  animation: pikachurun 20s infinite;
+  width: 100px;
+  overflow: hidden;
+}
+
+@keyframes pikachurun {
+  0%{
+    margin-left: -50vw;
+  }
+  100%{
+    margin-left: 70vw;
+  }
+}
+
 .idleAnimationPlayer{
   animation-name: idlenpc;
   animation-iteration-count: infinite;

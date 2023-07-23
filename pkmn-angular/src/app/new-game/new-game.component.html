@@ -12,9 +12,32 @@
       <button (click)="getRegion(region)">{{region}}</button>
     </div>
   </div>
+  <div *ngIf="regionPokemons.length==0" 
+    style="   
+    padding: 2vh 5vw;
+    text-align: center;
+    background: #495057;
+    color: white;
+    border: 2px solid yellow;"
+    >
+    <h2>Main objectives</h2>
+    <div style="text-align: left; padding-left: 5px; padding-bottom: 5vh;">
+      <p>- Become the pokemon Champion</p>
+      <p>- Defeat all the gym leaders</p>
+      <p>- Defeat Champion Ash</p>
+      <p>- Have fun!</p>
+    </div>
+    <h6>Sub objectives</h6>
+    <div style="text-align: left; padding-left: 5px;">
+      <p>- Choose 6 pokemons</p>
+      <p>- Choose 4 moves in every 6 pokemon</p>
+      <p>- Choose 3 pokemon to battle</p>
+    </div>
+  </div>
+  <img *ngIf="regionPokemons.length==0" alt="" class="pikachu" src="https://media.tenor.com/fSsxftCb8w0AAAAC/pikachu-running.gif" />
   <div class="pokemon-list" *ngIf="regionPokemons">
     <span *ngFor="let pokemon of regionPokemons">
-        <img [src]="pokemon.url" (click)="chosenPokemon(pokemon.id)" />
+        <img alt="" [src]="pokemon.url" (click)="chosenPokemon(pokemon.id)" />
     </span>
   </div>
 </div>

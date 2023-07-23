@@ -426,7 +426,13 @@ export class BattleComponent implements OnInit{
       setTimeout(() => {
         if (player.others.condition == 'poison' || player.others.condition == 'burn') {
           this.burnOrToxicPlayer = player.others.condition
-          player.currentHp -= Math.floor(player.maxHp*.12)
+          player.currentHp -= Math.floor(player.maxHp * .12)
+          if (this.currentPlayer1[0].currentHp <= 0) {
+            setTimeout(() => {
+              this.currentPlayer1Fainted()
+              //death timer player
+              },500)
+          }
       }},1300)
       setTimeout(() => {
         if (this.currentPlayer2[0].currentHp <= 0) {
@@ -478,7 +484,13 @@ export class BattleComponent implements OnInit{
           setTimeout(() => {
             if (npc.others.condition == 'poison' || npc.others.condition == 'burn') {
               this.burnOrToxicNpc = npc.others.condition
-              npc.currentHp -= Math.floor(npc.maxHp*.12)
+              npc.currentHp -= Math.floor(npc.maxHp * .12)
+              if (this.currentPlayer2[0].currentHp <= 0) {
+                setTimeout(() => {
+                  this.currentPlayer2Fainted()
+                  //death timer npc
+                }, 500)
+              }
           }},1300)
           setTimeout(() => {
             if (this.currentPlayer1[0].currentHp <= 0) {
@@ -539,7 +551,13 @@ export class BattleComponent implements OnInit{
       setTimeout(() => {
         if (npc.others.condition == 'poison' || npc.others.condition == 'burn') {
           this.burnOrToxicNpc = npc.others.condition
-          npc.currentHp -= Math.floor(npc.maxHp*.12)
+          npc.currentHp -= Math.floor(npc.maxHp * .12)
+          if (this.currentPlayer2[0].currentHp <= 0) {
+            setTimeout(() => {
+              this.currentPlayer2Fainted()
+              //death timer npc
+            }, 500)
+          }
       }},1300)
       setTimeout(() => {
         if (this.currentPlayer1[0].currentHp <= 0) {
@@ -593,7 +611,13 @@ export class BattleComponent implements OnInit{
           setTimeout(() => {
             if (player.others.condition == 'poison' || player.others.condition == 'burn') {
               this.burnOrToxicPlayer = player.others.condition
-              player.currentHp -= Math.floor(player.maxHp*.12)
+              player.currentHp -= Math.floor(player.maxHp * .12)
+              if (this.currentPlayer1[0].currentHp <= 0) {
+                setTimeout(() => {
+                  this.currentPlayer1Fainted()
+                  //death timer player
+                }, 500)
+              }
           }},1300)
           setTimeout(() => {
             if (this.currentPlayer2[0].currentHp <= 0) {

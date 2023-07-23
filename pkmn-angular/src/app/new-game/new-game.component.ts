@@ -164,6 +164,7 @@ export class NewGameComponent implements OnInit{
         })
       })
     }
+    console.log(this.regionPokemons.length>0)
   }
 
   getRegion(region: string) {

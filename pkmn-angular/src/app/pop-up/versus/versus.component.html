@@ -1,11 +1,18 @@
 <div class="parent">
   <div class="avatarParent">
-    <h2>{{this.dataObj.player2.leaderName}}</h2>
     <img class="avatar" alt="" [src]="this.dataObj.player2.gymImage" />
+    <h1>VERSUS</h1>
   </div>
   <div class="pokemonHolder">
-    <div *ngFor="let pokemon of this.dataObj.player2.pokemons">
-      <img alt="" src='{{"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+pokemon.id+".png"}}' />
+    <div class="parentnpc">
+      <div *ngFor="let pokemon of this.dataObj.player2.pokemons">
+        <img alt="" src='{{"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+pokemon.id+".png"}}' />
+      </div>
+    </div>
+    <div class="parentplayer">
+      <div *ngFor="let pokemon of this.dataObj.player1.pokemons">
+        <img alt="" src='{{"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+pokemon.id+".png"}}' />
+      </div>
     </div>
   </div>
 </div>

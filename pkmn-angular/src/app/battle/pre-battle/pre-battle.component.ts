@@ -66,9 +66,8 @@ export class PreBattleComponent implements OnInit {
               leaderName: this.leaderInfo.name
             }
           }
-          // this.battlePhase = "versus"
-          this.battlePhase = 'pre-battle'
-          // setTimeout(()=>{this.battlePhase = 'pre-battle'},3000)
+          this.battlePhase = "versus"
+          setTimeout(()=>{this.battlePhase = 'pre-battle'},5000)
           this.getMove()
         }
       })
