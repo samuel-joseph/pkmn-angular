@@ -30,6 +30,7 @@
      <div [ngStyle]="{
       'border-radius': '20px',
       'border': 'solid black',
+      'text-shadow': '0 0 black',
       'padding': '5px',
       'background-color':
       pokemon.types.typeOne == 'fire' ? 'red' : 
@@ -37,15 +38,17 @@
       pokemon.types.typeOne == 'grass' ? 'green' :
       pokemon.types.typeOne == 'psychic' ? 'purple' :
       pokemon.types.typeOne == 'rock' ? 'darkbrown' :
-      pokemon.types.typeOne == 'ground' ? 'lightbrown' :
+      pokemon.types.typeOne == 'ground' ? 'brown' :
       pokemon.types.typeOne == 'fighting' ? 'brown' :
       pokemon.types.typeOne == 'poison' ? 'violet' :
       pokemon.types.typeOne == 'dragon' ? 'darkviolet' :
       pokemon.types.typeOne == 'fairy' ? 'pink' :
       pokemon.types.typeOne == 'flying' ? 'gray' :
-      pokemon.types.typeOne == 'normal' ? 'lightgray' :
+      pokemon.types.typeOne == 'normal' ? 'gray' :
       pokemon.types.typeOne == 'dark' ? 'black' : 
-      pokemon.types.typeOne == 'bug' ? 'lightgreen': ''
+      pokemon.types.typeOne == 'bug' ? 'lightgreen': 
+      pokemon.types.typeOne  == 'ghost' ? 'violet' : 
+      pokemon.types.typeOne  == 'electric' ? '#b1b100' : 'black'
      }
      "
      >{{pokemon.types.typeOne.toLocaleUpperCase()}}</div>
@@ -54,6 +57,7 @@
       [ngStyle]="{
         'border-radius': '20px',
         'border': 'solid black',
+        'text-shadow': '0 0 black',
         'padding': '5px',
         'background-color':
         pokemon.types.typeTwo == 'fire' ? 'red' : 
@@ -61,15 +65,17 @@
         pokemon.types.typeTwo == 'grass' ? 'green' :
         pokemon.types.typeTwo == 'psychic' ? 'purple' :
         pokemon.types.typeTwo == 'rock' ? 'darkbrown' :
-        pokemon.types.typeTwo == 'ground' ? 'lightbrown' :
+        pokemon.types.typeTwo == 'ground' ? 'brown' :
         pokemon.types.typeTwo == 'fighting' ? 'brown' :
         pokemon.types.typeTwo == 'poison' ? 'violet' :
         pokemon.types.typeTwo == 'dragon' ? 'darkviolet' :
         pokemon.types.typeTwo == 'fairy' ? 'pink' :
         pokemon.types.typeTwo == 'flying' ? 'gray' :
-        pokemon.types.typeTwo == 'normal' ? 'lightgray' :
+        pokemon.types.typeTwo == 'normal' ? 'gray' :
         pokemon.types.typeTwo == 'dark' ? 'black' : 
-        pokemon.types.typeTwo == 'bug' ? 'lightgreen': ''
+        pokemon.types.typeTwo == 'bug' ? 'lightgreen': 
+        pokemon.types.typeTwo == 'ghost' ? 'violet' : 
+        pokemon.types.typeTwo  == 'electric' ? '#b1b100' : 'black'
        }
        "
       >{{pokemon.types.typeTwo.toLocaleUpperCase()}}</div>
@@ -101,14 +107,69 @@
         <h6>Available moves</h6>
         <div style="overflow-y: scroll; height: 40vh;">
           <div *ngFor="let move of pokemon.dbMoves">
-            <button style="background-color: blue; border-radius: 20px; margin: 2px 0; color: white;" (click)="modifyMove(move.id, pokemon.id,'add')">{{move.name}} : {{move.power!=null?move.power:'N/A'}}</button>
+            <button 
+            [ngStyle]="{
+              'border-radius': '20px',
+              'width': '180px',
+              'border': 'solid black',
+              'margin-bottom': '5px',
+              'text-shadow': '0 0 black',
+              'color': 'white',
+              'padding': '5px',
+              'background-color':
+              move.type == 'fire' ? 'red' : 
+              move.type == 'water' ? 'blue' :
+              move.type == 'grass' ? 'green' :
+              move.type == 'psychic' ? 'purple' :
+              move.type == 'rock' ? 'darkbrown' :
+              move.type == 'ground' ? 'brown' :
+              move.type == 'fighting' ? 'brown' :
+              move.type == 'poison' ? 'violet' :
+              move.type == 'dragon' ? 'darkviolet' :
+              move.type == 'fairy' ? 'pink' :
+              move.type == 'flying' ? 'gray' :
+              move.type == 'normal' ? 'gray' :
+              move.type == 'dark' ? 'black' : 
+              move.type == 'bug' ? 'lightgreen': 
+              move.type == 'ghost' ? 'violet' : 
+              move.type  == 'electric' ? '#b1b100' : 'black'
+             }
+             " (click)="modifyMove(move.id, pokemon.id,'add')"
+             >{{move.name}} : {{move.power!=null?move.power:'N/A'}}</button>
           </div>
         </div>
       </div>
       <div *ngIf="pokemon.moves">
         <h6>Moves learned</h6>
         <div *ngFor="let move of pokemon.moves">
-          <button style="background-color: red; border-radius: 20px; margin: 2px 0; color: white;" (click)="modifyMove(move.id, pokemon.id,'subtract')">{{move.name}} : {{move.power!=null?move.power:'N/A'}}</button>
+          <button 
+          [ngStyle]="{
+            'border-radius': '20px',
+            'border': 'solid black',
+            'margin-bottom': '5px',
+            'text-shadow': '0 0 black',
+            'width': '180px',
+            'color': 'white',
+            'padding': '5px',
+            'background-color':
+            move.type == 'fire' ? 'red' : 
+            move.type == 'water' ? 'blue' :
+            move.type == 'grass' ? 'green' :
+            move.type == 'psychic' ? 'purple' :
+            move.type == 'rock' ? 'darkbrown' :
+            move.type == 'ground' ? 'brown' :
+            move.type == 'fighting' ? 'brown' :
+            move.type == 'poison' ? 'violet' :
+            move.type == 'dragon' ? 'darkviolet' :
+            move.type == 'fairy' ? 'pink' :
+            move.type == 'flying' ? 'gray' :
+            move.type == 'normal' ? 'gray' :
+            move.type == 'dark' ? 'black' : 
+            move.type == 'bug' ? 'lightgreen': 
+            move.type == 'ghost' ? 'violet' : 'black'
+           }
+           " (click)="modifyMove(move.id, pokemon.id,'subtract')">
+           {{move.name}} : {{move.power!=null?move.power:'N/A'}}</button>
         </div>
       </div>
     </div>
