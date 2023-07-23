@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core"
 import { PokemonService } from "../_services/pokemon/pokemon.service"
 import { RegionPokemon } from "../model/pokemon-model.model"
 import { regionPokemonsImage } from "./region-helper"
+import { bannedPokemon } from "src/environment/environment-constants";
  
 
  @Injectable({ providedIn: 'root' })
@@ -46,7 +47,9 @@ import { regionPokemonsImage } from "./region-helper"
          
      }
      for (let i = firstPokemon; i <= lastPokemon; i++){
-       this.regionPokemons.push(regionPokemonsImage(`${i}`))
+       if(!bannedPokemon.includes(i)){
+         this.regionPokemons.push(regionPokemonsImage(`${i}`))
+        }
      }
      return this.regionPokemons
    }

@@ -32,9 +32,7 @@ export class NewGameComponent implements OnInit{
     } else {
       moveDamage = 'medium'
     }
-
-    console.log("what is move type ", moveType)
-    console.log("what is move damage ", moveDamage)
+    
     switch (moveDamage) {
       case 'medium':
         switch (moveType) {

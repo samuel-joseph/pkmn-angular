@@ -48,7 +48,7 @@ export class PreBattleComponent implements OnInit {
       this.currentGymLeader = this.checkLeaders()
       this.copyMyPokemons = this.myPokemons
       this.getPokemon()
-    },8000)
+    },4000)
   }
 
   getPokemon() {

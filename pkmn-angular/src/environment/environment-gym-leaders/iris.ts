@@ -3,7 +3,7 @@ import { GymLeader } from "src/app/model/gym-leader-model.model";
 export const iris: GymLeader = {
   name: 'Iris',
   gymBadge: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/badges/9.png',
-  gymImage: 'https://samurai-gamers.com/wp-content/uploads/2016/12/Black_White_Grimsley.png',
+  gymImage: 'https://archives.bulbagarden.net/media/upload/d/d0/Black_2_White_2_Iris.png',
   gymLose: false,
   gymPokemons: [
     {
