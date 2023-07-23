@@ -11,6 +11,5 @@ export class VersusComponent implements OnInit {
   playerProfile = playerProfile
   
   ngOnInit(): void {
-      console.log(this.dataObj)
   }
 }

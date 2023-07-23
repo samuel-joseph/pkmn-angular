@@ -44,11 +44,11 @@ export class PreBattleComponent implements OnInit {
 
   initialBattlePhase() {
     this.resetBattle()
-    // setTimeout(() => {
+    setTimeout(() => {
       this.currentGymLeader = this.checkLeaders()
       this.copyMyPokemons = this.myPokemons
       this.getPokemon()
-    // },3000)
+    },8000)
   }
 
   getPokemon() {

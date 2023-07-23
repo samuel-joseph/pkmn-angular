@@ -188,12 +188,12 @@ export class BattleComponent implements OnInit{
     for (let stat of pokemonStat) {
       stat.base_stat+=this.statValue(stat.name, trainer, 'current')
     }
-    console.log(pokemonStat)
   }
 
   statValue(stat: string, trainer: string, current_origin: string) {
     let index
     let state
+    
     if (trainer == 'player') {
       state = current_origin == 'current' ? this.currentPlayer1[0].stats : this.currentPlayer1Stat
       index = state.findIndex(val => val.name == stat)
@@ -220,9 +220,11 @@ export class BattleComponent implements OnInit{
   }
 
   attackSequence(attacker: PokemonModel, defender: PokemonModel, move: MoveModel, receiver: string) {
-    let indexAccuracy = attacker.stats.findIndex(val => val.name == 'accuracy')
-    let accuracyAttacker = attacker.stats[indexAccuracy].base_stat
-    let isAccurate = this.moveAccurateOrMiss(move.accuracy,accuracyAttacker)
+    let indexAccuracy = attacker.others.stats.findIndex(val => val.name == 'accuracy')
+    let indexEvasion = defender.others.stats.findIndex(val=>val.name=='evasion')
+    let accuracyAttacker = attacker.others.stats[indexAccuracy].base_stat
+    let evasionDefender = defender.others.stats[indexEvasion].base_stat
+    let isAccurate = this.moveAccurateOrMiss(move.accuracy,accuracyAttacker, evasionDefender)
     let multiplier = 1;
     let damage = 0
     let indexAttackerStat
@@ -267,12 +269,12 @@ export class BattleComponent implements OnInit{
     if (receiver == 'npc') {
       this.npcDamageReceive = damage
       if (move.damageClass.ailment&&move.damageClass.ailment.name!='none') {
-        this.ailment(move,'player-move',accuracyAttacker)
+        this.ailment(move,'player-move',accuracyAttacker, evasionDefender)
       }
     } else {
       this.playerDamageReceive = damage
       if (move.damageClass.ailment&&move.damageClass.ailment.name!='none') {
-        this.ailment(move,'npc-move',accuracyAttacker)
+        this.ailment(move,'npc-move',accuracyAttacker, evasionDefender)
       }
     }
 
@@ -302,9 +304,9 @@ export class BattleComponent implements OnInit{
     }
   }
 
-  moveAccurateOrMiss = (accuracy: number, pokemonAccuracy: number): boolean => {
+  moveAccurateOrMiss = (accuracy: number, pokemonAccuracy: number, defenderEvasion: number): boolean => {
     let accurate = false
-    if (accuracy == null||getRandNum(1, pokemonAccuracy) <= accuracy) {
+    if (accuracy == null||getRandNum(1, pokemonAccuracy+defenderEvasion) <= accuracy) {
       accurate = true
     } 
     return accurate
@@ -331,6 +333,13 @@ export class BattleComponent implements OnInit{
     this.ongoingBattle = true
     let player = this.currentPlayer1[0]
     let npc = this.currentPlayer2[0]
+
+    let indexEvasionPlayer = player.others.stats.findIndex(val=>val.name == 'evasion')
+    let indexEvasionNpc = npc.others.stats.findIndex(val => val.name == 'evasion')
+    
+    let evasionPlayer = player.others.stats[indexEvasionPlayer].base_stat
+    let evasionNpc = npc.others.stats[indexEvasionNpc].base_stat
+
 
     //checking ailment
     if (this.frozenConfusedAsleepCounterPlayer > 0) {
@@ -379,7 +388,7 @@ export class BattleComponent implements OnInit{
       if (!playerDisabled&&playerMove.damageClass.name == 'status') {
         switch (playerMove.damageClass.ailment?.category) {
           case 'ailment':
-            this.ailment(playerMove,'player-move',playerAccuracy)
+            this.ailment(playerMove,'player-move',playerAccuracy, evasionNpc)
             break
           case 'net-good-stats':
             if (playerMove.target=='user'||playerMove.target=='all-opponents'||'selected-pokemon') {
@@ -429,7 +438,7 @@ export class BattleComponent implements OnInit{
           if (!npcDisabled && npcMove[0].damageClass.name == 'status') {
             switch (npcMove[0].damageClass.ailment?.category) {
               case 'ailment':
-                this.ailment(npcMove[0], 'npc-move', npcAccuracy)
+                this.ailment(npcMove[0], 'npc-move', npcAccuracy, evasionPlayer)
                 break
               case 'net-good-stats':
                 if (npcMove[0].target == "user" || npcMove[0].target == "all-opponents" || npcMove[0].target == "selected-pokemon") {
@@ -489,7 +498,7 @@ export class BattleComponent implements OnInit{
       if (!npcDisabled&&npcMove[0].damageClass.name == 'status') {
         switch (npcMove[0].damageClass.ailment?.category) {
           case 'ailment':
-            this.ailment(npcMove[0],'npc-move', npcAccuracy)
+            this.ailment(npcMove[0],'npc-move', npcAccuracy, evasionPlayer)
             break
           case 'net-good-stats':
             if (npcMove[0].target == 'user' || npcMove[0].target == 'all-opponents' || npcMove[0].target == 'selected-pokemon') {
@@ -543,7 +552,7 @@ export class BattleComponent implements OnInit{
           if (!playerDisabled&&playerMove.damageClass.name == 'status') {
             switch (playerMove.damageClass.ailment?.category) {
               case 'ailment':
-                this.ailment(playerMove, 'player-move',playerAccuracy)
+                this.ailment(playerMove, 'player-move',playerAccuracy, evasionNpc)
                 break
               case 'net-good-stats':
                 if (playerMove.target=='user'||playerMove.target=='all-opponents'||'selected-pokemon') {
@@ -618,14 +627,14 @@ export class BattleComponent implements OnInit{
     }, 7000)
   }
 
-  ailment(move: MoveModel, playermove: string, accuracyAttacker:number) {
+  ailment(move: MoveModel, playermove: string, accuracyAttacker:number, evasionDefender: number) {
     let trainerOpponent: PokemonModel = playermove === 'player-move' ? this.currentPlayer2[0] : this.currentPlayer1[0]
     if (move.damageClass.ailment&&trainerOpponent.others.condition === '') {
       let ailment = move.damageClass.ailment.name
-      if (move.damageClass.name == 'status' && this.moveAccurateOrMiss(move.accuracy,accuracyAttacker)) {
+      if (move.damageClass.name == 'status' && this.moveAccurateOrMiss(move.accuracy,accuracyAttacker, evasionDefender)) {
         this.animationAttack(playermove === 'player-move' ? 'player' : 'npc', 'special')
         trainerOpponent.others.condition = ailment
-      } else if(move.effect_chance&&this.moveAccurateOrMiss(move.effect_chance,accuracyAttacker)){
+      } else if(move.effect_chance&&this.moveAccurateOrMiss(move.effect_chance,accuracyAttacker, evasionDefender)){
         trainerOpponent.others.condition = ailment
       }
       playermove === 'player-move' ? this.frozenConfusedAsleepCounterNpc = 4 : this.frozenConfusedAsleepCounterPlayer = 4
@@ -638,11 +647,15 @@ export class BattleComponent implements OnInit{
   }
 
   debuff(base_stat: number, change: number) {
-    return Math.floor(base_stat - (base_stat * multiplier(change)))
+    let new_base_stat = Math.floor(base_stat - (base_stat * multiplier(change)))
+    return new_base_stat >1 ? new_base_stat : base_stat
   }
 
-  buff(base_stat: number, change: number) {
-    return base_stat+(base_stat*multiplier(change))
+  buff(name:string, base_stat: number, change: number) {
+    if (name=='evasion'&&base_stat == 0) {
+      base_stat = 40
+    }
+    return base_stat >=200? base_stat: Math.floor(base_stat+(base_stat*multiplier(change)))
   }
 
   powerUp(move: MoveModel, playermove: string) {
@@ -654,7 +667,7 @@ export class BattleComponent implements OnInit{
         stat_changes.push(stat_buff.stat.name)
         let indexStat = trainer.stats.findIndex(req => req.name == stat_buff.stat.name)
         if (stat_buff.change > 0) {
-          trainer.others.stats[indexStat].base_stat = this.buff(trainer.others.stats[indexStat].base_stat, stat_buff.change)
+          trainer.others.stats[indexStat].base_stat = this.buff(trainer.others.stats[indexStat].name,trainer.others.stats[indexStat].base_stat, stat_buff.change)
           if (playermove == 'player-move') {
             if (stat_changes){
               this.playerbuff = stat_changes
@@ -778,6 +791,15 @@ export class BattleComponent implements OnInit{
     }
   }
 
+  spliceEvasionAccuracy(pokemon: PokemonModel) {
+    let indexEvasion = pokemon.others.stats.findIndex(val=>val.name=='evasion')
+    let indexAccuracy = pokemon.others.stats.findIndex(val => val.name == 'accuracy')
+    
+    pokemon.others.stats.splice(indexEvasion,1)
+    pokemon.others.stats.splice(indexAccuracy, 1)
+    return pokemon
+  }
+
   battleEnd(outcome: string) {
     const returnPokemonPlayer1: PokemonModel [] = []
     const returnPokemonPlayer2: PokemonModel[] = []
@@ -812,6 +834,7 @@ export class BattleComponent implements OnInit{
         returnPokemonPlayer2[i].currentHp = returnPokemonPlayer2[i].maxHp
         returnPokemonPlayer2[i].others.stats = returnPokemonPlayer2[i].stats
         returnPokemonPlayer2[i].others.condition = ''
+
         i++
       }
 

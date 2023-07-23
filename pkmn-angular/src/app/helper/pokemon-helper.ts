@@ -103,7 +103,6 @@ export const calculateDamage = (
   moveType: string,
   receiverType: Type
 ) => {
-  console.log('Attack stat ',attackerStat)
   const STAB = getStab(attackerType, moveType)
   let TYPE
   if(receiverType.typeTwo){
@@ -129,7 +128,6 @@ export const calculateDamage = (
 
 
 export const typeAdvantage = (moveType: string, receiverType: string) => {
-  console.log(moveType,' ',receiverType)
   switch (moveType) {
     case "dragon":
       switch (receiverType) {
