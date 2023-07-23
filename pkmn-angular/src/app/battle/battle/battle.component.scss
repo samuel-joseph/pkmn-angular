@@ -98,17 +98,23 @@
 
   .buffFx{
     animation: buff 2s;
+    opacity: 0;
   }
 
   @keyframes buff {
     40%{
       margin-bottom: 0px;
     }
+    49%{
+      opacity: 0;
+    }
     50%{
+      opacity: 1;
       transform: rotateY(0deg);
       margin-bottom: 100px;
     }
     100%{
+      opacity: 1;
       margin-bottom: 100px;
       transform: rotateY(180deg);
     }
