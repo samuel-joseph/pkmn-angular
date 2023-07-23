@@ -1,4 +1,4 @@
-<div>
+<div style="padding-top: 50px;">
   <div *ngIf="myPokemons">
     <span *ngFor="let pokemon of myPokemons">
       <img class="idleAnimationPlayer" style="width: 15%;" [src]="pokemon.sprites.front_default" (click)="removePokemon(pokemon.id)"/>

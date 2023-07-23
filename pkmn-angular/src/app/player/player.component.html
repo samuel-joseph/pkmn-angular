@@ -17,6 +17,63 @@
     *ngFor="let pokemon of myPokemons"
     >
     <h2 style="text-align: center;">{{pokemon.name.toLocaleUpperCase()}}</h2>
+    <div style="    
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 30vw;
+    justify-content: space-evenly;
+    color: white;
+    font-size: x-small;
+    font-weight: bolder;
+    ">
+     <div [ngStyle]="{
+      'border-radius': '20px',
+      'border': 'solid black',
+      'padding': '5px',
+      'background-color':
+      pokemon.types.typeOne == 'fire' ? 'red' : 
+      pokemon.types.typeOne == 'water' ? 'blue' :
+      pokemon.types.typeOne == 'grass' ? 'green' :
+      pokemon.types.typeOne == 'psychic' ? 'purple' :
+      pokemon.types.typeOne == 'rock' ? 'darkbrown' :
+      pokemon.types.typeOne == 'ground' ? 'lightbrown' :
+      pokemon.types.typeOne == 'fighting' ? 'brown' :
+      pokemon.types.typeOne == 'poison' ? 'violet' :
+      pokemon.types.typeOne == 'dragon' ? 'darkviolet' :
+      pokemon.types.typeOne == 'fairy' ? 'pink' :
+      pokemon.types.typeOne == 'flying' ? 'gray' :
+      pokemon.types.typeOne == 'normal' ? 'lightgray' :
+      pokemon.types.typeOne == 'dark' ? 'black' : 
+      pokemon.types.typeOne == 'bug' ? 'lightgreen': ''
+     }
+     "
+     >{{pokemon.types.typeOne.toLocaleUpperCase()}}</div>
+     <div
+      *ngIf="pokemon.types.typeTwo!==undefined"
+      [ngStyle]="{
+        'border-radius': '20px',
+        'border': 'solid black',
+        'padding': '5px',
+        'background-color':
+        pokemon.types.typeTwo == 'fire' ? 'red' : 
+        pokemon.types.typeTwo == 'water' ? 'blue' :
+        pokemon.types.typeTwo == 'grass' ? 'green' :
+        pokemon.types.typeTwo == 'psychic' ? 'purple' :
+        pokemon.types.typeTwo == 'rock' ? 'darkbrown' :
+        pokemon.types.typeTwo == 'ground' ? 'lightbrown' :
+        pokemon.types.typeTwo == 'fighting' ? 'brown' :
+        pokemon.types.typeTwo == 'poison' ? 'violet' :
+        pokemon.types.typeTwo == 'dragon' ? 'darkviolet' :
+        pokemon.types.typeTwo == 'fairy' ? 'pink' :
+        pokemon.types.typeTwo == 'flying' ? 'gray' :
+        pokemon.types.typeTwo == 'normal' ? 'lightgray' :
+        pokemon.types.typeTwo == 'dark' ? 'black' : 
+        pokemon.types.typeTwo == 'bug' ? 'lightgreen': ''
+       }
+       "
+      >{{pokemon.types.typeTwo.toLocaleUpperCase()}}</div>
+    </div>
     <div
       style="display: flex; flex-direction: row;"
     >
