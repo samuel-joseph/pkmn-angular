@@ -43,7 +43,8 @@ export const brock: GymLeader = {
       moves: [
         'poison-fang',
         'air-cutter',
-        'cross-poison'
+        'cross-poison',
+        'toxic'
       ]
     },
     {
