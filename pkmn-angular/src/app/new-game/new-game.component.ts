@@ -142,7 +142,6 @@ export class NewGameComponent implements OnInit{
 
         let moveFx = this.getMoveFx(move.type.name, move.power)
 
-        console.log(moveFx)
 
         this.dbMoves.push({
           id: move.id,
@@ -165,7 +164,6 @@ export class NewGameComponent implements OnInit{
         })
       })
     }
-    console.log(this.regionPokemons.length>0)
   }
 
   getRegion(region: string) {
@@ -188,7 +186,7 @@ export class NewGameComponent implements OnInit{
           front_image: pokemon.sprites.front_default,
         }
         this.toDisplayPokemon.push(objPokemon)
-        console.log(this.toDisplayPokemon)
+        this.pokemon = data
       }
     })
   }
@@ -201,14 +199,11 @@ export class NewGameComponent implements OnInit{
     let isUnique;
     this.emptyDisplay()
     isUnique = this.myPokemons.filter(pokemon => pokemon.id == id)
-    if(isUnique.length<1 || isUnique == undefined){
-      this.http.getPokemon(id).subscribe((data) => {
-        this.pokemon = data
-        this.myPokemons.push(data)
+    if (isUnique.length < 1 || isUnique == undefined) {
+      this.myPokemons.push(this.pokemon)
         if (this.myPokemons.length == 6) {
           this.toStore()
         }
-      })
     }
     this.gotoTop()
   }
