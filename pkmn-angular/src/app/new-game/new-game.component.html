@@ -46,6 +46,7 @@
       position: absolute;
       background: #fffffff3;
       padding: 2vh 30vw;
+      padding-bottom: 5vh;
       " 
       *ngFor="let pokemon of toDisplayPokemon">
       <h6>Add this pokemon?</h6>
@@ -120,7 +121,7 @@
             </div>
             <div>
               <div *ngFor="let stat of pokemon.stats">
-                <h6>{{stat.name}}</h6>
+                <h6>{{stat.name}} : {{stat.base_stat}}</h6>
                 <div
                 [style]="{
                 'background-color': 'green',
