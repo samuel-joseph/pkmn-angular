@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { PokemonService } from '../_services/pokemon/pokemon.service';
-import { PokemonModel, RegionPokemon } from '../model/pokemon-model.model';
-import { getStats, getMove, getTypes, calculateHp } from '../helper/pokemon-helper';
+import { RegionPokemon } from '../model/pokemon-model.model';
+import { getStats, getTypes, calculateHp } from '../helper/pokemon-helper';
 import { Pokemon } from '../helper/pokemon.class';
 import { MoveModel } from '../model/move-model.model';
 import { environment } from 'src/environment/environment';
@@ -24,6 +24,7 @@ export class NewGameComponent implements OnInit{
     dbMoves: MoveModel[] = []
     FinalArrMove: MoveModel[] = []
   pokemon: any
+  toDisplayPokemon: any[] = []
   
   getMoveFx(moveType: string, power: number) {
     let moveDamage = ''
@@ -172,11 +173,36 @@ export class NewGameComponent implements OnInit{
     this.regionPokemons = copyRegionPokemons
   }
 
+  displayPokemon(id: string) {
+    this.http.getPokemon(id).subscribe((data) => {
+      let temp: any = []
+      temp.push(data)
+      for (let pokemon of temp) {
+        const stats = getStats(pokemon.stats)
+        const types = getTypes(pokemon.types)
+        let objPokemon = {
+          id: pokemon.id,
+          name: pokemon.name,
+          types,
+          stats,
+          front_image: pokemon.sprites.front_default,
+        }
+        this.toDisplayPokemon.push(objPokemon)
+        console.log(this.toDisplayPokemon)
+      }
+    })
+  }
+
+  emptyDisplay() {
+    this.toDisplayPokemon = []
+  }
+
   chosenPokemon(id: string) {
     let isUnique;
+    this.emptyDisplay()
     isUnique = this.myPokemons.filter(pokemon => pokemon.id == id)
     if(isUnique.length<1 || isUnique == undefined){
-      this.pokemon = this.http.getPokemon(id).subscribe((data) => {
+      this.http.getPokemon(id).subscribe((data) => {
         this.pokemon = data
         this.myPokemons.push(data)
         if (this.myPokemons.length == 6) {
