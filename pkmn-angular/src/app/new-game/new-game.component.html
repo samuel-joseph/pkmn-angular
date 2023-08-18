@@ -36,8 +36,108 @@
   </div>
   <img *ngIf="regionPokemons.length==0" alt="" class="pikachu" src="https://media.tenor.com/fSsxftCb8w0AAAAC/pikachu-running.gif" />
   <div class="pokemon-list" *ngIf="regionPokemons">
+    <div style="
+    display: flex;
+    width: 100vw;
+    text-align: center;
+    justify-content: center;" 
+    *ngIf="toDisplayPokemon.length!==0">
+      <div style="    
+      position: absolute;
+      background: #fffffff3;
+      padding: 2vh 30vw;
+      " 
+      *ngFor="let pokemon of toDisplayPokemon">
+      <h6>Add this pokemon?</h6>
+      <div style="display: flex; flex-direction: row; justify-content: space-between;">
+        <button style="border-radius: 20px;" (click)="chosenPokemon(pokemon.id)">YES</button>  
+        <button style="border-radius: 20px;" (click)="emptyDisplay()">NO</button>
+      </div>
+        <div style="display: flex; flex-direction: column; justify-content: center;">
+          <img [src]="pokemon.front_image" />
+          <h5>{{pokemon.name.toLocaleUpperCase()}}</h5>
+          <div style="    
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-evenly;
+          color: white;
+          font-size: x-small;
+          font-weight: bolder;
+          ">
+            <div [ngStyle]="{
+              'border-radius': '20px',
+              'border': 'solid black',
+              'text-shadow': '0 0 black',
+              'padding': '5px',
+              'background-color':
+              pokemon.types.typeOne == 'fire' ? 'red' : 
+              pokemon.types.typeOne == 'water' ? 'blue' :
+              pokemon.types.typeOne == 'grass' ? 'green' :
+              pokemon.types.typeOne == 'psychic' ? 'purple' :
+              pokemon.types.typeOne == 'rock' ? 'darkbrown' :
+              pokemon.types.typeOne == 'ground' ? 'brown' :
+              pokemon.types.typeOne == 'fighting' ? 'brown' :
+              pokemon.types.typeOne == 'poison' ? 'violet' :
+              pokemon.types.typeOne == 'dragon' ? 'darkviolet' :
+              pokemon.types.typeOne == 'fairy' ? 'pink' :
+              pokemon.types.typeOne == 'flying' ? 'gray' :
+              pokemon.types.typeOne == 'normal' ? 'gray' :
+              pokemon.types.typeOne == 'dark' ? 'black' : 
+              pokemon.types.typeOne == 'bug' ? 'lightgreen': 
+              pokemon.types.typeOne  == 'ghost' ? 'violet' : 
+              pokemon.types.typeOne  == 'electric' ? '#b1b100' : 'black'
+            }
+            "
+            >{{pokemon.types.typeOne.toLocaleUpperCase()}}</div>
+            <div
+              *ngIf="pokemon.types.typeTwo!==undefined"
+              [ngStyle]="{
+                'border-radius': '20px',
+                'border': 'solid black',
+                'text-shadow': '0 0 black',
+                'padding': '5px',
+                'background-color':
+                pokemon.types.typeTwo == 'fire' ? 'red' : 
+                pokemon.types.typeTwo == 'water' ? 'blue' :
+                pokemon.types.typeTwo == 'grass' ? 'green' :
+                pokemon.types.typeTwo == 'psychic' ? 'purple' :
+                pokemon.types.typeTwo == 'rock' ? 'darkbrown' :
+                pokemon.types.typeTwo == 'ground' ? 'brown' :
+                pokemon.types.typeTwo == 'fighting' ? 'brown' :
+                pokemon.types.typeTwo == 'poison' ? 'violet' :
+                pokemon.types.typeTwo == 'dragon' ? 'darkviolet' :
+                pokemon.types.typeTwo == 'fairy' ? 'pink' :
+                pokemon.types.typeTwo == 'flying' ? 'gray' :
+                pokemon.types.typeTwo == 'normal' ? 'gray' :
+                pokemon.types.typeTwo == 'dark' ? 'black' : 
+                pokemon.types.typeTwo == 'bug' ? 'lightgreen': 
+                pokemon.types.typeTwo == 'ghost' ? 'violet' : 
+                pokemon.types.typeTwo  == 'electric' ? '#b1b100' : 'black'
+              }
+              "
+              >{{pokemon.types.typeTwo.toLocaleUpperCase()}}</div>
+            </div>
+            <div>
+              <div *ngFor="let stat of pokemon.stats">
+                <h6>{{stat.name}}</h6>
+                <div
+                [style]="{
+                'background-color': 'green',
+                'height': '1vh',
+                'position': 'relative',
+                'width': ((stat.base_stat/180)*100).toString()+'%'
+                }
+                "
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <span *ngFor="let pokemon of regionPokemons">
-        <img alt="" [src]="pokemon.url" (click)="chosenPokemon(pokemon.id)" />
+        <img alt="" [src]="pokemon.url" (click)="displayPokemon(pokemon.id)" />
     </span>
   </div>
 </div>
