@@ -103,39 +103,68 @@
     <div
       style="display: flex; flex-direction: row;"
     >
-      <div *ngIf="pokemon.moves.length<4">
+      <div>
         <h6>Available moves</h6>
-        <div style="overflow-y: scroll; height: 40vh;">
-          <div *ngFor="let move of pokemon.dbMoves">
-            <button 
-            [ngStyle]="{
-              'border-radius': '20px',
-              'width': '180px',
-              'border': 'solid black',
-              'margin-bottom': '5px',
-              'text-shadow': '0 0 black',
-              'color': 'white',
-              'padding': '5px',
-              'background-color':
-              move.type == 'fire' ? 'red' : 
-              move.type == 'water' ? 'blue' :
-              move.type == 'grass' ? 'green' :
-              move.type == 'psychic' ? 'purple' :
-              move.type == 'rock' ? 'darkbrown' :
-              move.type == 'ground' ? 'brown' :
-              move.type == 'fighting' ? 'brown' :
-              move.type == 'poison' ? 'violet' :
-              move.type == 'dragon' ? 'darkviolet' :
-              move.type == 'fairy' ? 'pink' :
-              move.type == 'flying' ? 'gray' :
-              move.type == 'normal' ? 'gray' :
-              move.type == 'dark' ? 'black' : 
-              move.type == 'bug' ? 'lightgreen': 
-              move.type == 'ghost' ? 'violet' : 
-              move.type  == 'electric' ? '#b1b100' : 'black'
-             }
-             " (click)="modifyMove(move.id, pokemon.id,'add')"
-             >{{move.name}} : {{move.power!=null?move.power:'N/A'}}</button>
+        <div style="    
+          border: 2px solid black;
+          padding: 10px 5px;
+          margin: 0 10px;" 
+          *ngIf="overviewMove.length!=0"
+        >
+          <div *ngFor="let move of overviewMove">
+            <h4 style="text-align: center; border-bottom: 2px solid black;">{{move.name.toLocaleUpperCase()}}</h4>
+            <div style="display: flex; flex-direction: row; justify-content: space-around; border-bottom: 2px solid black;">
+              <p>Power: {{move.power}}</p>
+              <p>Type: {{move.type}}</p>
+            </div>
+            <div style="display: flex; flex-direction: row; justify-content: space-around; border-bottom: 2px solid black;">
+              <p>PP: {{move.pp}}/{{move.pp}}</p>
+              <p>{{move.damageClass.name}}</p>
+            </div>
+            <p style="border-bottom: 2px solid black;">Description: {{move.description}}</p>
+            <p style="border-bottom: 2px solid black;">Accuracy: {{move.accuracy}}</p>
+            <div>
+              <h6>Learn this move?</h6>
+              <div style="display: flex; flex-direction: row; justify-content: space-around;">
+                <button style="border-radius: 20px;" (click)="modifyMove(move.id, pokemon.id,'add')">YES</button>  
+                <button style="border-radius: 20px;" (click)="closeOverView()">NO</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="overviewMove.length==0">
+          <div style="overflow-y: scroll; height: 40vh;">
+            <div *ngFor="let move of pokemon.dbMoves">
+              <button 
+              [ngStyle]="{
+                'border-radius': '20px',
+                'width': '180px',
+                'border': 'solid black',
+                'margin-bottom': '5px',
+                'text-shadow': '0 0 black',
+                'color': 'white',
+                'padding': '5px',
+                'background-color':
+                move.type == 'fire' ? 'red' : 
+                move.type == 'water' ? 'blue' :
+                move.type == 'grass' ? 'green' :
+                move.type == 'psychic' ? 'purple' :
+                move.type == 'rock' ? 'darkbrown' :
+                move.type == 'ground' ? 'brown' :
+                move.type == 'fighting' ? 'brown' :
+                move.type == 'poison' ? 'violet' :
+                move.type == 'dragon' ? 'darkviolet' :
+                move.type == 'fairy' ? 'pink' :
+                move.type == 'flying' ? 'gray' :
+                move.type == 'normal' ? 'gray' :
+                move.type == 'dark' ? 'black' : 
+                move.type == 'bug' ? 'lightgreen': 
+                move.type == 'ghost' ? 'violet' : 
+                move.type  == 'electric' ? '#b1b100' : 'black'
+              }
+              " (click)="openOverView(move.id, pokemon.id)"
+              >{{move.name}} : {{move.power!=null?move.power:'N/A'}}</button>
+            </div>
           </div>
         </div>
       </div>

@@ -12,7 +12,8 @@ export interface MoveModel {
   hits?: MaxHit,
   crit_rate?: number,
   moveFx: string,
-  target: string
+  target: string,
+  description: string
 }
 
 export interface MaxHit{

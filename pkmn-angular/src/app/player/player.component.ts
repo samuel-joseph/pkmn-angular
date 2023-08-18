@@ -11,12 +11,26 @@ export class PlayerComponent implements OnInit{
   @Input() myPokemons: PokemonModel[] = []
   @Output() pokemonSubmit = new EventEmitter();
   movesAllReady = false
+  overviewMove: any[] = []
 
   battleReady(response: any) {
     this.movesAllReady = response
     if (response) {
       this.pokemonSubmit.emit({ pokemon: this.myPokemons, next:'pre-battle'})
     }
+  }
+
+  closeOverView() {
+    this.overviewMove = []
+  }
+
+  openOverView(idMove: number, idPokemon: number) {
+    let indexPokemon = this.myPokemons.findIndex(pokemon => pokemon.id === idPokemon)
+    let myPokemon = this.myPokemons[indexPokemon]
+    let indexMove
+
+    indexMove = this.myPokemons[indexPokemon].dbMoves.findIndex(move => move.id === idMove)
+    this.overviewMove.push(myPokemon.dbMoves[indexMove])
   }
 
   modifyMove(idMove: number, idPokemon: number, str: string) {
@@ -26,6 +40,7 @@ export class PlayerComponent implements OnInit{
 
     if (str === 'add') {
       indexMove = this.myPokemons[indexPokemon].dbMoves.findIndex(move => move.id === idMove)
+      this.overviewMove.push(myPokemon.dbMoves[indexMove])
       myPokemon.moves.push(myPokemon.dbMoves[indexMove])
       myPokemon.dbMoves.splice(indexMove, 1)
     } else if (str === 'subtract') {
@@ -39,8 +54,10 @@ export class PlayerComponent implements OnInit{
       if(firstPokemon){
         this.myPokemons.push(firstPokemon)
       }
+      this.gotoTop()
     }
 
+    this.closeOverView()
     this.allMovesReady()
   }
 
@@ -49,6 +66,14 @@ export class PlayerComponent implements OnInit{
     if (checker.length == 6) {
       this.movesAllReady = true
     }
+  }
+
+  gotoTop() {
+    window.scroll({ 
+      top: 0, 
+      left: 0, 
+      behavior: 'smooth' 
+    });
   }
 
   ngOnInit(): void {}

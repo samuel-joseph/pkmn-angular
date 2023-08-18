@@ -142,6 +142,13 @@ export class NewGameComponent implements OnInit{
 
         let moveFx = this.getMoveFx(move.type.name, move.power)
 
+        let description 
+        for (let desc of move.flavor_text_entries) {
+          if (desc.language.name == "en") {
+            description = desc.flavor_text
+          }
+        }
+
 
         this.dbMoves.push({
           id: move.id,
@@ -161,6 +168,7 @@ export class NewGameComponent implements OnInit{
           crit_rate,
           moveFx,
           target: move.target.name,
+          description
         })
       })
     }
