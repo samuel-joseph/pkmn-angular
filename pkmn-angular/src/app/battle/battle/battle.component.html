@@ -226,7 +226,7 @@
             <span>Type: {{move.type}}</span>
           </div>
           <div style="display: flex; flex-direction: row; justify-content: space-around; border-bottom: 2px solid black;">
-            <span>PP: {{move.pp}}/{{move.pp}}</span>
+            <span>PP: {{move.pp}}/{{move.ppMax}}</span>
             <span>{{move.damageClass.name}}</span>
           </div>
           <span>Description: {{move.description}}</span>
@@ -234,7 +234,7 @@
           <div>
             <h6 style="text-align: center;">Use this move?</h6>
             <div style="display: flex; flex-direction: row; justify-content: space-around;">
-              <button style="border-radius: 20px;" (click)="this.chosenMove(move)">YES</button>  
+              <button *ngIf="move.pp!=0" style="border-radius: 20px;" (click)="this.chosenMove(move)">YES</button>  
               <button style="border-radius: 20px;" (click)="this.closeOverview()">NO</button>
             </div>
           </div>

@@ -376,6 +376,10 @@ export class BattleComponent implements OnInit{
     let playerAccuracy = player.stats[indexAccuracyPlayer].base_stat
     let npcAccuracy = npc.stats[indexAccuracyNpc].base_stat
 
+    //minus pp
+    playerMove.pp = playerMove.pp - 1
+    npcMove[0].pp = npcMove[0].pp - 1 
+
     this.npcCurrentMoveFx = npcMove[0].moveFx
     this.playerCurrentMoveFx = playerMove.moveFx
 
@@ -770,20 +774,22 @@ export class BattleComponent implements OnInit{
     let typeArr = this.currentPlayer1[0].types
     let chosenNpcMove: MoveModel[] = []
     for (let move of this.currentPlayer2[0].moves) {
-      let newType
-      if (typeArr.typeTwo) {
-        newType = typeAdvantage(move.type, typeArr.typeOne) * typeAdvantage(move.type, typeArr.typeTwo)
-        if (TYPE < newType) {
-          TYPE = newType
-          chosenNpcMove = []
-          chosenNpcMove.push(move)
-        }
-      } else {
-        newType = typeAdvantage(move.type, typeArr.typeOne)
-        if (TYPE < newType) {
-          TYPE = newType
-          chosenNpcMove = []
-          chosenNpcMove.push(move)
+      if(move.pp > 0){
+        let newType
+        if (typeArr.typeTwo) {
+          newType = typeAdvantage(move.type, typeArr.typeOne) * typeAdvantage(move.type, typeArr.typeTwo)
+          if (TYPE < newType) {
+            TYPE = newType
+            chosenNpcMove = []
+            chosenNpcMove.push(move)
+          }
+        } else {
+          newType = typeAdvantage(move.type, typeArr.typeOne)
+          if (TYPE < newType) {
+            TYPE = newType
+            chosenNpcMove = []
+            chosenNpcMove.push(move)
+          }
         }
       }
     }
@@ -871,6 +877,14 @@ export class BattleComponent implements OnInit{
         returnPokemonPlayer2[i].currentHp = returnPokemonPlayer2[i].maxHp
         returnPokemonPlayer2[i].others.stats = returnPokemonPlayer2[i].stats
         returnPokemonPlayer2[i].others.condition = ''
+
+        for (let move of returnPokemonPlayer1[i].moves) {
+          move.pp = move.ppMax
+        }
+
+        for (let move of returnPokemonPlayer2[i].moves) {
+          move.pp = move.ppMax
+        }
 
         i++
       }
