@@ -166,49 +166,78 @@
     <div [ngSwitch]="playerOption"
     style="display: flex; flex-direction: column; justify-content: center;">
     <div *ngSwitchCase="'fight'">
-      <div         
-      *ngIf="!this.ongoingBattle">
-        <div
-        style="
-        display: flex;
-        justify-content: center;
-        margin-bottom: 5px;
-        "
-        *ngFor="let move of this.currentPlayer1[0].moves">
-          <button
-          [ngStyle]="{
-            'border-radius': '20px',
-            'border': 'solid black',
-            'margin-bottom': '5px',
-            'text-shadow': '0 0 black',
-            'width': '180px',
-            'color': 'white',
-            'padding': '5px',
-            'background-color':
-            move.type == 'fire' ? 'red' : 
-            move.type == 'water' ? 'blue' :
-            move.type == 'grass' ? 'green' :
-            move.type == 'psychic' ? 'purple' :
-            move.type == 'rock' ? 'darkbrown' :
-            move.type == 'ground' ? 'brown' :
-            move.type == 'fighting' ? 'brown' :
-            move.type == 'poison' ? 'violet' :
-            move.type == 'dragon' ? 'darkviolet' :
-            move.type == 'fairy' ? 'pink' :
-            move.type == 'flying' ? 'gray' :
-            move.type == 'normal' ? 'gray' :
-            move.type == 'dark' ? 'black' : 
-            move.type == 'bug' ? 'lightgreen' :
-            move.type == 'ghost' ? 'violet' : 
-            move.type  == 'electric' ? '#b1b100' : 'black'
-           }
-           " 
-           (click)="this.chosenMove(move)" 
-           >{{move.name}}</button>
+      <div *ngIf="moveOverview.length==0">
+        <div         
+        *ngIf="!this.ongoingBattle">
+          <div
+          style="
+          display: flex;
+          justify-content: center;
+          margin-bottom: 5px;
+          "
+          *ngFor="let move of this.currentPlayer1[0].moves">
+            <button
+            [ngStyle]="{
+              'border-radius': '20px',
+              'border': 'solid black',
+              'margin-bottom': '5px',
+              'text-shadow': '0 0 black',
+              'width': '180px',
+              'color': 'white',
+              'padding': '5px',
+              'background-color':
+              move.type == 'fire' ? 'red' : 
+              move.type == 'water' ? 'blue' :
+              move.type == 'grass' ? 'green' :
+              move.type == 'psychic' ? 'purple' :
+              move.type == 'rock' ? 'brown' :
+              move.type == 'ground' ? 'brown' :
+              move.type == 'fighting' ? 'brown' :
+              move.type == 'poison' ? 'violet' :
+              move.type == 'dragon' ? 'darkviolet' :
+              move.type == 'fairy' ? 'pink' :
+              move.type == 'flying' ? 'gray' :
+              move.type == 'normal' ? 'gray' :
+              move.type == 'dark' ? 'black' : 
+              move.type == 'bug' ? 'lightgreen' :
+              move.type == 'ghost' ? 'violet' : 
+              move.type  == 'electric' ? '#b1b100' : 'black'
+            }
+            " 
+            (click)="this.openOverview(move)" 
+            >{{move.name}}</button>
+            </div>
+            <div *ngIf="this.currentPlayer1" (click)="this.decisionOption('default')"
+            style="text-align: center;"
+            >back</div>
           </div>
-          <div *ngIf="this.currentPlayer1" (click)="this.decisionOption('default')"
-          style="text-align: center;"
-          >back</div>
+        </div>
+      </div>
+      <div *ngIf="moveOverview.length!=0">
+        <div style="
+        display: flex;
+        font-size: small;
+        flex-direction: column;" 
+        *ngFor="let move of moveOverview"
+        >
+          <h6 style="text-align: center; border-bottom: 2px solid black;">{{move.name.toLocaleUpperCase()}}</h6>
+          <div style="display: flex; flex-direction: row; justify-content: space-around;">
+            <span>Power: {{move.power}}</span>
+            <span>Type: {{move.type}}</span>
+          </div>
+          <div style="display: flex; flex-direction: row; justify-content: space-around; border-bottom: 2px solid black;">
+            <span>PP: {{move.pp}}/{{move.pp}}</span>
+            <span>{{move.damageClass.name}}</span>
+          </div>
+          <span>Description: {{move.description}}</span>
+          <span style="border-bottom: 2px solid black;">Accuracy: {{move.accuracy}}</span>
+          <div>
+            <h6 style="text-align: center;">Use this move?</h6>
+            <div style="display: flex; flex-direction: row; justify-content: space-around;">
+              <button style="border-radius: 20px;" (click)="this.chosenMove(move)">YES</button>  
+              <button style="border-radius: 20px;" (click)="this.closeOverview()">NO</button>
+            </div>
+          </div>
         </div>
       </div>
       <div *ngSwitchCase="'default'">
