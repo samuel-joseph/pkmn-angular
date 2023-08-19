@@ -25,6 +25,8 @@ export class PreBattleComponent implements OnInit {
   gymPokemons: any
   copyGymPokemons: any
 
+  pokemonOverview: any[] = []
+
   currentGymLeader: any[] = []
   leaderInfo: GymLeader
 
@@ -34,6 +36,8 @@ export class PreBattleComponent implements OnInit {
   player2: PokemonModel[] = []
 
   battlePhase: string
+
+  switchOn = false
   
   constructor(private http: PokemonService){}
 
@@ -49,6 +53,10 @@ export class PreBattleComponent implements OnInit {
       this.copyMyPokemons = this.myPokemons
       this.getPokemon()
     },4000)
+  }
+
+  toggleSwitch() {
+    this.switchOn = !this.switchOn
   }
 
   getPokemon() {
@@ -149,6 +157,14 @@ export class PreBattleComponent implements OnInit {
     this.copyMyPokemons.push(...removed)
   }
 
+  pushOverview(pokemon: PokemonModel) {
+    this.pokemonOverview.push(pokemon)
+  }
+
+  emptyOverview() {
+    this.pokemonOverview = []
+  }
+
   
   player1Chosen(pokemon: PokemonModel) {
     if(this.player1.length<3){
@@ -156,6 +172,7 @@ export class PreBattleComponent implements OnInit {
       const index = this.copyMyPokemons.findIndex(val => val == pokemon)
       this.copyMyPokemons.splice(index, 1)
     }
+    this.emptyOverview()
   }
 
 

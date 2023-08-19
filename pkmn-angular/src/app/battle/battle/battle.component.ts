@@ -26,6 +26,8 @@ export class BattleComponent implements OnInit{
   currentPlayer1: PokemonModel[] = []
   currentPlayer2: PokemonModel[] = []
 
+  moveOverview: any[] = []
+
 
   currentPlayer1Stat = [
     {
@@ -378,7 +380,10 @@ export class BattleComponent implements OnInit{
     this.playerCurrentMoveFx = playerMove.moveFx
 
     const playerSpeedIndex = player.stats.findIndex(val => val.name == 'speed')
-    const npcSpeedIndex = npc.stats.findIndex(val=>val.name=='speed')
+    const npcSpeedIndex = npc.stats.findIndex(val => val.name == 'speed')
+    
+
+    this.closeOverview()
 
     if (
       playerMove.priority > npcMove[0].priority ||
@@ -783,6 +788,14 @@ export class BattleComponent implements OnInit{
       }
     }
     return chosenNpcMove
+  }
+
+  closeOverview() {
+    this.moveOverview = []
+  }
+
+  openOverview(move: MoveModel) {
+    this.moveOverview.push(move)
   }
 
   swapOption(pokemon: PokemonModel) {
