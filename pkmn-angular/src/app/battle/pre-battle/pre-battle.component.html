@@ -159,8 +159,34 @@
   *ngSwitchCase="'in-battle'"
   >
   </app-battle>
-  <div *ngSwitchCase="'new-champion'">
-    <h1>YOU ARE THE CHAMPION</h1>
+  <div
+  *ngSwitchCase="'new-champion'">
+    <div
+    style="display: flex; flex-direction: column; text-align: center;"
+    >
+      <div
+      style="
+      display: flex;
+      flex-direction: row;
+      padding-top: 5vh;
+      flex-wrap: wrap;
+      align-items: center;
+      position: absolute;
+      z-index: -1;"
+      >
+        <div *ngFor="let gym of this.gymLeaders">
+          <img  style="height: 15vh;" alt="" [src]="gym.gymBadge" />
+        </div>
+      </div>
+      <div>
+        <h1>YOU ARE THE CHAMPION</h1>
+        <div>
+          <div *ngFor="let pokemon of myPokemons">
+            <img style="height: 12vh;" alt="" [src]="pokemon.front_image" />
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div *ngSwitchCase="'game-over'">
     <app-root></app-root>
