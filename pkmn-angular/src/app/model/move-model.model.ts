@@ -3,6 +3,7 @@ export interface MoveModel {
   name: string,
   power: number,
   pp: number,
+  ppMax: number,
   type: string,
   accuracy: number,
   damageClass: DamageClass,

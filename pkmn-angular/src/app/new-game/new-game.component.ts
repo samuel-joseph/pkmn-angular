@@ -155,6 +155,7 @@ export class NewGameComponent implements OnInit{
           name: move.name,
           power: move.power,
           pp: move.pp,
+          ppMax: move.pp,
           type: move.type.name,
           accuracy: move.accuracy,
           damageClass: {
