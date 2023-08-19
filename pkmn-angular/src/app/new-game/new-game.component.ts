@@ -187,12 +187,21 @@ export class NewGameComponent implements OnInit{
       for (let pokemon of temp) {
         const stats = getStats(pokemon.stats)
         const types = getTypes(pokemon.types)
+        let moves = []
+        for (const move of pokemon.moves) {
+          let tempObj = {
+            name: move.move.name
+          }
+          moves.push(tempObj)
+        }
         let objPokemon = {
           id: pokemon.id,
           name: pokemon.name,
           types,
           stats,
           front_image: pokemon.sprites.front_default,
+          back_image: pokemon.sprites.back_default,
+          moves
         }
         this.toDisplayPokemon.push(objPokemon)
         this.pokemon = data
