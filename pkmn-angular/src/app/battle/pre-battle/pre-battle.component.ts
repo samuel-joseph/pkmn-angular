@@ -50,8 +50,12 @@ export class PreBattleComponent implements OnInit {
     this.resetBattle()
     setTimeout(() => {
       this.currentGymLeader = this.checkLeaders()
-      this.copyMyPokemons = this.myPokemons
-      this.getPokemon()
+      if (this.currentGymLeader.length == 0) {
+        this.battlePhase = 'new-champion'
+      }else{
+        this.copyMyPokemons = this.myPokemons
+        this.getPokemon()
+      }
     },4000)
   }
 
@@ -75,7 +79,9 @@ export class PreBattleComponent implements OnInit {
             }
           }
           this.battlePhase = "versus"
-          setTimeout(()=>{this.battlePhase = 'pre-battle'},5000)
+          setTimeout(() => {
+            this.battlePhase = 'pre-battle'
+          }, 5000)
           this.getMove()
         }
       })
@@ -193,12 +199,9 @@ export class PreBattleComponent implements OnInit {
   async outcomeBattle(event: any) {
     if (event.outcome === "win") {
       for (let i = 0; i < this.gymLeaders.length; i++){
-        if (!this.gymLeaders[i].gymLose&&i!==this.gymLeaders.length-1) {
+        if (!this.gymLeaders[i].gymLose) {
           this.myPokemons.push(...event.returnPokemonPlayer1)
           this.gymLeaders[i].gymLose = true
-          break
-        } else if(i==this.gymLeaders.length-1) {
-          this.battlePhase = 'new-champion'
           break
         }
       }
