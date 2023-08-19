@@ -6,6 +6,7 @@ export const regions = [
   'hoenn',
   'sinnoh',
   'unova',
+  'kalos',
   'alola'
 ]
 

@@ -45,17 +45,22 @@
       <div style="    
       position: absolute;
       background: #fffffff3;
-      padding: 2vh 30vw;
+      padding: 2vh 10vw;
       padding-bottom: 5vh;
       " 
       *ngFor="let pokemon of toDisplayPokemon">
       <h6>Add this pokemon?</h6>
       <div style="display: flex; flex-direction: row; justify-content: space-between;">
-        <button style="border-radius: 20px;" (click)="chosenPokemon(pokemon.id)">YES</button>  
+        <button *ngIf="pokemon.back_image!=null" style="border-radius: 20px;" (click)="chosenPokemon(pokemon.id)">YES</button>  
         <button style="border-radius: 20px;" (click)="emptyDisplay()">NO</button>
       </div>
         <div style="display: flex; flex-direction: column; justify-content: center;">
-          <img [src]="pokemon.front_image" />
+          <div style="    
+          height: 20vh;
+          display: flex;
+          justify-content: center;">
+            <img [src]="pokemon.front_image" />
+          </div>
           <h5>{{pokemon.name.toLocaleUpperCase()}}</h5>
           <div style="    
           display: flex;
@@ -119,18 +124,29 @@
               "
               >{{pokemon.types.typeTwo.toLocaleUpperCase()}}</div>
             </div>
-            <div>
-              <div *ngFor="let stat of pokemon.stats">
-                <p style="text-align: initial;">{{stat.name}} : {{stat.base_stat}}</p>
-                <div
-                [style]="{
-                'background-color': 'green',
-                'height': '1vh',
-                'position': 'relative',
-                'width': ((stat.base_stat/180)*100).toString()+'%'
-                }
-                "
-                >
+            <div style="display: flex; flex-direction: row-reverse; border: 2px solid black; font-size: small; margin-top: 10px;">
+              <div style="border-left: 2px solid black;">
+                <h6>Available Moves:</h6>
+                <div  style="overflow-y: scroll; height: 36vh; margin-left: 5px; padding: 0 10px; text-align: initial;">
+                  <div *ngFor="let move of pokemon.moves">
+                    <p>{{move.name}}</p>
+                  </div>
+                </div>
+              </div>
+              <div style="padding: 0 10px;">
+                <h6>Stats</h6>
+                <div *ngFor="let stat of pokemon.stats">
+                  <p style="text-align: initial;">{{stat.name}} : {{stat.base_stat}}</p>
+                  <div
+                  [style]="{
+                  'background-color': 'green',
+                  'height': '1vh',
+                  'position': 'relative',
+                  'width': ((stat.base_stat/180)*100).toString()+'%'
+                  }
+                  "
+                  >
+                </div>
               </div>
             </div>
           </div>
