@@ -166,24 +166,29 @@
     >
       <div
       style="
-      display: flex;
-      flex-direction: row;
-      padding-top: 5vh;
-      flex-wrap: wrap;
-      align-items: center;
-      position: absolute;
-      z-index: -1;"
-      >
-        <div *ngFor="let gym of this.gymLeaders">
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    position: absolute;
+    z-index: -1;
+    justify-content: center;
+    width: 400px;
+    ">
+        <div style="padding-top: 5vh;" *ngFor="let gym of this.gymLeaders">
           <img  style="height: 15vh;" alt="" [src]="gym.gymBadge" />
         </div>
       </div>
-      <div>
-        <h1>YOU ARE THE CHAMPION</h1>
-        <div>
+      <div
+      style="padding-top: 15vh; height: 70vh; background: #0000008a; color: white; font-weight: bold;"
+      >
+        <h1>CONGRATULATIONS</h1>
+        <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center;">
           <div *ngFor="let pokemon of myPokemons">
             <img style="height: 12vh;" alt="" [src]="pokemon.front_image" />
           </div>
+          <h1>YOU ARE THE CHAMPION</h1>
+          <h6>Thank you for playing the game!!!</h6>
         </div>
       </div>
     </div>
