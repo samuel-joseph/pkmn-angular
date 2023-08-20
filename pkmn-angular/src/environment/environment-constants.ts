@@ -33,6 +33,10 @@ export const playerProfile = {
   image: "https://static-cdn.jtvnw.net/jtv_user_pictures/5793095b-97ef-4602-b69d-d7c5052e83ae-profile_image-300x300.png"
 }
 
+export const rechargeMove = ['hyper-beam', 'giga-impact', 'frenzy-plant', 'blast-burn', 'hydro-cannon', 'rock-wrecker', 'roar-of-time']
+
+export const chargeMove = ['meteor-beam','solar-beam','sky-attack']
+
 // export const moveFxRecords = {
 //   waterSpecialLow: 'https://thumbs.gfycat.com/InformalWellwornCockroach-small.gif',
 //   waterSpecialMid: 'https://webstockreview.net/images/clipart-mountain-ocean-1.gif',

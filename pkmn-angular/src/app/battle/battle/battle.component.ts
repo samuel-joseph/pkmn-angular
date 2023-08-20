@@ -3,7 +3,7 @@ import { calculateDamage, getRandNum, isSuperEffective, multiplier, typeAdvantag
 import { GymLeader } from 'src/app/model/gym-leader-model.model';
 import { MoveModel, StatModel } from 'src/app/model/move-model.model';
 import { PokemonModel } from 'src/app/model/pokemon-model.model';
-import { powerup } from 'src/environment/environment-constants';
+import { chargeMove, powerup, rechargeMove } from 'src/environment/environment-constants';
 
 
 
@@ -144,6 +144,13 @@ export class BattleComponent implements OnInit{
 
   frozenConfusedAsleepCounterPlayer = 0
   frozenConfusedAsleepCounterNpc = 0
+
+
+  playerLoseFirstTurn = false
+  playerLoseSecondTurn = false
+
+  npcLoseFirstTurn = false
+  npcLoseSecondTurn = false
 
 
   npcDamageReceive: number
@@ -377,8 +384,32 @@ export class BattleComponent implements OnInit{
     let npcAccuracy = npc.stats[indexAccuracyNpc].base_stat
 
     //minus pp
-    playerMove.pp = playerMove.pp - 1
-    npcMove[0].pp = npcMove[0].pp - 1 
+    if (!this.playerLoseSecondTurn||!this.playerLoseFirstTurn) {
+      playerMove.pp = playerMove.pp - 1
+    }else if(!this.npcLoseSecondTurn){
+      npcMove[0].pp = npcMove[0].pp - 1 
+    }
+
+    //checking charge move
+    if (chargeMove.includes(playerMove.name)&&!this.playerLoseFirstTurn) {
+      playerDisabled = true
+      this.playerLoseFirstTurn = true
+    } else if (chargeMove.includes(playerMove.name) && this.playerLoseFirstTurn) {
+      this.playerLoseFirstTurn = false
+    } 
+
+    //checking recharge move
+    if (rechargeMove.includes(playerMove.name) && !this.playerLoseSecondTurn) {
+      this.playerLoseSecondTurn = true
+    } else if (rechargeMove.includes(npcMove[0].name) && !this.npcLoseSecondTurn) {
+      this.npcLoseSecondTurn = true
+    } else if (this.playerLoseSecondTurn) {
+      playerDisabled = true
+      this.playerLoseSecondTurn = false
+    } else if (this.npcLoseSecondTurn) {
+      npcDisabled = true
+      this.npcLoseSecondTurn = false
+    }
 
     this.npcCurrentMoveFx = npcMove[0].moveFx
     this.playerCurrentMoveFx = playerMove.moveFx
@@ -657,6 +688,10 @@ export class BattleComponent implements OnInit{
       this.npcCondition = ''
       playerDisabled = false
       npcDisabled = false
+
+      if (this.playerLoseFirstTurn||this.playerLoseSecondTurn) {
+        this.chosenMove(playerMove)
+      } 
     }, 7000)
   }
 
