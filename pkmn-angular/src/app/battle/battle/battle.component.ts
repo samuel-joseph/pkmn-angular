@@ -384,10 +384,13 @@ export class BattleComponent implements OnInit{
     let npcAccuracy = npc.stats[indexAccuracyNpc].base_stat
 
     //minus pp
-    if (!this.playerLoseSecondTurn||!this.playerLoseFirstTurn) {
-      playerMove.pp = playerMove.pp - 1
-    }else if(!this.npcLoseSecondTurn){
-      npcMove[0].pp = npcMove[0].pp - 1 
+    playerMove.pp = playerMove.pp - 1
+    npcMove[0].pp = npcMove[0].pp - 1 
+
+    if (this.playerLoseFirstTurn || this.playerLoseSecondTurn) {
+      playerMove.pp++
+    } else if (this.npcLoseFirstTurn || this.npcLoseSecondTurn) {
+      npcMove[0].pp++
     }
 
     //checking charge move
