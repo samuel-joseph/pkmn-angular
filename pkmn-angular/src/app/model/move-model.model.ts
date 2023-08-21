@@ -14,7 +14,8 @@ export interface MoveModel {
   crit_rate?: number,
   moveFx: string,
   target: string,
-  description: string
+  description: string,
+  drain?: number
 }
 
 export interface MaxHit{
