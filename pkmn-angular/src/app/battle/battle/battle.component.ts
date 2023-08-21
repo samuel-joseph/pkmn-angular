@@ -238,6 +238,8 @@ export class BattleComponent implements OnInit{
     let damage = 0
     let indexAttackerStat
     let indexDefenderStat
+    let crit = 1
+
     if(isAccurate){
       if (move.damageClass.name === 'physical') {
         indexAttackerStat = attacker.others.stats.findIndex(val => val.name == 'attack')
@@ -287,9 +289,32 @@ export class BattleComponent implements OnInit{
       }
     }
 
+    //critical
+    if (move.crit_rate && move.crit_rate > 0) {
+      console.log("current damage is ",damage)
+      const randomNumber = getRandNum(1, 100)
+      switch (move.crit_rate) {
+        case 1:
+          if (randomNumber <= 50) {
+            crit = 1.5
+          }
+          break
+        case 2:
+          if (randomNumber <= 80) {
+            crit = 1.5
+          }
+          break
+        case 3:
+          crit = 1.5
+          break
+      }
+    }
 
-
-    defender.currentHp = defender.currentHp - damage
+    defender.currentHp = defender.currentHp - Math.floor(damage * crit)
+    if (move.drain&&move.drain != 0) {
+      attacker.currentHp = Math.floor(attacker.currentHp + (damage * ((move.drain) / 100)))
+      if(attacker.currentHp>attacker.maxHp) attacker.currentHp = attacker.maxHp
+    }
     this.calculatePercentHp()
   }
 
@@ -470,13 +495,14 @@ export class BattleComponent implements OnInit{
         if (player.others.condition == 'poison' || player.others.condition == 'burn') {
           this.burnOrToxicPlayer = player.others.condition
           player.currentHp -= Math.floor(player.maxHp * .12)
-          if (this.currentPlayer1[0].currentHp <= 0) {
-            setTimeout(() => {
-              this.currentPlayer1Fainted()
-              //death timer player
-              },500)
-          }
-      }},1300)
+        }
+        if (this.currentPlayer1[0].currentHp <= 0) {
+          setTimeout(() => {
+            this.currentPlayer1Fainted()
+            //death timer player
+            },500)
+        }
+      }, 1300)
       setTimeout(() => {
         if (this.currentPlayer2[0].currentHp <= 0) {
           setTimeout(() => {

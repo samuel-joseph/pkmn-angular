@@ -166,10 +166,11 @@ export class NewGameComponent implements OnInit{
           stat_changes: move.stat_changes,
           priority: move.priority,
           hits,
-          crit_rate,
+          crit_rate: move.meta.crit_rate,
           moveFx,
           target: move.target.name,
-          description
+          description,
+          drain: move.meta.drain
         })
       })
     }
