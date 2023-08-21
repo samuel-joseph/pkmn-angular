@@ -778,6 +778,8 @@ export class BattleComponent implements OnInit{
   }
 
   currentPlayer1Fainted() {
+    this.playerLoseFirstTurn = false
+    this.playerLoseSecondTurn = false
     this.revertOriginPokemonStat('player')
     const faintedPokemon = this.currentPlayer1.pop()
     if (faintedPokemon) {
@@ -791,6 +793,8 @@ export class BattleComponent implements OnInit{
   }
 
   currentPlayer2Fainted() {
+    this.npcLoseFirstTurn = false
+    this.npcLoseSecondTurn = false
     this.revertOriginPokemonStat('npc')
     const faintedPokemon = this.currentPlayer2.pop()
     if (faintedPokemon) { 
