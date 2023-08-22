@@ -238,7 +238,6 @@ export class BattleComponent implements OnInit{
     let damage = 0
     let indexAttackerStat
     let indexDefenderStat
-    let crit = 1
 
     if(isAccurate){
       if (move.damageClass.name === 'physical') {
@@ -296,21 +295,21 @@ export class BattleComponent implements OnInit{
       switch (move.crit_rate) {
         case 1:
           if (randomNumber <= 50) {
-            crit = 1.5
+            damage *= 1.5
           }
           break
         case 2:
           if (randomNumber <= 80) {
-            crit = 1.5
+            damage*= 1.5
           }
           break
         case 3:
-          crit = 1.5
+          damage*= 1.5
           break
       }
     }
 
-    defender.currentHp = defender.currentHp - Math.floor(damage * crit)
+    defender.currentHp = Math.floor(defender.currentHp - damage)
     if (move.drain&&move.drain != 0) {
       attacker.currentHp = Math.floor(attacker.currentHp + (damage * ((move.drain) / 100)))
       if(attacker.currentHp>attacker.maxHp) attacker.currentHp = attacker.maxHp
