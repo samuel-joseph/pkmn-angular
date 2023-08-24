@@ -61,7 +61,7 @@
           justify-content: center;">
             <img [src]="pokemon.front_image" />
           </div>
-          <h5>{{pokemon.name.toLocaleUpperCase()}}</h5>
+          <h5 style="font-weight: bold;">{{pokemon.name.toLocaleUpperCase()}}</h5>
           <div style="    
           display: flex;
           flex-direction: row;
@@ -75,7 +75,7 @@
               'text-shadow': '0 0 black',
               'font-weight': 'bold',
               'padding': '5px',
-              'font-size': '12pt',
+              'font-size': '8pt',
               'color':
               pokemon.types.typeOne == 'fire' ? 'red' : 
               pokemon.types.typeOne == 'water' ? 'blue' :
@@ -102,7 +102,7 @@
                 'text-shadow': '0 0 black',
                 'font-weight': 'bold',
                 'padding': '5px',
-                'font-size': '12pt',
+                'font-size': '8pt',
                 'color':
                 pokemon.types.typeTwo == 'fire' ? 'red' : 
                 pokemon.types.typeTwo == 'water' ? 'blue' :
@@ -169,7 +169,7 @@
               <div style="padding: 0 10px;">
                 <h6>Stats</h6>
                 <div *ngFor="let stat of pokemon.stats">
-                  <p style="text-align: initial;">{{stat.name}} : {{stat.base_stat}}</p>
+                  <p style="text-align: initial; margin: 5px 0;">{{stat.name}} : {{stat.base_stat}}</p>
                   <div
                   [style]="{
                   'background-color': 'green',
