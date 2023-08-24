@@ -19,14 +19,13 @@ export class AppComponent implements OnInit{
   pokemonObj = {}
 
   public transition(child: any): void {
+    console.log(child)
     switch (child.next) {
       case "player":
-        this.myPokemon = []
         this.myPokemon.push(...child.pokemon)
         this.dbMove.push(...child.dbMoves)
         break
       case "pre-batlle":
-        this.myPokemon = []
         this.myPokemon.push(...child.pokemon)
         break
     }

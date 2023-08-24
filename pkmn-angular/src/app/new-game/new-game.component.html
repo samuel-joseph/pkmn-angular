@@ -1,7 +1,7 @@
 <div style="padding-top: 50px;">
   <div *ngIf="myPokemons">
     <span *ngFor="let pokemon of myPokemons">
-      <img class="idleAnimationPlayer" style="width: 15%;" [src]="pokemon.sprites.front_default" (click)="removePokemon(pokemon.id)"/>
+      <img class="idleAnimationPlayer" style="width: 15%;" [src]="pokemon.front_image" (click)="removePokemon(pokemon.id)"/>
     </span>
   </div>
   <!-- <form style="display: flex; justify-content: center;">
@@ -48,10 +48,10 @@
       padding: 2vh 10vw;
       padding-bottom: 5vh;
       " 
-      *ngFor="let pokemon of toDisplayPokemon">
+      *ngFor="let displayPokemon of toDisplayPokemon">
       <h6>Add this pokemon?</h6>
-      <div style="display: flex; flex-direction: row; justify-content: space-between;">
-        <button *ngIf="pokemon.back_image!=null" style="border-radius: 20px;" (click)="chosenPokemon(pokemon.id)">YES</button>  
+      <div style="display: flex; flex-direction: row; justify-content: center;">
+        <button *ngIf="displayPokemon.back_image!=null" style="border-radius: 20px; margin-right: 30px;" (click)="chosenPokemon(pokemon)">YES</button>  
         <button style="border-radius: 20px;" (click)="emptyDisplay()">NO</button>
       </div>
         <div style="display: flex; flex-direction: column; justify-content: center;">
@@ -72,11 +72,11 @@
           font-weight: bolder;
           ">
             <div [ngStyle]="{
-              'border-radius': '20px',
-              'border': 'solid black',
               'text-shadow': '0 0 black',
+              'font-weight': 'bold',
               'padding': '5px',
-              'background-color':
+              'font-size': '12pt',
+              'color':
               pokemon.types.typeOne == 'fire' ? 'red' : 
               pokemon.types.typeOne == 'water' ? 'blue' :
               pokemon.types.typeOne == 'grass' ? 'green' :
@@ -99,11 +99,11 @@
             <div
               *ngIf="pokemon.types.typeTwo!==undefined"
               [ngStyle]="{
-                'border-radius': '20px',
-                'border': 'solid black',
                 'text-shadow': '0 0 black',
+                'font-weight': 'bold',
                 'padding': '5px',
-                'background-color':
+                'font-size': '12pt',
+                'color':
                 pokemon.types.typeTwo == 'fire' ? 'red' : 
                 pokemon.types.typeTwo == 'water' ? 'blue' :
                 pokemon.types.typeTwo == 'grass' ? 'green' :
@@ -124,14 +124,47 @@
               "
               >{{pokemon.types.typeTwo.toLocaleUpperCase()}}</div>
             </div>
-            <div style="display: flex; flex-direction: row-reverse; border: 2px solid black; font-size: small; margin-top: 10px;">
-              <div style="border-left: 2px solid black;">
-                <h6>Available Moves:</h6>
-                <div  style="overflow-y: scroll; height: 36vh; margin-left: 5px; padding: 0 10px; text-align: initial;">
-                  <div *ngFor="let move of pokemon.moves">
-                    <p>{{move.name}}</p>
-                  </div>
-                </div>
+            <div style="display: flex; flex-direction: row-reverse; font-size: small; margin-top: 10px;">
+              <div style="display: flex; flex-direction: column; align-items: center;">
+                <h6>Moves:</h6>
+                <div
+                style="
+                display: flex;
+                justify-content: center;
+                margin-bottom: 5px;
+                width: 75%;
+                "
+          *ngFor="let move of pokemon.moves">
+            <button
+            [ngStyle]="{
+              'border-radius': '20px',
+              'border': 'solid black',
+              'margin-bottom': '5px',
+              'text-shadow': '0 0 black',
+              'width': '180px',
+              'color': 'white',
+              'padding': '5px',
+              'background-color':
+              move.type == 'fire' ? 'red' : 
+              move.type == 'water' ? 'blue' :
+              move.type == 'grass' ? 'green' :
+              move.type == 'psychic' ? 'purple' :
+              move.type == 'rock' ? 'brown' :
+              move.type == 'ground' ? 'brown' :
+              move.type == 'fighting' ? 'brown' :
+              move.type == 'poison' ? 'violet' :
+              move.type == 'dragon' ? 'darkviolet' :
+              move.type == 'fairy' ? 'pink' :
+              move.type == 'flying' ? 'gray' :
+              move.type == 'normal' ? 'gray' :
+              move.type == 'dark' ? 'black' : 
+              move.type == 'bug' ? 'lightgreen' :
+              move.type == 'ghost' ? 'violet' : 
+              move.type  == 'electric' ? '#b1b100' : 'black'
+            }
+            " 
+            >{{move.name}}</button>
+            </div>
               </div>
               <div style="padding: 0 10px;">
                 <h6>Stats</h6>
