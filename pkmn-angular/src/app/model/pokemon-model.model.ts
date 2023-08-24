@@ -12,12 +12,20 @@ export interface PokemonModel {
   maxHp: number,
   currentHp: number,
   others: Meta,
-  status?: string
+  status?: string,
 }
 
 export interface Meta {
   stats: Array<StatsModel>,
-  condition: string
+  originalValues: {
+    front_image: string,
+    back_image: string,
+    move_power?: number,
+    min_hits?: number
+  }
+  condition: string,
+  canMegaEvolve?: boolean,
+  isMegaEvolve?: boolean
 }
 
 export interface RegionPokemon {

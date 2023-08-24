@@ -30,10 +30,10 @@
   @keyframes idlenpc {
     50%{
       margin-right: 10px;
-      transform: rotateZ(-5deg);
+      // transform: rotateZ(-5deg);
     }
     55%{
-      transform: rotateZ(0deg);
+      // transform: rotateZ(0deg);
     }
     100%{
       margin-right: 0px;
@@ -55,10 +55,10 @@
  @keyframes idleplayer {
   50%{
     margin-left: 10px;
-    transform: rotateZ(5deg);
+    // transform: rotateZ(5deg);
   }
   55%{
-    transform: rotateZ(0deg);
+    // transform: rotateZ(0deg);
   }
   100%{
     margin-left: 0px;

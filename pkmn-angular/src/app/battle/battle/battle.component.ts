@@ -105,6 +105,9 @@ export class BattleComponent implements OnInit{
   faintedPokemonPlayer1: PokemonModel[] = []
   faintedPokemonPlayer2: PokemonModel[] = []
 
+  megaFrontImageNpc:string
+  megaFrontImagePlayer:string
+
   playerOption: string
   battlePhase: string
   outcome: string
@@ -833,10 +836,21 @@ export class BattleComponent implements OnInit{
         this.battleEnd('win')
     } else {
       this.currentPlayer2 = this.player2.splice(0, 1)
+      if (this.currentPlayer2[0].others.canMegaEvolve) {
+        const megaFrontImageNpc = this.currentPlayer2[0].front_image
+        this.currentPlayer2[0].front_image = this.currentPlayer2[0].others.originalValues.front_image
+        setTimeout(() => {
+          this.currentPlayer2[0].front_image = megaFrontImageNpc
+        },1000)
+      }
       this.settingUpInitialStat('npc')
       this.calculatePercentHp()
       this.playerOption = 'default'
     }
+  }
+
+  megaEvolution(originFrontImage: string) {
+    
   }
 
   npcMove() {

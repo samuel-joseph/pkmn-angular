@@ -1,11 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { calculateHp, getRandNum, getStats, getTypes } from 'src/app/helper/pokemon-helper';
-import { PokemonModel } from 'src/app/model/pokemon-model.model';
+import { PokemonModel, StatsModel } from 'src/app/model/pokemon-model.model';
 
 import { PokemonService } from 'src/app/_services/pokemon/pokemon.service';
 import { environment } from 'src/environment/environment';
 import { MoveModel } from 'src/app/model/move-model.model';
 import { GymLeader } from 'src/app/model/gym-leader-model.model';
+import { mega_greninja, stat_greninja } from 'src/environment/environment-mega-pokemon.ts/greninja';
 
 @Component({
   selector: 'app-pre-battle',
@@ -135,12 +136,15 @@ export class PreBattleComponent implements OnInit {
       let moveSet = filtered[0].moves
       for (let j = 0; j < moveSet.length; j++){
         let move = this.dbMoves.filter(move => move.name == moveSet[j])
+        if (this.gymPokemonsTemp[i].name == 'greninja'&&move[0].name == 'water-shuriken'&&move[0].hits) {
+          move[0].power = 20
+          move[0].hits.min_hits = 3
+        }
         tempMoves.push(...move)
       }
 
       const maxHp = calculateHp(this.gymPokemonsTemp[i].stats[0].base_stat)
-
-      const stats = getStats(this.gymPokemonsTemp[i].stats)
+      const stats = this.gymPokemonsTemp[i].name == 'greninja' ? stat_greninja:getStats(this.gymPokemonsTemp[i].stats)
 
       let pokemon = {
         id: this.gymPokemonsTemp[i].id,
@@ -149,13 +153,18 @@ export class PreBattleComponent implements OnInit {
         types: getTypes(this.gymPokemonsTemp[i].types),
         moves: tempMoves,
         dbMoves: tempMoves,
-        front_image: this.gymPokemonsTemp[i].sprites.front_default,
+        front_image: this.gymPokemonsTemp[i].name == 'greninja'? mega_greninja.front_image:this.gymPokemonsTemp[i].sprites.front_default,
         back_image: this.gymPokemonsTemp[i].sprites.back_default,
         maxHp,
         currentHp: maxHp,
         others: {
           stats,
-          condition: ''
+          condition: '',
+          originalValues: {
+            front_image: this.gymPokemonsTemp[i].sprites.front_default,
+            back_image: this.gymPokemonsTemp[i].sprites.back_default,
+          },
+          canMegaEvolve: this.gymPokemonsTemp[i].name == 'greninja'? true:false
         }
       }
       let copyGymPokemons = {
