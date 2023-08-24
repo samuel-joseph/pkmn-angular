@@ -12,7 +12,8 @@ export const leon: GymLeader = {
         'weather-ball',
         'mud-shot',
         'gastro-acid'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'dragapult',
@@ -21,7 +22,8 @@ export const leon: GymLeader = {
         'flamethrower',
         'thunderbolt',
         'dragon-breath'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'haxorus',
@@ -29,7 +31,8 @@ export const leon: GymLeader = {
         'poison-jab',
         'iron-tail',
         'earthquake'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'rhyperior',
@@ -37,7 +40,8 @@ export const leon: GymLeader = {
         'earthquake',
         'stone-edge',
         'mega-horn'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'rillaboom',
@@ -45,7 +49,8 @@ export const leon: GymLeader = {
         'drum-beating',
         'high-horsepower',
         'endeavor'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'charizard',
@@ -53,7 +58,8 @@ export const leon: GymLeader = {
         'fire-blast',
         'air-slash',
         'solar-beam'
-      ]
+      ],
+      isMain: true
     }
   ]
 }

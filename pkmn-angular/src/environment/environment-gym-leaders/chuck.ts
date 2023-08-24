@@ -12,7 +12,8 @@ export const chuck: GymLeader = {
         'karate-chop',
         'submission',
         'cross-chop'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'poliwrath',
@@ -20,21 +21,24 @@ export const chuck: GymLeader = {
         'double-slap',
         'water-gun',
         'poison-jab'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'primeape',
       moves: [
         'dynamic-punch',
         'submission'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'machamp',
       moves: [
         'vital-throw',
         'strength',
-      ]
+      ],
+      isMain: true
     },
     {
       name: 'hitmonlee',
@@ -42,7 +46,8 @@ export const chuck: GymLeader = {
         'mega-kick',
         'double-kick',
         'triple-kick'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'hitmontop',
@@ -50,7 +55,8 @@ export const chuck: GymLeader = {
         'mega-kick',
         'double-kick',
         'triple-kick'
-      ]
+      ],
+      isMain: false
     }
   ]
 }

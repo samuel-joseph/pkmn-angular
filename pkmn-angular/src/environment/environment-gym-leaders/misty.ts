@@ -12,7 +12,8 @@ export const misty: GymLeader = {
         'swift',
         'thunder',
         'bubblebeam'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'togetic',
@@ -20,7 +21,8 @@ export const misty: GymLeader = {
         'wing-attack',
         'fairy-wind',
         'extrasensory'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'gyarados',
@@ -28,7 +30,8 @@ export const misty: GymLeader = {
         'hyper-beam',
         'crunch',
         'hydro-pump'
-      ]
+      ],
+      isMain: true
     },
     {
       name: 'psyduck',
@@ -36,7 +39,8 @@ export const misty: GymLeader = {
         'confusion',
         'water-gun',
         'scratch'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'seaking',
@@ -44,7 +48,8 @@ export const misty: GymLeader = {
         'water-fall',
         'swift',
         'horn-attack'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'horsea',
@@ -52,7 +57,8 @@ export const misty: GymLeader = {
         'water-gun',
         'quick-attack',
         'swift'
-      ]
+      ],
+      isMain: false
     }
   ]
 }

@@ -13,7 +13,8 @@ export const volkner: GymLeader = {
         'volt-tackle',
         'thunder',
         'thunder-wave'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'luxray',
@@ -21,7 +22,8 @@ export const volkner: GymLeader = {
         'thunder-fang',
         'iron-tail',
         'snarl'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'jolteon',
@@ -29,7 +31,8 @@ export const volkner: GymLeader = {
         'shadow-ball',
         'thunderbolt',
         'thunder-wave'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'lanturn',
@@ -37,7 +40,8 @@ export const volkner: GymLeader = {
         'thunder',
         'surf',
         'ice-beam'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'rotom',
@@ -45,7 +49,8 @@ export const volkner: GymLeader = {
         'thunder-wave',
         'air-slash',
         'hex'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'electivire',
@@ -54,7 +59,8 @@ export const volkner: GymLeader = {
         'ice-punch',
         'iron-tail',
         'thunder-punch'
-      ]
+      ],
+      isMain: true
     }
   ]
 }

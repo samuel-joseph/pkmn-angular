@@ -12,15 +12,17 @@ export const ash: GymLeader = {
         'thunder-claw',
         'flame-thrower',
         'air-slash'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'greninja',
       moves: [
         'water-shuriken',
         'cut',
-        'hydro-pump'
-      ]
+        'night-slash'
+      ],
+      isMain: true
     },
     {
       name: 'pikachu',
@@ -28,7 +30,8 @@ export const ash: GymLeader = {
         'thunder',
         'quick-attack',
         'iron-tail'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'infernape',
@@ -36,7 +39,8 @@ export const ash: GymLeader = {
         'thunder-punch',
         'fire-punch',
         'flamethrower'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'dragonite',
@@ -44,7 +48,8 @@ export const ash: GymLeader = {
         'dragon-claw',
         'thunder',
         'wing-attack'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'gengar',
@@ -52,7 +57,8 @@ export const ash: GymLeader = {
         'shadow-ball',
         'psychic',
         'thunder-punch'
-      ]
+      ],
+      isMain: false
     }
   ]
 }

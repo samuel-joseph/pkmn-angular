@@ -22,7 +22,7 @@ export class PreBattleComponent implements OnInit {
   copyMyPokemons: PokemonModel[] = []
 
   gymPokemonsTemp: any[]=[]
-  gymPokemons: any
+  gymPokemons: PokemonModel[] = []
   copyGymPokemons: any
 
   pokemonOverview: any[] = []
@@ -34,6 +34,8 @@ export class PreBattleComponent implements OnInit {
 
   player1: PokemonModel[] = []
   player2: PokemonModel[] = []
+
+  gymLeaderMain: string
 
   battlePhase: string
 
@@ -64,8 +66,11 @@ export class PreBattleComponent implements OnInit {
   }
 
   getPokemon() {
-    for (const data of this.currentGymLeader) {
-      this.http.getPokemon(data.name).subscribe(data => {
+    for (const pokemonObj of this.currentGymLeader) {
+      this.http.getPokemon(pokemonObj.name).subscribe(data => {
+        if (pokemonObj.isMain) {
+          this.gymLeaderMain = pokemonObj.name
+        }
         this.gymPokemonsTemp.push(data)
         if (this.gymPokemonsTemp.length == 6) {
           this.dataObj = {
@@ -94,12 +99,17 @@ export class PreBattleComponent implements OnInit {
 
 
   gymChoose() {
-    while (this.player2.length<3) {
+    let mainPokemon: PokemonModel
+    const indexMain = this.gymPokemons.findIndex(pokemon => pokemon.name == this.gymLeaderMain)
+    mainPokemon = this.gymPokemons[indexMain]
+    while (this.player2.length < 2) {
       let randIndex = getRandNum(0, this.gymPokemons.length - 1)
       let chosen = this.gymPokemons[randIndex]
       this.gymPokemons.splice(randIndex, 1)
       this.player2Chosen(chosen)
     }
+
+    this.player2.push(mainPokemon)
   }
 
   battleReady(response: boolean) {
@@ -186,11 +196,7 @@ export class PreBattleComponent implements OnInit {
   checkLeaders() {
     for (const gymLeader of this.gymLeaders) {
       if (!gymLeader.gymLose) {
-        this.leaderInfo = {
-          gymBadge: gymLeader.gymBadge,
-          gymImage: gymLeader.gymImage,
-          name: gymLeader.name
-        }
+        this.leaderInfo = gymLeader
         return gymLeader.gymPokemons
       } 
     }

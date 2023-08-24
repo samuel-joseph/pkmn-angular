@@ -11,7 +11,8 @@ export const cynthia: GymLeader = {
       moves: [
         'sucker-punch',
         'shadow-ball'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'eelektross',
@@ -20,7 +21,8 @@ export const cynthia: GymLeader = {
         'wild-charge',
         'dragon-claw',
         'flamethrower'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'milotic',
@@ -29,7 +31,8 @@ export const cynthia: GymLeader = {
         'blizzard',
         'bulldoze',
         'dragon-tail'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'braviary',
@@ -37,7 +40,8 @@ export const cynthia: GymLeader = {
         'brave-bird',
         'crush-claw',
         'shadow-claw'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'lucario',
@@ -46,7 +50,8 @@ export const cynthia: GymLeader = {
         'dragon-pulse',
         'close-combat',
         'aura-sphere'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'garchomp',
@@ -55,7 +60,8 @@ export const cynthia: GymLeader = {
         'crunch',
         'earthquake',
         'stone-edge'
-      ]
+      ],
+      isMain: true
     }
   ]
 }
