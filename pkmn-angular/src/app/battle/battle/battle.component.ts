@@ -165,6 +165,9 @@ export class BattleComponent implements OnInit{
     this.settingUpInitialStat('player')
     this.settingUpInitialStat('npc')
     this.calculatePercentHp()
+
+
+    console.log(this)
   }
 
   pushEvasionAccuracy(trainer:string) {

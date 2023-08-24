@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { PokemonService } from '../_services/pokemon/pokemon.service';
-import { RegionPokemon } from '../model/pokemon-model.model';
-import { getStats, getTypes, calculateHp } from '../helper/pokemon-helper';
+import { PokemonModel, RegionPokemon } from '../model/pokemon-model.model';
+import { getStats, getTypes, calculateHp, getRandNum } from '../helper/pokemon-helper';
 import { Pokemon } from '../helper/pokemon.class';
 import { MoveModel } from '../model/move-model.model';
 import { environment } from 'src/environment/environment';
@@ -19,12 +19,14 @@ export class NewGameComponent implements OnInit{
     @Output() pokemonSubmit = new EventEmitter();
     moveListArr = environment.moveDb
     regionArr = environment.region
-    myPokemons: any[] = []
+    // myPokemons: any[] = []
     regionPokemons: RegionPokemon[] = []
     dbMoves: MoveModel[] = []
     FinalArrMove: MoveModel[] = []
-  pokemon: any
-  toDisplayPokemon: any[] = []
+    pokemon: PokemonModel
+    toDisplayPokemon: any[] = []
+    
+    myPokemons: PokemonModel[] = []
   
   getMoveFx(moveType: string, power: number) {
     let moveDamage = ''
@@ -182,109 +184,121 @@ export class NewGameComponent implements OnInit{
   }
 
   displayPokemon(id: string) {
-    this.http.getPokemon(id).subscribe((data) => {
-      let temp: any = []
-      temp.push(data)
-      for (let pokemon of temp) {
-        const stats = getStats(pokemon.stats)
-        const types = getTypes(pokemon.types)
-        let moves = []
-        for (const move of pokemon.moves) {
-          let tempObj = {
-            name: move.move.name
+    const isUnique = this.myPokemons.filter(pokemon => pokemon.id == parseInt(id))  
+    if(isUnique.length == 0){
+      this.http.getPokemon(id).subscribe((data) => {
+        let temp: any = []
+        temp.push(data)
+        for (let pokemon of temp) {
+          const stats = getStats(pokemon.stats)
+          const types = getTypes(pokemon.types)
+          let tempDbMoves: MoveModel[] = []
+          let moveSet: MoveModel [] = []
+          for (const move of pokemon.moves) {
+            let url = move.move.url
+            let learnMethod = move.version_group_details[0].move_learn_method.name
+            url = url.substring(0, url.length - 1);
+            let index = url.indexOf('2')
+            const id = url.substring(index + "2/move/".length)
+    
+            if (this.moveListArr.includes(parseInt(id))&&(learnMethod=='level-up'||learnMethod=='tutor')) {
+              let index = this.dbMoves.findIndex(val => val.id == id)
+              tempDbMoves.push(this.dbMoves[index])
+
+            } 
           }
-          moves.push(tempObj)
+
+          let i = 0
+          let groupOne:MoveModel[] = tempDbMoves.filter(move => move.type == types.typeOne)
+          let groupTwo:MoveModel[] = types.typeTwo && tempDbMoves.filter(move => move.type == types.typeTwo)
+          let nonGroupOne:MoveModel[] = tempDbMoves.filter(move => move.type !== types.typeOne)
+
+          while (i < 4) {
+            let randomNum
+            let index: number
+            let name: string
+            if (i == 0) {
+              randomNum = getRandNum(0, groupOne.length - 1)
+              name = groupOne[randomNum].name
+              moveSet.push(groupOne[randomNum])
+            } else if (i == 1&&groupTwo!==undefined&&groupTwo.length>0) { 
+              randomNum = getRandNum(0, groupTwo.length - 1)
+              name = groupTwo[randomNum].name
+              moveSet.push(groupTwo[randomNum])
+            } else if (i == 2) { 
+              randomNum = getRandNum(0, nonGroupOne.length - 1)
+              name = nonGroupOne[randomNum].name
+              moveSet.push(nonGroupOne[randomNum])
+            } else {
+              randomNum = getRandNum(0, tempDbMoves.length - 1)
+              name = tempDbMoves[randomNum].name
+              moveSet.push(tempDbMoves[randomNum])
+            }
+
+            index = tempDbMoves.findIndex(move => move.name == name)
+            tempDbMoves.splice(index,1)
+            i++
+          }
+
+
+          const maxHp = calculateHp(pokemon.stats[0].base_stat)
+    
+          let pokemonObj: PokemonModel = {
+            id: pokemon.id,
+            name: pokemon.name,
+            stats,
+            types: getTypes(pokemon.types),
+            moves: moveSet,
+            dbMoves: tempDbMoves,
+            front_image: pokemon.sprites.front_default,
+            back_image: pokemon.sprites.back_default,
+            maxHp,
+            currentHp: maxHp,
+            others: {
+              stats,
+              condition: ''
+            }
+          }
+
+
+          let objPokemon = {
+            id: pokemon.id,
+            name: pokemon.name,
+            types,
+            stats,
+            front_image: pokemon.sprites.front_default,
+            back_image: pokemon.sprites.back_default,
+            moves: moveSet
+          }
+
+          this.toDisplayPokemon.push(objPokemon)
+          this.pokemon = pokemonObj
         }
-        let objPokemon = {
-          id: pokemon.id,
-          name: pokemon.name,
-          types,
-          stats,
-          front_image: pokemon.sprites.front_default,
-          back_image: pokemon.sprites.back_default,
-          moves
-        }
-        this.toDisplayPokemon.push(objPokemon)
-        this.pokemon = data
-      }
-    })
+        
+      })
+    }
   }
 
   emptyDisplay() {
     this.toDisplayPokemon = []
   }
 
-  chosenPokemon(id: string) {
+  chosenPokemon(chosen: PokemonModel) {
     let isUnique;
     this.emptyDisplay()
-    isUnique = this.myPokemons.filter(pokemon => pokemon.id == id)
+    isUnique = this.myPokemons.filter(pokemon => pokemon.id == chosen.id)
     if (isUnique.length < 1 || isUnique == undefined) {
-      this.myPokemons.push(this.pokemon)
-        if (this.myPokemons.length == 6) {
-          this.toStore()
-        }
+      this.myPokemons.push(chosen)
+      if (this.myPokemons.length == 6) {
+        this.pokemonSubmit.emit({ pokemon: this.myPokemons, next:'player', dbMoves: this.dbMoves })
+      }
     }
-    this.gotoTop()
-  }
-
-  gotoTop() {
-    window.scroll({ 
-      top: 0, 
-      left: 0, 
-      behavior: 'smooth' 
-    });
   }
 
   removePokemon(id:any) {
-    let copyMyPokemons = this.myPokemons.filter(pokemon => {
+    let copyMyPokemons: PokemonModel[] = this.myPokemons.filter(pokemon => {
       return pokemon.id != id
     })
     this.myPokemons = copyMyPokemons
-  }
-
-
-
-  toStore() {
-    let tempArr = []
-    for (const myPokemon of this.myPokemons) {
-      let tempDbMoves: MoveModel[] = []
-      let temp4Moves: MoveModel[] = []
-      for (const move of myPokemon.moves) {
-        let url = move.move.url
-        let learnMethod = move.version_group_details[0].move_learn_method.name
-        url = url.substring(0, url.length - 1);
-        let index = url.indexOf('2')
-        const id = url.substring(index + "2/move/".length)
-
-        if (this.moveListArr.includes(parseInt(id))&&(learnMethod=='level-up'||learnMethod=='tutor')) {
-          let index = this.dbMoves.findIndex(val => val.id == id)
-          tempDbMoves.push(this.dbMoves[index])
-        } 
-      }
-
-      const maxHp = calculateHp(myPokemon.stats[0].base_stat)
-      const stats = getStats(myPokemon.stats)
-
-      let pokemon = {
-        id: myPokemon.id,
-        name: myPokemon.name,
-        stats,
-        types: getTypes(myPokemon.types),
-        moves: temp4Moves,
-        dbMoves: tempDbMoves,
-        front_image: myPokemon.sprites.front_default,
-        back_image: myPokemon.sprites.back_default,
-        maxHp,
-        currentHp: maxHp,
-        others: {
-          stats,
-          condition: ''
-        }
-      }
-      tempArr.push(pokemon)
-      if (tempArr.length == 6) {
-        this.pokemonSubmit.emit({ pokemon: tempArr, next:'player', dbMoves: this.dbMoves});
-      }
-    }
   }
 }

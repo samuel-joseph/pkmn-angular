@@ -103,6 +103,7 @@ export class PreBattleComponent implements OnInit {
   }
 
   battleReady(response: boolean) {
+    console.log(this.player1)
     if (response) {
       this.battlePhase = 'in-battle'
     } else {

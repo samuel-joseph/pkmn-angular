@@ -1,6 +1,7 @@
 // import { moveFxRecords } from "src/environment/environment-constants"
 // import { MoveModel } from "../model/move-model.model"
-import { Type } from "../model/pokemon-model.model"
+import { StatModel } from "../model/move-model.model"
+import { Type,StatsModel } from "../model/pokemon-model.model"
 
 export const getMove = (move:any)=>{
   return {
@@ -54,14 +55,12 @@ export const multiplier = (stage: number): number => {
 }
 
 export const getStats = (stats: Array<any>) => {
-  let arr = []
+  let arr: Array<StatsModel> = []
   for (let stat of stats) {
-    let tempObj = {}
-    tempObj = {
+    arr.push({
       base_stat: stat.base_stat,
       name: stat.stat.name
-    }
-    arr.push(tempObj)
+    })
   }
   return arr
 }

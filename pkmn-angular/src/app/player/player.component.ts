@@ -66,6 +66,8 @@ export class PlayerComponent implements OnInit{
     if (checker.length == 6) {
       this.movesAllReady = true
     }
+
+    //feel free to check
   }
 
   gotoTop() {
@@ -76,6 +78,8 @@ export class PlayerComponent implements OnInit{
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.allMovesReady()
+  }
 }
 
