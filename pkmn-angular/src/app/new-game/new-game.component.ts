@@ -262,7 +262,11 @@ export class NewGameComponent implements OnInit{
             currentHp: maxHp,
             others: {
               stats,
-              condition: ''
+              condition: '',
+              originalValues: {
+                front_image: pokemon.sprites.front_default,
+                back_image: pokemon.sprites.back_default,
+              }
             }
           }
 
