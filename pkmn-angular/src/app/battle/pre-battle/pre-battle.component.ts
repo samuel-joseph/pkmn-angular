@@ -102,6 +102,7 @@ export class PreBattleComponent implements OnInit {
     let mainPokemon: PokemonModel
     const indexMain = this.gymPokemons.findIndex(pokemon => pokemon.name == this.gymLeaderMain)
     mainPokemon = this.gymPokemons[indexMain]
+    this.gymPokemons.splice(indexMain,1)
     while (this.player2.length < 2) {
       let randIndex = getRandNum(0, this.gymPokemons.length - 1)
       let chosen = this.gymPokemons[randIndex]
