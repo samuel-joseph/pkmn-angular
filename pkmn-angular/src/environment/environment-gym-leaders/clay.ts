@@ -12,7 +12,8 @@ export const clay: GymLeader = {
         'bulldoze',
         'metal-claw',
         'slash'
-      ]
+      ],
+      isMain: true
     },
     {
       name: 'claydol',
@@ -20,7 +21,8 @@ export const clay: GymLeader = {
         'bulldoze',
         'psybeam',
         'rock-tomb'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'golurk',
@@ -28,7 +30,8 @@ export const clay: GymLeader = {
         'shadow-punch',
         'earthquake',
         'focus-punch'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'palpitoad',
@@ -36,7 +39,8 @@ export const clay: GymLeader = {
         'bubble-beam',
         'mud-shot',
         'aqua-ring'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'krokorok',
@@ -44,7 +48,8 @@ export const clay: GymLeader = {
         'bulldoze',
         'crunch',
         'torment'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'sandslash',
@@ -52,7 +57,8 @@ export const clay: GymLeader = {
         'bulldoze',
         'crush-claw',
         'mud-shot'
-      ]
+      ],
+      isMain: false
     }
   ]
 }

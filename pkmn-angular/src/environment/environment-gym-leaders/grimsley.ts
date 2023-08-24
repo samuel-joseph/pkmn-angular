@@ -12,7 +12,8 @@ export const grimsley: GymLeader = {
         'crunch',
         'brick-break',
         'poison-jab'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'liepard',
@@ -20,7 +21,8 @@ export const grimsley: GymLeader = {
         'nigh-slash',
         'fake-out',
         'aerial-ace'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'krookodile',
@@ -28,7 +30,8 @@ export const grimsley: GymLeader = {
         'crunch',
         'dragon-claw',
         'earthquake'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'bisharp',
@@ -37,7 +40,8 @@ export const grimsley: GymLeader = {
         'x-scissor',
         'metal-claw',
         'aerial-ace'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'sharpedo',
@@ -45,7 +49,8 @@ export const grimsley: GymLeader = {
         'aqua-jet',
         'swift',
         'horn-attack'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'drapion',
@@ -54,7 +59,8 @@ export const grimsley: GymLeader = {
         'poison-fang',
         'fire-fang',
         'crunch'
-      ]
+      ],
+      isMain: true
     }
   ]
 }

@@ -12,7 +12,8 @@ export const brock: GymLeader = {
         'bulldoze',
         'tackle',
         'rock-blast'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'ninetales',
@@ -20,7 +21,8 @@ export const brock: GymLeader = {
         'tackle',
         'flamethrower',
         'extrasensory'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'lumineon',
@@ -28,7 +30,8 @@ export const brock: GymLeader = {
         'tackle',
         'water-gun',
         'water-pulse'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'onix',
@@ -36,7 +39,8 @@ export const brock: GymLeader = {
         'bulldoze',
         'tackle',
         'rock-blast'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'crobat',
@@ -45,7 +49,8 @@ export const brock: GymLeader = {
         'air-cutter',
         'cross-poison',
         'toxic'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'steelix',
@@ -53,7 +58,8 @@ export const brock: GymLeader = {
         'iron-tail',
         'stone-edge',
         'slam'
-      ]
+      ],
+      isMain: true
     }
   ]
 }

@@ -13,7 +13,8 @@ export const iris: GymLeader = {
         'ice-beam',
         'thunderbolt',
         'sing'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'archeops',
@@ -21,7 +22,8 @@ export const iris: GymLeader = {
         'acrobatics',
         'dragon-claw',
         'rock-slide'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'aggron',
@@ -29,7 +31,8 @@ export const iris: GymLeader = {
         'earthquake',
         'double-edge',
         'rock-slide'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'druddigon',
@@ -38,7 +41,8 @@ export const iris: GymLeader = {
         'flamethrower',
         'dragon-tail',
         'focus-blast'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'hydreigon',
@@ -46,7 +50,8 @@ export const iris: GymLeader = {
         'flamethrower',
         'dragon-pulse',
         'surf'
-      ]
+      ],
+      isMain: false
     },
     {
       name: 'haxorus',
@@ -55,7 +60,8 @@ export const iris: GymLeader = {
         'x-scissor',
         'dual-chop',
         'dragon-dance'
-      ]
+      ],
+      isMain: true
     }
   ]
 }

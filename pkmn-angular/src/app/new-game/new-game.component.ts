@@ -220,15 +220,21 @@ export class NewGameComponent implements OnInit{
             if (i == 0) {
               randomNum = getRandNum(0, groupOne.length - 1)
               name = groupOne[randomNum].name
+              let findIndex = groupOne.findIndex(pokemon=>pokemon.name == name)
               moveSet.push(groupOne[randomNum])
+              groupOne.splice(findIndex,1)
             } else if (i == 1&&groupTwo!==undefined&&groupTwo.length>0) { 
               randomNum = getRandNum(0, groupTwo.length - 1)
               name = groupTwo[randomNum].name
               moveSet.push(groupTwo[randomNum])
+              let findIndex = groupTwo.findIndex(pokemon => pokemon.name == name)
+              groupTwo.splice(findIndex,1)
             } else if (i == 2) { 
               randomNum = getRandNum(0, nonGroupOne.length - 1)
               name = nonGroupOne[randomNum].name
               moveSet.push(nonGroupOne[randomNum])
+              let findIndex = nonGroupOne.findIndex(pokemon => pokemon.name == name)
+              nonGroupOne.splice(findIndex,1)
             } else {
               randomNum = getRandNum(0, tempDbMoves.length - 1)
               name = tempDbMoves[randomNum].name
