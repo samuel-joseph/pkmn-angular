@@ -177,7 +177,9 @@ export class NewGameComponent implements OnInit{
         })
       })
     }
-    setTimeout(()=>{this.gameLoading = false},10000)
+    setTimeout(() => {
+      this.gameLoading = false
+    }, 10000)
   }
 
   getRegion(region: string) {
@@ -247,9 +249,18 @@ export class NewGameComponent implements OnInit{
             tempDbMoves.splice(index,1)
             i++
           }
-
-
+          let front_image
+          let back_image
+          if (pokemon.sprites.versions['generation-v']['black-white'].animated.back_default !== null) {
+            front_image = pokemon.sprites.versions['generation-v']['black-white'].animated.front_default
+            back_image = pokemon.sprites.versions['generation-v']['black-white'].animated.back_default
+          } else {
+            front_image = pokemon.sprites.front_default
+            back_image = pokemon.sprites.back_default
+          }
           const maxHp = calculateHp(pokemon.stats[0].base_stat)
+
+          console.log(pokemon.sprites)
     
           let pokemonObj: PokemonModel = {
             id: pokemon.id,
@@ -258,8 +269,8 @@ export class NewGameComponent implements OnInit{
             types: getTypes(pokemon.types),
             moves: moveSet,
             dbMoves: tempDbMoves,
-            front_image: pokemon.sprites.front_default,
-            back_image: pokemon.sprites.back_default,
+            front_image,
+            back_image,
             maxHp,
             currentHp: maxHp,
             others: {
