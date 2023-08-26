@@ -1,12 +1,10 @@
-<div style="padding-top: 50px;">
+<app-openning *ngIf="gameLoading"></app-openning>
+<div *ngIf="!gameLoading" style="padding-top: 50px;">
   <div *ngIf="myPokemons">
     <span *ngFor="let pokemon of myPokemons">
-      <img class="idleAnimationPlayer" style="width: 15%;" [src]="pokemon.front_image" (click)="removePokemon(pokemon.id)"/>
+      <img alt="" class="idleAnimationPlayer" style="width: 15%;" [src]="pokemon.front_image" (click)="removePokemon(pokemon.id)"/>
     </span>
   </div>
-  <!-- <form style="display: flex; justify-content: center;">
-    <input style="width: 40vw; border:none; text-align: center; height: 5vh;" placeholder="Enter pokemon name here" type="text">
-  </form> -->
   <div style="display: flex; flex-direction: row; justify-content: center;">
     <div *ngFor="let region of regionArr">
       <button (click)="getRegion(region)">{{region}}</button>
