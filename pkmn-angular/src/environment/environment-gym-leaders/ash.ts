@@ -19,7 +19,8 @@ export const ash: GymLeader = {
       name: 'greninja',
       moves: [
         'water-shuriken',
-        'cut',
+        'gunk-shot',
+        'aerial-ace',
         'night-slash'
       ],
       isMain: true
@@ -34,11 +35,11 @@ export const ash: GymLeader = {
       isMain: false
     },
     {
-      name: 'infernape',
+      name: 'snorlax',
       moves: [
-        'thunder-punch',
-        'fire-punch',
-        'flamethrower'
+        'hyper-beam',
+        'zen-headbutt',
+        'earthquake'
       ],
       isMain: false
     },

@@ -167,6 +167,18 @@
     opacity: 0;
   }
 
+  .megaNpcPhysical{
+    height: 25vh;
+    position: fixed;
+    background: url(https://opengameart.org/sites/default/files/Air%20Shuriken%20128x128.png);
+    background-size: 100%;
+    z-index: 99;
+    margin-left: 110px;
+    margin-top: 80px;
+    animation: npcPhysicalAttack 1.5s;
+    opacity: 0;    
+  }
+
   @keyframes npcPhysicalAttack {
     5%{
       opacity: 1;
@@ -255,6 +267,16 @@
     animation: fainted 2s;
     opacity: 0;
     height: 25vh;
+  }
+
+  .ordinaryPokemonImg{
+    height: 25vh;
+  }
+
+  .auraShuriken{
+    height: 25vh;
+    background: url(https://opengameart.org/sites/default/files/Air%20Shuriken%20128x128.png);
+    background-size: 100%;
   }
 }
 

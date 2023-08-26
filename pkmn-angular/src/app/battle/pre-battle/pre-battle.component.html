@@ -1,4 +1,15 @@
 <div [ngSwitch]="battlePhase">
+  <div *ngSwitchCase="'game-over'">
+    <app-root></app-root>
+  </div>
+  <div *ngSwitchCase="'overview'">
+    <app-overview></app-overview>
+  </div>
+  <div *ngSwitchCase="'versus'">
+    <app-versus
+    [dataObj]="dataObj"
+    ></app-versus>
+  </div>
   <div 
   *ngSwitchCase="'pre-battle'"
   class="parent-prebattle"
@@ -209,16 +220,5 @@
           <img  style="height: 15vh;" alt="" [src]="gym.gymBadge" />
         </div>
       </div>
-  </div>
-  <div *ngSwitchCase="'game-over'">
-    <app-root></app-root>
-  </div>
-  <div *ngSwitchCase="'overview'">
-    <app-overview></app-overview>
-  </div>
-  <div *ngSwitchCase="'versus'">
-    <app-versus
-    [dataObj]="dataObj"
-    ></app-versus>
   </div>
 </div>

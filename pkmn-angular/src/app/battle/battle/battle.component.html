@@ -54,18 +54,20 @@
         [src]="this.playerCurrentMoveFx"
         />
         <p style="position: absolute;" *ngIf="this.npcCondition!==''">{{this.npcCondition}}</p>
-        <img
+        <div
         *ngIf="this.currentPlayer2[0].currentHp>0"
         alt=""
         [ngClass]="
         this.npcAttackMotion&&this.npcAttackClass==='physical'?'pokemonFade':
         this.npcAttackMotion&&this.npcAttackClass==='special'?'npcPokemon':
         this.npcbuffOn?'powerupfx':'idleAnimationNpc'
-        "
+        ">
+          <img        
+          alt=""
           [src]="this.currentPlayer2[0].front_image" 
-        style="height: 25vh;
-        " 
-        />
+          [ngClass]="this.npcMegaEvolve?'auraShuriken':'ordinaryPokemonImg'
+          " />
+        </div>
         <img
         *ngIf="this.currentPlayer2[0].currentHp<=0"
         class="faintedPokemon"
@@ -77,7 +79,7 @@
     <img
     *ngIf="this.npcAttackMotion&&this.npcAttackClass=='physical'"
     alt=""
-    class="npcPhysical"
+    [ngClass]="this.npcMegaEvolve? 'megaNpcPhysical':'npcPhysical'"
       [src]="this.currentPlayer2[0].front_image" 
     />
     <div *ngIf="this.currentPlayer1.length>0"

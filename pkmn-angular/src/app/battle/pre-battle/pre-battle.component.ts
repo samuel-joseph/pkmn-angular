@@ -51,13 +51,13 @@ export class PreBattleComponent implements OnInit {
   
   constructor(private http: PokemonService) { }
   
-  pushToHighlight() {
+  championshipFn() {
     setTimeout(() => {
       this.highlightPokemon = []
       this.highlightPokemon.push(this.myPokemons[this.counter])
       if (this.counter < this.myPokemons.length - 1) {
         this.counter++
-        this.pushToHighlight()
+        this.championshipFn()
       } else {
         this.showChampionPokemon = true
       }
@@ -65,18 +65,9 @@ export class PreBattleComponent implements OnInit {
   }
 
 
-
-
-
   ngOnInit() {
-    // this.battlePhase = 'overview'
-    // this.initialBattlePhase()
-    this.battlePhase = 'new-champion'
-    this.championshipFn()
-  }
-
-  championshipFn() {
-    this.pushToHighlight()
+    this.battlePhase = 'overview'
+    this.initialBattlePhase()
   }
 
 
@@ -86,6 +77,7 @@ export class PreBattleComponent implements OnInit {
       this.currentGymLeader = this.checkLeaders()
       if (this.currentGymLeader.length == 0) {
         this.battlePhase = 'new-champion'
+        this.championshipFn()
       }else{
         this.copyMyPokemons = this.myPokemons
         this.getPokemon()
