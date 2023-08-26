@@ -7,6 +7,7 @@ import { environment } from 'src/environment/environment';
 import { MoveModel } from 'src/app/model/move-model.model';
 import { GymLeader } from 'src/app/model/gym-leader-model.model';
 import { mega_greninja, stat_greninja } from 'src/environment/environment-mega-pokemon.ts/greninja';
+import { Pokemon } from 'src/app/helper/pokemon.class';
 
 @Component({
   selector: 'app-pre-battle',
@@ -41,13 +42,43 @@ export class PreBattleComponent implements OnInit {
   battlePhase: string
 
   switchOn = false
+
+
+  //winning related
+  showChampionPokemon = false
+  highlightPokemon: PokemonModel[]=[]
+  counter: number = 0
   
-  constructor(private http: PokemonService){}
+  constructor(private http: PokemonService) { }
+  
+  pushToHighlight() {
+    setTimeout(() => {
+      this.highlightPokemon = []
+      this.highlightPokemon.push(this.myPokemons[this.counter])
+      if (this.counter < this.myPokemons.length - 1) {
+        this.counter++
+        this.pushToHighlight()
+      } else {
+        this.showChampionPokemon = true
+      }
+    },10000)
+  }
+
+
+
+
 
   ngOnInit() {
-    this.battlePhase = 'overview'
-    this.initialBattlePhase()
+    // this.battlePhase = 'overview'
+    // this.initialBattlePhase()
+    this.battlePhase = 'new-champion'
+    this.championshipFn()
   }
+
+  championshipFn() {
+    this.pushToHighlight()
+  }
+
 
   initialBattlePhase() {
     this.resetBattle()
