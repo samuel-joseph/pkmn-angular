@@ -7,11 +7,6 @@
     animation-delay: 1.5s;
     animation-iteration-count: infinite;
     animation-duration: 2s;
-    -webkit-transition: all 0.9s ease;
-       -moz-transition: all 0.9s ease;
-         -o-transition: all 0.9s ease;
-            transition: all 0.9s ease;
-    animation-direction: alternate;
   }
 
   @keyframes idlenpc {
@@ -29,11 +24,6 @@
   animation-name: idleplayer;
   animation-iteration-count: infinite;
   animation-duration: 2s;
-  -webkit-transition: all 0.9s ease;
-     -moz-transition: all 0.9s ease;
-       -o-transition: all 0.9s ease;
-          transition: all 0.9s ease;
-  animation-direction: alternate;
  }
  
 
@@ -302,13 +292,6 @@
 }
 
 .damageReceived{
-  -webkit-transform: rotate(-45deg); 
-  -moz-transform: rotate(-45deg); 
-   -ms-transform: rotate(-45deg); 
-    -o-transform: rotate(-45deg); 
-       transform: rotate(-45deg);
- -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.7071067811865482, M12=0.7071067811865466, M21=-0.7071067811865466, M22=0.7071067811865482, SizingMethod='auto expand')";
- filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.7071067811865482, M12=0.7071067811865466, M21=-0.7071067811865466, M22=0.7071067811865482, SizingMethod='auto expand');
  display: block;
  position: absolute;
  font-weight: bolder;
