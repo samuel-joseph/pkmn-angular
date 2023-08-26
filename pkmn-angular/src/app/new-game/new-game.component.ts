@@ -19,12 +19,13 @@ export class NewGameComponent implements OnInit{
     @Output() pokemonSubmit = new EventEmitter();
     moveListArr = environment.moveDb
     regionArr = environment.region
-    // myPokemons: any[] = []
     regionPokemons: RegionPokemon[] = []
     dbMoves: MoveModel[] = []
     FinalArrMove: MoveModel[] = []
     pokemon: PokemonModel
     toDisplayPokemon: any[] = []
+  
+    gameLoading = true
     
     myPokemons: PokemonModel[] = []
   
@@ -176,6 +177,7 @@ export class NewGameComponent implements OnInit{
         })
       })
     }
+    setTimeout(()=>{this.gameLoading = false},10000)
   }
 
   getRegion(region: string) {

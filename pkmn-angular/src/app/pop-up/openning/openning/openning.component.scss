@@ -1,0 +1,74 @@
+.parent{
+  height: 100vh;
+  background: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  letter-spacing: .8rem;
+  font-weight: bolder;
+
+  .textParent{
+    overflow: hidden;
+    margin-bottom: 50vh;
+    position: absolute;
+    animation: textDrop 12s;
+  }
+
+  .pokemonParent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+    .parentWater{
+      .water{
+        height: 18vh;
+        margin-left: 200px;
+        animation: waterMove 6s;
+      }
+    }
+
+    .parentFire{
+      .fire{
+        height: 18vh;
+        margin-right: 200px;
+        animation: fireMove 12s;
+      }
+    }
+  }
+}
+
+@keyframes waterMove {
+  50%{
+    margin-left: 200px;
+  }
+  60%{
+    margin-left: 100px;
+  }
+  75%{
+    margin-left: 200px;
+  }
+}
+
+
+@keyframes fireMove {
+  55%{
+    margin-right: 200px;
+  }
+  60%{
+    margin-right: 100px;
+  }
+  70%{
+    margin-right: 200px;
+  }
+}
+
+@keyframes textDrop {
+  0%{
+    margin-bottom: 200vh;
+  }
+  100%{
+    margin-bottom: 50vh;
+  }
+}
