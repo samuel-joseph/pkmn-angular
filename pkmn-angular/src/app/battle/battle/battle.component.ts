@@ -155,6 +155,7 @@ export class BattleComponent implements OnInit{
   npcLoseFirstTurn = false
   npcLoseSecondTurn = false
 
+  npcMegaEvolve = false
 
   npcDamageReceive: number
   playerDamageReceive: number
@@ -170,7 +171,6 @@ export class BattleComponent implements OnInit{
     this.calculatePercentHp()
 
 
-    console.log(this)
   }
 
   pushEvasionAccuracy(trainer:string) {
@@ -269,6 +269,26 @@ export class BattleComponent implements OnInit{
           defender.types
         )
       }
+
+          //critical
+    if (move.crit_rate && move.crit_rate > 0) {
+      const randomNumber = getRandNum(1, 100)
+      switch (move.crit_rate) {
+        case 1:
+          if (randomNumber <= 50) {
+            damage = Math.floor(damage + (damage/2))
+          }
+          break
+        case 2:
+          if (randomNumber <= 80) {
+            damage = Math.floor(damage + (damage/2))
+          }
+          break
+        case 3:
+          damage = Math.floor(damage + (damage/2))
+          break
+      }
+    }
     }
 
     if (move.damageClass.ailment) {
@@ -294,28 +314,7 @@ export class BattleComponent implements OnInit{
       }
     }
 
-    //critical
-    if (move.crit_rate && move.crit_rate > 0) {
-      console.log("current damage is ",damage)
-      const randomNumber = getRandNum(1, 100)
-      switch (move.crit_rate) {
-        case 1:
-          if (randomNumber <= 50) {
-            damage *= 1.5
-          }
-          break
-        case 2:
-          if (randomNumber <= 80) {
-            damage*= 1.5
-          }
-          break
-        case 3:
-          damage*= 1.5
-          break
-      }
-    }
-
-    defender.currentHp = Math.floor(defender.currentHp - damage)
+    defender.currentHp =defender.currentHp - damage
     if (move.drain&&move.drain != 0) {
       attacker.currentHp = Math.floor(attacker.currentHp + (damage * ((move.drain) / 100)))
       if(attacker.currentHp>attacker.maxHp) attacker.currentHp = attacker.maxHp
@@ -837,11 +836,13 @@ export class BattleComponent implements OnInit{
     } else {
       this.currentPlayer2 = this.player2.splice(0, 1)
       if (this.currentPlayer2[0].others.canMegaEvolve) {
+        this.npcMegaEvolve = true
         const megaFrontImageNpc = this.currentPlayer2[0].front_image
         this.currentPlayer2[0].front_image = this.currentPlayer2[0].others.originalValues.front_image
         setTimeout(() => {
           this.currentPlayer2[0].front_image = megaFrontImageNpc
-        },1000)
+          this.currentPlayer2[0].others.isMegaEvolve
+        },2000)
       }
       this.settingUpInitialStat('npc')
       this.calculatePercentHp()
