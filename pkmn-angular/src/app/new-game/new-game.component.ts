@@ -179,7 +179,7 @@ export class NewGameComponent implements OnInit{
     }
     setTimeout(() => {
       this.gameLoading = false
-    }, 10000)
+    }, 10700)
   }
 
   getRegion(region: string) {
