@@ -1,42 +1,10 @@
 .on-going{
   display: flex;
   flex-direction: column;
+  background-color: black;
+  height: 100vh;
+  
 
-  .idleAnimationNpc{
-    animation-name: idlenpc;
-    animation-delay: 1.5s;
-    animation-iteration-count: infinite;
-    animation-duration: 2s;
-  }
-
-  @keyframes idlenpc {
-    50%{
-      margin-right: 10px;
-    }
-    55%{
-    }
-    100%{
-      margin-right: 0px;
-    }
-   }
-
- .idleAnimationPlayer{
-  animation-name: idleplayer;
-  animation-iteration-count: infinite;
-  animation-duration: 2s;
- }
- 
-
- @keyframes idleplayer {
-  50%{
-    margin-left: 10px;
-  }
-  55%{
-  }
-  100%{
-    margin-left: 0px;
-  }
- }
   .powerupfx{
     animation: aura 2s;
     opacity: 1;
@@ -91,12 +59,22 @@
       transform: rotateY(180deg);
     }
   }
+
+  .npcIdle{
+    padding-right: 5.5vw;
+  }
+
+  .playerIdle{
+    padding-left: 5.5vw;
+  }
+
   .npcPokemon{
     animation: npcMove 1s;
   }
 
   .pokemonFade{
     opacity: 1;
+    height: 25vh;
     animation: faded 2s;
   }
 
@@ -135,6 +113,7 @@
     animation: npcPhysicalAttack 1.5s;
     opacity: 0;
   }
+  
   .megaNpcPhysical{
     height: 25vh;
     position: fixed;
@@ -146,64 +125,76 @@
     animation: npcPhysicalAttack 1.5s;
     opacity: 0;    
   }
+
+  .playerOption{
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center;
+  }
+
   @keyframes npcPhysicalAttack {
     5%{
       opacity: 1;
     }
     50%{
       opacity: 1;
+      height: 25vh;
     }
     60%{
       opacity: 1;
-      transform: rotateZ(-5deg);
+      transform: rotateZ(0deg);
+      height: 25vh;
     }
     80%{
       opacity: 1;
       margin-left: 80px;
-      margin-top: 105px;
-      transform: rotateZ(-25deg);
+      margin-top: 90px;
+      height: 25vh;
+      transform: rotateZ(-5deg);
     }
     85%{
       opacity: 1;
       transform: rotateZ(0deg);
+      height: 25vh;
     }
     100%{
       opacity: 1;
+      height: 25vh;
     }
   }
 
   @keyframes playerPhysicalAttack {
     5%{
       opacity: 1;
-
+      height: 25vh;
     }
     50%{
       opacity: 1;
       transform: rotateZ(0deg);
       margin-top: 80px;
+      height: 25vh;
     }
     55%{
       opacity: 1;
       transform: rotateZ(15deg);
       margin-left: 120px;
       margin-top: 80px;
+      height: 25vh;
     }
     70%{
       margin-left: 120px;
       margin-top: 80px;
+      height: 25vh;
     }
     80%{
       transform: rotateZ(0deg);
       opacity: 1;
+      height: 25vh;
     }
     100%{
       opacity: 1;
+      height: 25vh;
     }
-  }
-  .npcPokemonMelee{
-    width: 30vw;
-    opacity: 1;
-    animation: faded 2s;
   }
 
   @keyframes faded {
@@ -226,6 +217,13 @@
 
   .playerPokemon{
     animation: playerMove 1s;
+    height: 25vh;
+  }
+  
+  .faintedPokemonNpc{
+    animation: fainted 2s;
+    opacity: 0;
+    height: 25vh;
   }
 
   .faintedPokemon{
@@ -322,7 +320,7 @@
   justify-content: center;
 
   .pokemonImage{
-    width: 30vw;
+    height: 15vh;
   }
 
   .parent{

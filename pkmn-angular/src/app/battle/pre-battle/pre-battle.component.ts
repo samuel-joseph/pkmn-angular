@@ -167,7 +167,20 @@ export class PreBattleComponent implements OnInit {
       }
 
       const maxHp = calculateHp(this.gymPokemonsTemp[i].stats[0].base_stat)
-      const stats = this.gymPokemonsTemp[i].name == 'greninja' ? stat_greninja:getStats(this.gymPokemonsTemp[i].stats)
+      const stats = this.gymPokemonsTemp[i].name == 'greninja' ? stat_greninja : getStats(this.gymPokemonsTemp[i].stats)
+
+      let front_image
+      let back_image
+      
+      if (this.gymPokemonsTemp[i].name == 'greninja') {
+        front_image = mega_greninja.front_image
+      }else if (this.gymPokemonsTemp[i].sprites.versions['generation-v']['black-white'].animated.back_default !== null) {
+        front_image = this.gymPokemonsTemp[i].sprites.versions['generation-v']['black-white'].animated.front_default
+        back_image = this.gymPokemonsTemp[i].sprites.versions['generation-v']['black-white'].animated.back_default
+      } else {
+        front_image = this.gymPokemonsTemp[i].sprites.front_default
+        back_image = this.gymPokemonsTemp[i].sprites.back_default
+      }
 
       let pokemon = {
         id: this.gymPokemonsTemp[i].id,
@@ -176,8 +189,8 @@ export class PreBattleComponent implements OnInit {
         types: getTypes(this.gymPokemonsTemp[i].types),
         moves: tempMoves,
         dbMoves: tempMoves,
-        front_image: this.gymPokemonsTemp[i].name == 'greninja'? mega_greninja.front_image:this.gymPokemonsTemp[i].sprites.front_default,
-        back_image: this.gymPokemonsTemp[i].sprites.back_default,
+        front_image,
+        back_image,
         maxHp,
         currentHp: maxHp,
         others: {
