@@ -74,12 +74,12 @@
 
   .pokemonFade{
     opacity: 1;
-    height: 25vh;
+    height: 19vh;
     animation: faded 2s;
   }
 
   .playerPhysical{
-    height: 25vh;
+    height: 19vh;
     position: fixed;
     z-index: 99;
     margin-left: 80px;
@@ -89,7 +89,7 @@
   }
   .attackFx{
     position: fixed;
-    height: 25vh;
+    height: 19vh;
     z-index: 99;
     animation: fx 1.5s;
     opacity: 0;
@@ -105,7 +105,7 @@
   }
 
   .npcPhysical{
-    height: 25vh;
+    height: 19vh;
     position: fixed;
     z-index: 99;
     margin-left: 110px;
@@ -115,7 +115,7 @@
   }
   
   .megaNpcPhysical{
-    height: 25vh;
+    height: 19vh;
     position: fixed;
     background: url(https://opengameart.org/sites/default/files/Air%20Shuriken%20128x128.png);
     background-size: 100%;
@@ -138,62 +138,62 @@
     }
     50%{
       opacity: 1;
-      height: 25vh;
+      height: 19vh;
     }
     60%{
       opacity: 1;
       transform: rotateZ(0deg);
-      height: 25vh;
+      height: 19vh;
     }
     80%{
       opacity: 1;
       margin-left: 80px;
       margin-top: 90px;
-      height: 25vh;
+      height: 19vh;
       transform: rotateZ(-5deg);
     }
     85%{
       opacity: 1;
       transform: rotateZ(0deg);
-      height: 25vh;
+      height: 19vh;
     }
     100%{
       opacity: 1;
-      height: 25vh;
+      height: 19vh;
     }
   }
 
   @keyframes playerPhysicalAttack {
     5%{
       opacity: 1;
-      height: 25vh;
+      height: 19vh;
     }
     50%{
       opacity: 1;
       transform: rotateZ(0deg);
       margin-top: 80px;
-      height: 25vh;
+      height: 19vh;
     }
     55%{
       opacity: 1;
       transform: rotateZ(15deg);
       margin-left: 120px;
       margin-top: 80px;
-      height: 25vh;
+      height: 19vh;
     }
     70%{
       margin-left: 120px;
       margin-top: 80px;
-      height: 25vh;
+      height: 19vh;
     }
     80%{
       transform: rotateZ(0deg);
       opacity: 1;
-      height: 25vh;
+      height: 19vh;
     }
     100%{
       opacity: 1;
-      height: 25vh;
+      height: 19vh;
     }
   }
 
@@ -217,26 +217,26 @@
 
   .playerPokemon{
     animation: playerMove 1s;
-    height: 25vh;
+    height: 19vh;
   }
   
   .faintedPokemonNpc{
     animation: fainted 2s;
     opacity: 0;
-    height: 25vh;
+    height: 19vh;
   }
 
   .faintedPokemon{
     animation: fainted 2s;
     opacity: 0;
-    height: 25vh;
+    height: 19vh;
   }
   .ordinaryPokemonImg{
-    height: 25vh;
+    height: 19vh;
   }
 
   .auraShuriken{
-    height: 25vh;
+    height: 19vh;
     background: url(https://opengameart.org/sites/default/files/Air%20Shuriken%20128x128.png);
     background-size: 100%;
   }
