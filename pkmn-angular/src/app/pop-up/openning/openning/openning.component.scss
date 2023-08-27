@@ -5,7 +5,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  letter-spacing: .8rem;
+  letter-spacing: .5rem;
   font-weight: bolder;
 
   .textParent{
@@ -13,6 +13,17 @@
     margin-bottom: 50vh;
     position: absolute;
     animation: textDrop 12s;
+    font-size: 36pt;
+    font-weight: bolder;
+    
+    p:nth-child(1) {
+      text-shadow: -2px 0 red, 0 2px red, 2px 0 red, 0 -2px red;
+      color: yellow;
+    }
+
+    p:nth-child(2){
+      color:blue;
+    }
   }
 
   .pokemonParent{
@@ -22,18 +33,36 @@
 
 
     .parentWater{
+      display: flex;
+      justify-content: center;
       .water{
         height: 18vh;
         margin-left: 200px;
         animation: waterMove 6s;
       }
+      .fireFx{
+        position: absolute;
+        height: 18vh;
+        margin-left: 150px;
+        animation: fireFx 14s;
+        opacity: 0;
+      }
     }
 
     .parentFire{
+      display: flex;
+      justify-content: center;
       .fire{
-        height: 18vh;
+        height: 20vh;
         margin-right: 200px;
         animation: fireMove 12s;
+      }
+      .waterFx{
+        position: absolute;
+        height: 20vh;
+        margin-right: 150px;
+        animation: waterFx 8s;
+        opacity: 0;
       }
     }
   }
@@ -43,8 +72,15 @@
   50%{
     margin-left: 200px;
   }
+  55%{
+    transform: rotate(0deg);
+  }
   60%{
     margin-left: 100px;
+    transform: rotate(-10deg);
+  }
+  65%{
+    transform: rotate(0deg);
   }
   75%{
     margin-left: 200px;
@@ -55,9 +91,14 @@
 @keyframes fireMove {
   55%{
     margin-right: 200px;
+    transform: rotate(0deg);
   }
   60%{
     margin-right: 100px;
+    transform: rotate(5deg);
+  }
+  63%{
+    transform: rotate(0deg);
   }
   70%{
     margin-right: 200px;
@@ -70,5 +111,41 @@
   }
   100%{
     margin-bottom: 50vh;
+  }
+}
+
+@keyframes fireFx {
+  0%{
+    opacity: 0;
+  }
+  50%{
+    opacity: 0;
+  }
+  51%{
+    opacity: 1;
+  }
+  70%{
+    opacity: 1;
+  }
+  80%{
+    opacity: 0;
+  }
+}
+
+@keyframes waterFx {
+  0%{
+    opacity: 0;
+  }
+  50%{
+    opacity: 0;
+  }
+  51%{
+    opacity: 1;
+  }
+  80%{
+    opacity: 1;
+  }
+  90%{
+    opacity: 0;
   }
 }

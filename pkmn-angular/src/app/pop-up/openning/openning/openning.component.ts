@@ -22,6 +22,8 @@ export class OpenningComponent implements OnInit{
     'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/back/157.gif'
   ]
   fireStarter: string
+  fireFx = 'https://i.gifer.com/3q62.gif'
+  waterFx = 'https://webstockreview.net/images/clipart-mountain-ocean-1.gif'
 
 
   ngOnInit(): void {

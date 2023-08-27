@@ -1,16 +1,17 @@
 <div [ngSwitch]="battlePhase"
-[style.background-color]="this.changeBackground ? (this.npcAttackMotion? 'red':'blue') : 'changeToNormal'"
-[ngClass]="this.changeBackground?'changeBackground':'changeToNormal'"
+  class="parent"
 >
   <div
   class="on-going"
    *ngSwitchCase="'on-going'">
-    <img
-    *ngIf="this.playerAttackMotion&&this.playerAttackClass=='physical'"
-    alt=""
-    class="playerPhysical"
-      [src]="this.currentPlayer1[0].back_image" 
-    />
+    <div class="playerIdle">
+      <img
+      *ngIf="this.playerAttackMotion&&this.playerAttackClass=='physical'"
+      alt=""
+      class="playerPhysical"
+        [src]="this.currentPlayer1[0].back_image" 
+      />
+    </div>
     <div *ngIf="this.currentPlayer2.length>0"
     style="
     display: flex;
@@ -60,7 +61,7 @@
         [ngClass]="
         this.npcAttackMotion&&this.npcAttackClass==='physical'?'pokemonFade':
         this.npcAttackMotion&&this.npcAttackClass==='special'?'npcPokemon':
-        this.npcbuffOn?'powerupfx':'idleAnimationNpc'
+        this.npcbuffOn?'powerupfx':'npcIdle'
         ">
           <img        
           alt=""
@@ -76,17 +77,20 @@
         />
       </div>
     </div>
-    <img
-    *ngIf="this.npcAttackMotion&&this.npcAttackClass=='physical'"
-    alt=""
-    [ngClass]="this.npcMegaEvolve? 'megaNpcPhysical':'npcPhysical'"
-      [src]="this.currentPlayer2[0].front_image" 
-    />
+    <div class="npcIdle">
+      <img
+      *ngIf="this.npcAttackMotion&&this.npcAttackClass=='physical'"
+      alt=""
+      [ngClass]="this.npcMegaEvolve? 'megaNpcPhysical':'npcPhysical'"
+        [src]="this.currentPlayer2[0].front_image" 
+      />
+    </div>
     <div *ngIf="this.currentPlayer1.length>0"
     style="
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
+    margin-top: 10vh;
     "
     >
       <div>
@@ -121,17 +125,18 @@
           </div>
         </div>
         <p style="position: absolute;" *ngIf="this.playerCondition!==''">{{this.playerCondition}}</p>
-        <img
-        *ngIf="this.currentPlayer1[0].currentHp>0"
-        alt=""
-        [ngClass]="
-        this.playerAttackMotion&&this.playerAttackClass==='physical'?'pokemonFade':
-        this.playerAttackMotion&&this.playerAttackClass==='special'?'playerPokemon':
-        this.playerbuffOn?'powerupfx':'idleAnimationPlayer'
-        "
-        [src]="this.currentPlayer1[0].back_image" 
-        style="height: 25vh;"
-        />
+        <div class="playerIdle">
+          <img
+          *ngIf="this.currentPlayer1[0].currentHp>0"
+          alt=""
+          [ngClass]="
+          this.playerAttackMotion&&this.playerAttackClass==='physical'?'pokemonFade':
+          this.playerAttackMotion&&this.playerAttackClass==='special'?'playerPokemon':
+          this.playerbuffOn?'powerupfx':'ordinaryPokemonImg'
+          "
+          [src]="this.currentPlayer1[0].back_image" 
+          />
+        </div>
         <img
         *ngIf="this.currentPlayer1[0].currentHp<=0"
         class="faintedPokemon"
@@ -166,7 +171,8 @@
       </div>
     </div>
     <div [ngSwitch]="playerOption"
-    style="display: flex; flex-direction: column; justify-content: center;">
+    class="playerOption"
+    >
     <div *ngSwitchCase="'fight'">
       <div *ngIf="moveOverview.length==0">
         <div         
@@ -181,9 +187,9 @@
             <button
             [ngStyle]="{
               'border-radius': '20px',
-              'border': 'solid black',
+              'border': 'solid white',
               'margin-bottom': '5px',
-              'text-shadow': '0 0 black',
+              'text-shadow': '0 0 white',
               'width': '180px',
               'color': 'white',
               'padding': '5px',
@@ -210,7 +216,7 @@
             >{{move.name}}</button>
             </div>
             <div *ngIf="this.currentPlayer1" (click)="this.decisionOption('default')"
-            style="text-align: center;"
+            style="text-align: center; color: white;"
             >back</div>
           </div>
         </div>
@@ -219,10 +225,12 @@
         <div style="
         display: flex;
         font-size: small;
-        flex-direction: column;" 
+        flex-direction: column;
+        color:white;
+        " 
         *ngFor="let move of moveOverview"
         >
-          <h6 style="text-align: center; border-bottom: 2px solid black;">{{move.name.toLocaleUpperCase()}}</h6>
+          <h6 style="text-align: center; border-bottom: 2px solid;">{{move.name.toLocaleUpperCase()}}</h6>
           <div style="display: flex; flex-direction: row; justify-content: space-around;">
             <span>Power: {{move.power}}</span>
             <span>Type: {{move.type}}</span>
@@ -232,12 +240,12 @@
             <span>{{move.damageClass.name}}</span>
           </div>
           <span>Description: {{move.description}}</span>
-          <span style="border-bottom: 2px solid black;">Accuracy: {{move.accuracy}}</span>
+          <span style="border-bottom: 2px solid white;">Accuracy: {{move.accuracy}}</span>
           <div>
-            <h6 style="text-align: center;">Use this move?</h6>
+            <h6 style="text-align: center; color:white;">Use this move?</h6>
             <div style="display: flex; flex-direction: row; justify-content: space-around;">
-              <button *ngIf="move.pp!=0" style="border-radius: 20px;" (click)="this.chosenMove(move)">YES</button>  
-              <button style="border-radius: 20px;" (click)="this.closeOverview()">NO</button>
+              <button *ngIf="move.pp!=0" style="border-radius: 20px; color:black;" (click)="this.chosenMove(move)">YES</button>  
+              <button style="border-radius: 20px; color:black;" (click)="this.closeOverview()">NO</button>
             </div>
           </div>
         </div>
@@ -252,8 +260,8 @@
         margin-bottom: 5px;
         align-items: center;
         ">
-        <button (click)="this.decisionOption('fight')" style="width: 40vw; border: none; background: none; padding: 8px 0px; border-bottom: 2px solid black;">Fight</button>
-        <button *ngIf="this.player1.length!==0" (click)="this.decisionOption('swap')" style="width: 40vw; border: none; background: none; padding: 8px 0px; border-bottom: 2px solid black;">Swap</button>
+        <button (click)="this.decisionOption('fight')" style="width: 40vw; border: none; background: none; padding: 8px 0px; border-bottom: 2px solid white; color:white;">Fight</button>
+        <button *ngIf="this.player1.length!==0" (click)="this.decisionOption('swap')" style="width: 40vw; border: none; background: none; padding: 8px 0px; border-bottom: 2px solid white; color: white;">Swap</button>
         </div>
       </div>
       <div *ngSwitchCase="'swap'">
@@ -265,10 +273,10 @@
         align-items: center;
         "
         *ngFor="let pokemon of this.player1">
-          <button style="width: 40vw; border: none; background: none; padding: 8px 0px; border-bottom: 2px solid black;" (click)="this.swapOption(pokemon)">{{pokemon.name}}</button>
+          <button style="width: 40vw; border: none; background: none; padding: 8px 0px; border-bottom: 2px solid white; color:white;" (click)="this.swapOption(pokemon)">{{pokemon.name}}</button>
         </div>
         <div *ngIf="this.currentPlayer1" (click)="this.decisionOption('default')"
-        style="text-align: center;"
+        style="text-align: center; color:white;"
         >back</div>
       </div>
     </div>
