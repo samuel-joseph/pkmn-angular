@@ -57,7 +57,7 @@ export const cynthia: GymLeader = {
       name: 'garchomp',
       moves: [
         'dragon-rush',
-        'crunch',
+        'swords-dance',
         'earthquake',
         'stone-edge'
       ],

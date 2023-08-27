@@ -28,8 +28,8 @@ export const volkner: GymLeader = {
     {
       name: 'jolteon',
       moves: [
-        'shadow-ball',
         'thunderbolt',
+        'shadow-ball',
         'thunder-wave'
       ],
       isMain: false
