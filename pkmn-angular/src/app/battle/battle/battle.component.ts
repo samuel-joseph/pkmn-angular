@@ -416,12 +416,12 @@ export class BattleComponent implements OnInit{
 
     //minus pp
     playerMove.pp = playerMove.pp - 1
-    npcMove[0].pp = npcMove[0].pp - 1 
+    npcMove.pp = npcMove.pp - 1 
 
     if (this.playerLoseFirstTurn || this.playerLoseSecondTurn) {
       playerMove.pp++
     } else if (this.npcLoseFirstTurn || this.npcLoseSecondTurn) {
-      npcMove[0].pp++
+      npcMove.pp++
     }
 
     //checking charge move
@@ -435,7 +435,7 @@ export class BattleComponent implements OnInit{
     //checking recharge move
     if (rechargeMove.includes(playerMove.name) && !this.playerLoseSecondTurn) {
       this.playerLoseSecondTurn = true
-    } else if (rechargeMove.includes(npcMove[0].name) && !this.npcLoseSecondTurn) {
+    } else if (rechargeMove.includes(npcMove.name) && !this.npcLoseSecondTurn) {
       this.npcLoseSecondTurn = true
     } else if (this.playerLoseSecondTurn) {
       playerDisabled = true
@@ -445,7 +445,7 @@ export class BattleComponent implements OnInit{
       this.npcLoseSecondTurn = false
     }
 
-    this.npcCurrentMoveFx = npcMove[0].moveFx
+    this.npcCurrentMoveFx = npcMove.moveFx
     this.playerCurrentMoveFx = playerMove.moveFx
 
     const playerSpeedIndex = player.stats.findIndex(val => val.name == 'speed')
@@ -455,11 +455,12 @@ export class BattleComponent implements OnInit{
     this.closeOverview()
 
     if (
-      playerMove.priority > npcMove[0].priority ||
+      playerMove.priority > npcMove.priority ||
       player.stats[playerSpeedIndex].base_stat > npc.stats[npcSpeedIndex].base_stat ||
       player.stats[playerSpeedIndex].base_stat == npc.stats[npcSpeedIndex].base_stat
     ) {
-      if (!playerDisabled&&playerMove.damageClass.name == 'status') {
+      if (!playerDisabled && playerMove.damageClass.name == 'status') {
+        this.narrate = `${this.currentPlayer1[0].name.toLocaleUpperCase()} use ${playerMove.name.toLocaleUpperCase()}!`
         switch (playerMove.damageClass.ailment?.category) {
           case 'ailment':
             this.ailment(playerMove,'player-move',playerAccuracy, evasionNpc)
@@ -479,6 +480,7 @@ export class BattleComponent implements OnInit{
         }, 1500)
       } else {
         if (this.playerCondition == 'confused') {
+          this.narrate = `${this.currentPlayer1[0].name.toLocaleUpperCase()} is confused!`
           this.animationAttack('player', 'special')
           setTimeout(() => {
             let indexAttackerStat = player.others.stats.findIndex(val => val.name == 'attack')
@@ -517,28 +519,30 @@ export class BattleComponent implements OnInit{
             //death timer npc
             },1500)
         } else {
-          if (!npcDisabled && npcMove[0].damageClass.name == 'status') {
-            switch (npcMove[0].damageClass.ailment?.category) {
+          if (!npcDisabled && npcMove.damageClass.name == 'status') {
+            this.narrate = `${this.currentPlayer2[0].name.toLocaleUpperCase()} use ${npcMove.name.toLocaleUpperCase()}!`
+            switch (npcMove.damageClass.ailment?.category) {
               case 'ailment':
-                this.ailment(npcMove[0], 'npc-move', npcAccuracy, evasionPlayer)
+                this.ailment(npcMove, 'npc-move', npcAccuracy, evasionPlayer)
                 break
               case 'net-good-stats':
-                if (npcMove[0].target == "user" || npcMove[0].target == "all-opponents" || npcMove[0].target == "selected-pokemon") {
-                  this.powerUp(npcMove[0], 'npc-move')
+                if (npcMove.target == "user" || npcMove.target == "all-opponents" || npcMove.target == "selected-pokemon") {
+                  this.powerUp(npcMove, 'npc-move')
                 }
                 break
             }
           } else if (!npcDisabled) {
-            this.animationAttack('npc', npcMove[0].damageClass.name)
-            this.narrate = `${this.currentPlayer2[0].name.toLocaleUpperCase()} use ${npcMove[0].name.toLocaleUpperCase()}!`
+            this.animationAttack('npc', npcMove.damageClass.name)
+            this.narrate = `${this.currentPlayer2[0].name.toLocaleUpperCase()} use ${npcMove.name.toLocaleUpperCase()}!`
             setTimeout(() => {
-              this.attackSequence(npc, player, npcMove[0], 'player')
+              this.attackSequence(npc, player, npcMove, 'player')
             },
               //reduce hp player
               1500)
           } else {
             {
               if (this.npcCondition == 'confused') {
+                this.narrate = `${this.currentPlayer2[0].name} is confused!`
                 this.animationAttack('npc', 'special')
                 setTimeout(() => {
                   let indexAttackerStat = npc.others.stats.findIndex(val => val.name == 'attack')
@@ -584,28 +588,30 @@ export class BattleComponent implements OnInit{
         //npc turn to attack
       }, 3000)
     } else {
-      if (!npcDisabled&&npcMove[0].damageClass.name == 'status') {
-        switch (npcMove[0].damageClass.ailment?.category) {
+      if (!npcDisabled && npcMove.damageClass.name == 'status') {
+        this.narrate = `${this.currentPlayer2[0].name.toLocaleUpperCase()} use ${npcMove.name.toLocaleUpperCase()}!`
+        switch (npcMove.damageClass.ailment?.category) {
           case 'ailment':
-            this.ailment(npcMove[0],'npc-move', npcAccuracy, evasionPlayer)
+            this.ailment(npcMove,'npc-move', npcAccuracy, evasionPlayer)
             break
           case 'net-good-stats':
-            if (npcMove[0].target == 'user' || npcMove[0].target == 'all-opponents' || npcMove[0].target == 'selected-pokemon') {
-              this.powerUp(npcMove[0],'npc-move')
+            if (npcMove.target == 'user' || npcMove.target == 'all-opponents' || npcMove.target == 'selected-pokemon') {
+              this.powerUp(npcMove,'npc-move')
             }
             break
         }   
       }else if(!npcDisabled){ 
-        this.animationAttack('npc', npcMove[0].damageClass.name)
-        this.narrate = `${this.currentPlayer2[0].name.toLocaleUpperCase()} use ${npcMove[0].name.toLocaleUpperCase()}!`
+        this.animationAttack('npc', npcMove.damageClass.name)
+        this.narrate = `${this.currentPlayer2[0].name.toLocaleUpperCase()} use ${npcMove.name.toLocaleUpperCase()}!`
         setTimeout(() => {
-          this.attackSequence(npc, player, npcMove[0], 'player')
+          this.attackSequence(npc, player, npcMove, 'player')
         },
         //reduce hp
         1500)
       } else {
         {
           if (this.npcCondition == 'confused') {
+            this.narrate = `${this.currentPlayer2[0].name.toLocaleUpperCase()} is confused!`
             this.animationAttack('npc', 'special')
             setTimeout(() => {
               let indexAttackerStat = npc.others.stats.findIndex(val => val.name == 'attack')
@@ -645,7 +651,8 @@ export class BattleComponent implements OnInit{
           //death timer player
           1500)
         } else {
-          if (!playerDisabled&&playerMove.damageClass.name == 'status') {
+          if (!playerDisabled && playerMove.damageClass.name == 'status') {
+            this.narrate = `${this.currentPlayer1[0].name.toLocaleUpperCase()} use ${playerMove.name.toLocaleUpperCase()}!`
             switch (playerMove.damageClass.ailment?.category) {
               case 'ailment':
                 this.ailment(playerMove, 'player-move',playerAccuracy, evasionNpc)
@@ -667,6 +674,7 @@ export class BattleComponent implements OnInit{
           } else {
             {
               if (this.playerCondition == 'confused') {
+                this.narrate = `${this.currentPlayer1[0].name} is confused!`
                 this.animationAttack('player', 'special')
                 setTimeout(() => {
                   let indexAttackerStat = player.others.stats.findIndex(val => val.name == 'attack')
@@ -861,14 +869,19 @@ export class BattleComponent implements OnInit{
     
   }
 
-  npcMove() {
+  npcMove():MoveModel {
     let TYPE = 0;
     let typeArr = this.currentPlayer1[0].types
     let chosenNpcMove: MoveModel[] = []
+
     for (let move of this.currentPlayer2[0].moves) {
-      if(move.pp > 0){
+      if (move.pp > 0) {
         let newType
-        if (typeArr.typeTwo) {
+        if (this.currentPlayer1[0].others.condition == '' && move.damageClass.ailment && move.damageClass.ailment.category == 'ailment') {
+          return move
+        } else if(this.currentPlayer2[0].stats==this.currentPlayer2[0].others.stats && move.damageClass.ailment &&move.damageClass.ailment.category == 'net-good-stats'){
+          return move
+        }else if (typeArr.typeTwo) {
           newType = typeAdvantage(move.type, typeArr.typeOne) * typeAdvantage(move.type, typeArr.typeTwo)
           if (TYPE < newType) {
             TYPE = newType
@@ -885,7 +898,7 @@ export class BattleComponent implements OnInit{
         }
       }
     }
-    return chosenNpcMove
+    return chosenNpcMove[0]
   }
 
   closeOverview() {
@@ -905,7 +918,7 @@ export class BattleComponent implements OnInit{
       this.currentPlayer1.pop()
       this.npcAttackMotion = true
       setTimeout(() => {
-        this.attackSequence(npc, pokemon, npcMove[0],'player')
+        this.attackSequence(npc, pokemon, npcMove,'player')
         this.npcAttackMotion = false
         this.calculatePercentHp()
       },2000)
