@@ -160,6 +160,8 @@ export class BattleComponent implements OnInit{
   npcDamageReceive: number
   playerDamageReceive: number
 
+  narrate: string
+
   ngOnInit(): void {
     this.playerOption = 'default'
     this.battlePhase = 'on-going'
@@ -470,6 +472,7 @@ export class BattleComponent implements OnInit{
         }
       }else if(!playerDisabled){
         this.animationAttack('player', playerMove.damageClass.name)
+        this.narrate = `${this.currentPlayer1[0].name.toLocaleUpperCase()} use ${playerMove.name.toLocaleUpperCase()}!`
         setTimeout(() => {
           this.attackSequence(player, npc, playerMove, 'npc')
           //reduce hp npc
@@ -527,6 +530,7 @@ export class BattleComponent implements OnInit{
             }
           } else if (!npcDisabled) {
             this.animationAttack('npc', npcMove[0].damageClass.name)
+            this.narrate = `${this.currentPlayer2[0].name.toLocaleUpperCase()} use ${npcMove[0].name.toLocaleUpperCase()}!`
             setTimeout(() => {
               this.attackSequence(npc, player, npcMove[0], 'player')
             },
@@ -593,6 +597,7 @@ export class BattleComponent implements OnInit{
         }   
       }else if(!npcDisabled){ 
         this.animationAttack('npc', npcMove[0].damageClass.name)
+        this.narrate = `${this.currentPlayer2[0].name.toLocaleUpperCase()} use ${npcMove[0].name.toLocaleUpperCase()}!`
         setTimeout(() => {
           this.attackSequence(npc, player, npcMove[0], 'player')
         },
@@ -653,6 +658,7 @@ export class BattleComponent implements OnInit{
             }
           }else if(!playerDisabled){
             this.animationAttack('player', playerMove.damageClass.name)
+            this.narrate = `${this.currentPlayer1[0].name.toLocaleUpperCase()} use ${playerMove.name.toLocaleUpperCase()}!`
             setTimeout(() => {
               this.attackSequence(player, npc, playerMove, 'npc')
             },
@@ -711,6 +717,7 @@ export class BattleComponent implements OnInit{
 
     setTimeout(() => {
       this.ongoingBattle = false
+      this.narrate = ''
       this.npcDamageReceive = -1
       this.playerDamageReceive = -1
       this.burnOrToxicNpc = ''

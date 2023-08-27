@@ -250,6 +250,9 @@
           </div>
         </div>
       </div>
+      <div *ngIf="this.ongoingBattle">
+        <p style="text-align: center; font-size: 14pt; color:white; padding-top: 5vh;">{{this.narrate}}</p>
+      </div>
       <div *ngSwitchCase="'default'">
         <div
         *ngIf="!this.ongoingBattle"

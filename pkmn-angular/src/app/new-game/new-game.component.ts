@@ -260,7 +260,6 @@ export class NewGameComponent implements OnInit{
           }
           const maxHp = calculateHp(pokemon.stats[0].base_stat)
 
-          console.log(pokemon.sprites)
     
           let pokemonObj: PokemonModel = {
             id: pokemon.id,
