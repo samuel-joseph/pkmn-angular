@@ -60,26 +60,18 @@
     }
   }
 
-  .npcIdle{
-    padding-right: 5.5vw;
-  }
-
-  .playerIdle{
-    padding-left: 5.5vw;
-  }
-
   .npcPokemon{
     animation: npcMove 1s;
   }
 
   .pokemonFade{
     opacity: 1;
-    height: 19vh;
+    height: 23vh;
     animation: faded 2s;
   }
 
   .playerPhysical{
-    height: 19vh;
+    height: 23vh;
     position: fixed;
     z-index: 99;
     margin-left: 80px;
@@ -89,7 +81,7 @@
   }
   .attackFx{
     position: fixed;
-    height: 19vh;
+    height: 23vh;
     z-index: 99;
     animation: fx 1.5s;
     opacity: 0;
@@ -105,23 +97,28 @@
   }
 
   .npcPhysical{
-    height: 19vh;
+    height: 23vh;
     position: fixed;
-    z-index: 99;
-    margin-left: 110px;
-    margin-top: 80px;
+    z-index: 1;
+    margin-left: 170px;
+    margin-top: -80px;
     animation: npcPhysicalAttack 1.5s;
     opacity: 0;
   }
+
+  .playerIdle {
+    position: relative;
+    z-index: 5;
+  }
   
   .megaNpcPhysical{
-    height: 19vh;
+    height: 23vh;
     position: fixed;
     background: url(https://opengameart.org/sites/default/files/Air%20Shuriken%20128x128.png);
     background-size: 100%;
-    z-index: 99;
-    margin-left: 110px;
-    margin-top: 80px;
+    z-index: 1;
+    margin-left: 170px;
+    margin-top: -80px;
     animation: npcPhysicalAttack 1.5s;
     opacity: 0;    
   }
@@ -135,65 +132,68 @@
   @keyframes npcPhysicalAttack {
     5%{
       opacity: 1;
+      margin-left: 140px;
     }
     50%{
       opacity: 1;
-      height: 19vh;
+      height: 23vh;
     }
     60%{
       opacity: 1;
       transform: rotateZ(0deg);
-      height: 19vh;
+      height: 23vh;
     }
     80%{
       opacity: 1;
       margin-left: 80px;
-      margin-top: 90px;
-      height: 19vh;
+      margin-top: 80px;
+      height: 23vh;
       transform: rotateZ(-5deg);
     }
     85%{
       opacity: 1;
       transform: rotateZ(0deg);
-      height: 19vh;
+      height: 23vh;
     }
     100%{
       opacity: 1;
-      height: 19vh;
+      height: 23vh;
+      margin-left: 80px;
+      margin-top: 80px;
     }
   }
 
   @keyframes playerPhysicalAttack {
     5%{
       opacity: 1;
-      height: 19vh;
+      height: 23vh;
     }
     50%{
       opacity: 1;
       transform: rotateZ(0deg);
       margin-top: 80px;
-      height: 19vh;
+      height: 23vh;
     }
     55%{
       opacity: 1;
       transform: rotateZ(15deg);
       margin-left: 120px;
       margin-top: 80px;
-      height: 19vh;
+      height: 23vh;
     }
     70%{
       margin-left: 120px;
       margin-top: 80px;
-      height: 19vh;
+      height: 23vh;
     }
     80%{
       transform: rotateZ(0deg);
       opacity: 1;
-      height: 19vh;
+      height: 23vh;
     }
     100%{
       opacity: 1;
-      height: 19vh;
+      height: 23vh;
     }
   }
 
@@ -217,26 +217,26 @@
 
   .playerPokemon{
     animation: playerMove 1s;
-    height: 19vh;
+    height: 23vh;
   }
   
   .faintedPokemonNpc{
     animation: fainted 2s;
     opacity: 0;
-    height: 19vh;
+    height: 23vh;
   }
 
   .faintedPokemon{
     animation: fainted 2s;
     opacity: 0;
-    height: 19vh;
+    height: 23vh;
   }
   .ordinaryPokemonImg{
-    height: 19vh;
+    height: 23vh;
   }
 
   .auraShuriken{
-    height: 19vh;
+    height: 23vh;
     background: url(https://opengameart.org/sites/default/files/Air%20Shuriken%20128x128.png);
     background-size: 100%;
   }
@@ -320,7 +320,7 @@
   justify-content: center;
 
   .pokemonImage{
-    height: 15vh;
+    height: 23vh;
   }
 
   .parent{
