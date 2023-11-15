@@ -25,7 +25,8 @@ export class NewGameComponent implements OnInit{
     pokemon: PokemonModel
     toDisplayPokemon: any[] = []
   
-    gameLoading = true
+  gameLoading = true
+  clickedPokemon = false
     
     myPokemons: PokemonModel[] = []
   
@@ -188,6 +189,7 @@ export class NewGameComponent implements OnInit{
   }
 
   displayPokemon(id: string) {
+    this.clickedPokemon = true
     const isUnique = this.myPokemons.filter(pokemon => pokemon.id == parseInt(id))  
     if(isUnique.length == 0){
       this.http.getPokemon(id).subscribe((data) => {
@@ -303,9 +305,11 @@ export class NewGameComponent implements OnInit{
 
   emptyDisplay() {
     this.toDisplayPokemon = []
+    this.clickedPokemon = false
   }
 
   chosenPokemon(chosen: PokemonModel) {
+    this.clickedPokemon = false
     let isUnique;
     this.emptyDisplay()
     isUnique = this.myPokemons.filter(pokemon => pokemon.id == chosen.id)
