@@ -61,7 +61,7 @@
         [ngClass]="
         this.npcAttackMotion&&this.npcAttackClass==='physical'?'pokemonFade':
         this.npcAttackMotion&&this.npcAttackClass==='special'?'npcPokemon':
-        this.npcbuffOn?'powerupfx':'npcIdle'
+        this.npcbuffOn?'powerupfx':''
         ">
           <img        
           alt=""
@@ -77,7 +77,7 @@
         />
       </div>
     </div>
-    <div class="npcIdle">
+    <div>
       <img
       *ngIf="this.npcAttackMotion&&this.npcAttackClass=='physical'"
       alt=""
