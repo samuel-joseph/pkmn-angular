@@ -75,7 +75,7 @@
     position: fixed;
     z-index: 99;
     margin-left: 80px;
-    margin-top: 150px;
+    margin-top: 200px;
     animation: playerPhysicalAttack 1.5s;
     opacity: 0;
   }
@@ -164,9 +164,13 @@
   }
 
   @keyframes playerPhysicalAttack {
-    5%{
+    1%{
       opacity: 1;
       height: 23vh;
+      margin-top: 200px;
+    }
+    30%{
+      margin-top: 140px;
     }
     50%{
       opacity: 1;
@@ -176,7 +180,7 @@
     }
     55%{
       opacity: 1;
-      transform: rotateZ(15deg);
+      transform: rotateZ(5deg);
       margin-left: 120px;
       margin-top: 80px;
       height: 23vh;
@@ -194,6 +198,8 @@
     100%{
       opacity: 1;
       height: 23vh;
+      margin-top: 170px;
+      margin-left: 80px;
     }
   }
 
