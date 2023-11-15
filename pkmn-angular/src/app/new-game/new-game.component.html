@@ -1,156 +1,158 @@
 <app-openning *ngIf="gameLoading"></app-openning>
-<div style="
-display: flex;
-text-align: center;
-justify-content: center;" 
-*ngIf="toDisplayPokemon.length!==0&&!gameLoading&&clickedPokemon">
-  <div style="    
-  position: absolute;
-  padding: 2vh 10vw;
-  padding-bottom: 5vh;
-  background-color: palevioletred;
-  height: 100vh;
+<div *ngIf="!gameLoading" style="padding-top: 50px; background-color: darkblue;">
+  <div style="
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  " 
-  *ngFor="let displayPokemon of toDisplayPokemon">
-  <div style="    
-  background-color: #ffffffd1;
-  padding: 3vh;
-  border-radius: 20px;
-  border: 5px solid darkblue;"
-  >
-    <h6>Add this pokemon?</h6>
-    <div style="display: flex; flex-direction: row; justify-content: center;">
-      <button *ngIf="displayPokemon.back_image!=null" style="border-radius: 20px; margin-right: 30px;" (click)="chosenPokemon(pokemon)">YES</button>  
-      <button style="border-radius: 20px;" (click)="emptyDisplay()">NO</button>
-    </div>
-      <div style="display: flex; flex-direction: column; justify-content: center;">
-        <div style="    
-        height: 20vh;
-        display: flex;
-        justify-content: center;">
-          <img [src]="pokemon.front_image" />
-        </div>
-        <h5 style="font-weight: bold;">{{pokemon.name.toLocaleUpperCase()}}</h5>
-        <div style="    
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-evenly;
-        color: white;
-        font-size: x-small;
-        font-weight: bolder;
-        ">
-          <div [ngStyle]="{
-            'text-shadow': '0 0 black',
-            'font-weight': 'bold',
-            'padding': '5px',
-            'font-size': '8pt',
-            'color':
-            pokemon.types.typeOne == 'fire' ? 'red' : 
-            pokemon.types.typeOne == 'water' ? 'blue' :
-            pokemon.types.typeOne == 'grass' ? 'green' :
-            pokemon.types.typeOne == 'psychic' ? 'purple' :
-            pokemon.types.typeOne == 'rock' ? 'brown' :
-            pokemon.types.typeOne == 'ground' ? 'brown' :
-            pokemon.types.typeOne == 'fighting' ? 'brown' :
-            pokemon.types.typeOne == 'poison' ? 'violet' :
-            pokemon.types.typeOne == 'dragon' ? 'darkviolet' :
-            pokemon.types.typeOne == 'fairy' ? 'pink' :
-            pokemon.types.typeOne == 'flying' ? 'gray' :
-            pokemon.types.typeOne == 'normal' ? 'gray' :
-            pokemon.types.typeOne == 'dark' ? 'black' : 
-            pokemon.types.typeOne == 'bug' ? 'lightgreen': 
-            pokemon.types.typeOne  == 'ghost' ? 'violet' : 
-            pokemon.types.typeOne  == 'electric' ? '#b1b100' : 'black'
-          }
-          "
-          >{{pokemon.types.typeOne.toLocaleUpperCase()}}</div>
-          <div
-            *ngIf="pokemon.types.typeTwo!==undefined"
-            [ngStyle]="{
+  text-align: center;
+  justify-content: center;" 
+  *ngIf="toDisplayPokemon.length!==0&&clickedPokemon">
+    <div style="    
+    position: absolute;
+    padding: 2vh 10vw;
+    padding-bottom: 5vh;
+    background-color: darkblue;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    " 
+    *ngFor="let displayPokemon of toDisplayPokemon">
+    <div style="    
+    background-color: palevioletred;
+    padding: 3vh;
+    border-radius: 20px;
+    border: 5px solid #ffffffd1;"
+    >
+      <h6>Add this pokemon?</h6>
+      <div style="display: flex; flex-direction: row; justify-content: center;">
+        <button *ngIf="displayPokemon.back_image!=null" style="border-radius: 20px; margin-right: 30px;" (click)="chosenPokemon(pokemon)">YES</button>  
+        <button style="border-radius: 20px;" (click)="emptyDisplay()">NO</button>
+      </div>
+        <div style="display: flex; flex-direction: column; justify-content: center;">
+          <div style="    
+          height: 20vh;
+          display: flex;
+          justify-content: center;">
+            <img [src]="pokemon.front_image" />
+          </div>
+          <h5 style="font-weight: bold;">{{pokemon.name.toLocaleUpperCase()}}</h5>
+          <div style="    
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-evenly;
+          color: white;
+          font-size: x-small;
+          font-weight: bolder;
+          ">
+            <div [ngStyle]="{
               'text-shadow': '0 0 black',
               'font-weight': 'bold',
               'padding': '5px',
               'font-size': '8pt',
               'color':
-              pokemon.types.typeTwo == 'fire' ? 'red' : 
-              pokemon.types.typeTwo == 'water' ? 'blue' :
-              pokemon.types.typeTwo == 'grass' ? 'green' :
-              pokemon.types.typeTwo == 'psychic' ? 'purple' :
-              pokemon.types.typeTwo == 'rock' ? 'brown' :
-              pokemon.types.typeTwo == 'ground' ? 'brown' :
-              pokemon.types.typeTwo == 'fighting' ? 'brown' :
-              pokemon.types.typeTwo == 'poison' ? 'violet' :
-              pokemon.types.typeTwo == 'dragon' ? 'darkviolet' :
-              pokemon.types.typeTwo == 'fairy' ? 'pink' :
-              pokemon.types.typeTwo == 'flying' ? 'gray' :
-              pokemon.types.typeTwo == 'normal' ? 'gray' :
-              pokemon.types.typeTwo == 'dark' ? 'black' : 
-              pokemon.types.typeTwo == 'bug' ? 'lightgreen': 
-              pokemon.types.typeTwo == 'ghost' ? 'violet' : 
-              pokemon.types.typeTwo  == 'electric' ? '#b1b100' : 'black'
+              pokemon.types.typeOne == 'fire' ? 'red' : 
+              pokemon.types.typeOne == 'water' ? 'blue' :
+              pokemon.types.typeOne == 'grass' ? 'green' :
+              pokemon.types.typeOne == 'psychic' ? 'purple' :
+              pokemon.types.typeOne == 'rock' ? 'brown' :
+              pokemon.types.typeOne == 'ground' ? 'brown' :
+              pokemon.types.typeOne == 'fighting' ? 'brown' :
+              pokemon.types.typeOne == 'poison' ? 'violet' :
+              pokemon.types.typeOne == 'dragon' ? 'darkviolet' :
+              pokemon.types.typeOne == 'fairy' ? 'pink' :
+              pokemon.types.typeOne == 'flying' ? 'gray' :
+              pokemon.types.typeOne == 'normal' ? 'gray' :
+              pokemon.types.typeOne == 'dark' ? 'black' : 
+              pokemon.types.typeOne == 'bug' ? 'lightgreen': 
+              pokemon.types.typeOne  == 'ghost' ? 'violet' : 
+              pokemon.types.typeOne  == 'electric' ? '#b1b100' : 'black'
             }
             "
-            >{{pokemon.types.typeTwo.toLocaleUpperCase()}}</div>
-          </div>
-          <div style="display: flex; flex-direction: row-reverse; font-size: small; margin-top: 10px;">
-            <div style="display: flex; flex-direction: column; align-items: center;">
-              <h6>Moves:</h6>
-              <div
-              style="
-              display: flex;
-              justify-content: center;
-              margin-bottom: 5px;
-              width: 75%;
+            >{{pokemon.types.typeOne.toLocaleUpperCase()}}</div>
+            <div
+              *ngIf="pokemon.types.typeTwo!==undefined"
+              [ngStyle]="{
+                'text-shadow': '0 0 black',
+                'font-weight': 'bold',
+                'padding': '5px',
+                'font-size': '8pt',
+                'color':
+                pokemon.types.typeTwo == 'fire' ? 'red' : 
+                pokemon.types.typeTwo == 'water' ? 'blue' :
+                pokemon.types.typeTwo == 'grass' ? 'green' :
+                pokemon.types.typeTwo == 'psychic' ? 'purple' :
+                pokemon.types.typeTwo == 'rock' ? 'brown' :
+                pokemon.types.typeTwo == 'ground' ? 'brown' :
+                pokemon.types.typeTwo == 'fighting' ? 'brown' :
+                pokemon.types.typeTwo == 'poison' ? 'violet' :
+                pokemon.types.typeTwo == 'dragon' ? 'darkviolet' :
+                pokemon.types.typeTwo == 'fairy' ? 'pink' :
+                pokemon.types.typeTwo == 'flying' ? 'gray' :
+                pokemon.types.typeTwo == 'normal' ? 'gray' :
+                pokemon.types.typeTwo == 'dark' ? 'black' : 
+                pokemon.types.typeTwo == 'bug' ? 'lightgreen': 
+                pokemon.types.typeTwo == 'ghost' ? 'violet' : 
+                pokemon.types.typeTwo  == 'electric' ? '#b1b100' : 'black'
+              }
               "
-        *ngFor="let move of pokemon.moves">
-          <button
-          [ngStyle]="{
-            'border-radius': '20px',
-            'border': 'solid black',
-            'margin-bottom': '5px',
-            'text-shadow': '0 0 black',
-            'width': '180px',
-            'color': 'white',
-            'padding': '5px',
-            'background-color':
-            move.type == 'fire' ? 'red' : 
-            move.type == 'water' ? 'blue' :
-            move.type == 'grass' ? 'green' :
-            move.type == 'psychic' ? 'purple' :
-            move.type == 'rock' ? 'brown' :
-            move.type == 'ground' ? 'brown' :
-            move.type == 'fighting' ? 'brown' :
-            move.type == 'poison' ? 'violet' :
-            move.type == 'dragon' ? 'darkviolet' :
-            move.type == 'fairy' ? 'pink' :
-            move.type == 'flying' ? 'gray' :
-            move.type == 'normal' ? 'gray' :
-            move.type == 'dark' ? 'black' : 
-            move.type == 'bug' ? 'lightgreen' :
-            move.type == 'ghost' ? 'violet' : 
-            move.type  == 'electric' ? '#b1b100' : 'black'
-          }
-          " 
-          >{{move.name}}</button>
-          </div>
+              >{{pokemon.types.typeTwo.toLocaleUpperCase()}}</div>
             </div>
-            <div style="padding: 0 10px;">
-              <h6>Stats</h6>
-              <div *ngFor="let stat of pokemon.stats">
-                <p style="text-align: initial; margin: 5px 0;">{{stat.name}} : {{stat.base_stat}}</p>
+            <div style="display: flex; flex-direction: row-reverse; font-size: small; margin-top: 10px;">
+              <div style="display: flex; flex-direction: column; align-items: center;">
+                <h6>Moves:</h6>
                 <div
-                [style]="{
-                'background-color': 'green',
-                'height': '1vh',
-                'position': 'relative',
-                'width': ((stat.base_stat/180)*100).toString()+'%'
-                }
+                style="
+                display: flex;
+                justify-content: center;
+                margin-bottom: 5px;
+                width: 75%;
                 "
-                >
+          *ngFor="let move of pokemon.moves">
+            <button
+            [ngStyle]="{
+              'border-radius': '20px',
+              'border': 'solid black',
+              'margin-bottom': '5px',
+              'text-shadow': '0 0 black',
+              'width': '180px',
+              'color': 'white',
+              'padding': '5px',
+              'background-color':
+              move.type == 'fire' ? 'red' : 
+              move.type == 'water' ? 'blue' :
+              move.type == 'grass' ? 'green' :
+              move.type == 'psychic' ? 'purple' :
+              move.type == 'rock' ? 'brown' :
+              move.type == 'ground' ? 'brown' :
+              move.type == 'fighting' ? 'brown' :
+              move.type == 'poison' ? 'violet' :
+              move.type == 'dragon' ? 'darkviolet' :
+              move.type == 'fairy' ? 'pink' :
+              move.type == 'flying' ? 'gray' :
+              move.type == 'normal' ? 'gray' :
+              move.type == 'dark' ? 'black' : 
+              move.type == 'bug' ? 'lightgreen' :
+              move.type == 'ghost' ? 'violet' : 
+              move.type  == 'electric' ? '#b1b100' : 'black'
+            }
+            " 
+            >{{move.name}}</button>
+            </div>
+              </div>
+              <div style="padding: 0 10px;">
+                <h6>Stats</h6>
+                <div *ngFor="let stat of pokemon.stats">
+                  <p style="text-align: initial; margin: 5px 0;">{{stat.name}} : {{stat.base_stat}}</p>
+                  <div
+                  [style]="{
+                  'background-color': 'green',
+                  'height': '1vh',
+                  'position': 'relative',
+                  'width': ((stat.base_stat/180)*100).toString()+'%'
+                  }
+                  "
+                  >
+                </div>
               </div>
             </div>
           </div>
@@ -158,9 +160,7 @@ justify-content: center;"
       </div>
     </div>
   </div>
-</div>
-<div *ngIf="!gameLoading&&!clickedPokemon" style="padding-top: 50px; background-color: darkblue;">
-  <div *ngIf="myPokemons">
+  <div *ngIf="myPokemons&&!clickedPokemon">
     <span *ngFor="let pokemon of myPokemons">
       <img alt="" class="idleAnimationPlayer" style="width: 15%;" [src]="pokemon.front_image" (click)="removePokemon(pokemon.id)"/>
     </span>
