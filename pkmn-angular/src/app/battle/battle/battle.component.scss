@@ -143,7 +143,7 @@
       transform: rotateZ(0deg);
       height: 23vh;
     }
-    80%{
+    75%{
       opacity: 1;
       margin-left: 80px;
       margin-top: 80px;
@@ -158,8 +158,8 @@
     100%{
       opacity: 1;
       height: 23vh;
-      margin-left: 80px;
-      margin-top: 80px;
+      margin-left: 140px;
+      margin-top: 0px;
     }
   }
 
@@ -320,7 +320,7 @@
   justify-content: center;
 
   .pokemonImage{
-    height: 23vh;
+    height: 15vh;
   }
 
   .parent{
