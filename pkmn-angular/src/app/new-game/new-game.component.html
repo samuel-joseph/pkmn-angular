@@ -1,19 +1,12 @@
 <app-openning *ngIf="gameLoading"></app-openning>
-<div *ngIf="!gameLoading" 
-style="
-background-color: darkblue; 
-height: 100vh;"
->
-  <div style="
-  display: flex;
-  text-align: center;
-  justify-content: center;" 
+<div *ngIf="!gameLoading" class="parent">
+  <div class="sub-parent" 
   *ngIf="toDisplayPokemon.length!==0&&clickedPokemon">
     <div style="    
     position: absolute;
     padding: 2vh 10vw;
     padding-bottom: 5vh;
-    background-color: darkblue;
+    background: var(--background-color);
     height: 100vh;
     display: flex;
     flex-direction: column;
