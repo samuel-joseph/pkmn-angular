@@ -1,3 +1,7 @@
+Url:
+https://the-pokemon-stadium-battle.web.app/
+
+
 To deploy webapp to production
 
 - merge changes to master all files except for cached files
