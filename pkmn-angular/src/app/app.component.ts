@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PokemonService } from './_services/pokemon/pokemon.service';
+import { PokemonService, Item } from './_services/pokemon/pokemon.service';
 
 import { PokemonModel } from './model/pokemon-model.model';
 import { MoveModel } from './model/move-model.model';
@@ -11,12 +11,17 @@ import { environment } from 'src/environment/environment';
 })
 export class AppComponent implements OnInit{
   title = 'pkmn-angular';
-  constructor(private http: PokemonService) { }
   myPokemon: PokemonModel[] = []
   dbMove: MoveModel[] = []
   page: string
   gymLeaders: any[] = []
   pokemonObj = {}
+
+  //to be deleted
+  items: Item[] = [];
+  newItem: Item = { name: '', quantity: 0, price: 0 };
+
+  constructor(private http: PokemonService) {}
 
   public transition(child: any): void {
     switch (child.next) {
@@ -37,9 +42,34 @@ export class AppComponent implements OnInit{
   }
   
   ngOnInit(): void {
+    this.http.getItems().subscribe(items => {
+      this.items = items;
+    });
     if (this.myPokemon.length < 1) {
       this.page = 'newGame'
     }
     this.gymLeaders = environment.gymLeaders
+  }
+
+  addItem(): void {
+    this.http.addItem(this.newItem).subscribe(item => {
+      this.items.push(item);
+      this.newItem = { name: '', quantity: 0, price: 0 };  // Clear the form
+    });
+  }
+
+  updateItem(item: Item): void {
+    this.http.updateItem(item).subscribe(updatedItem => {
+      const index = this.items.findIndex(i => i._id === updatedItem._id);
+      if (index !== -1) {
+        this.items[index] = updatedItem;
+      }
+    });
+  }
+
+  deleteItem(id: string): void {
+    this.http.deleteItem(id).subscribe(response => {
+      this.items = this.items.filter(item => item._id !== id);
+    });
   }
 }
