@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { MatDialogModule } from '@angular/material/dialog'
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -32,7 +33,8 @@ import { OpenningComponent } from './pop-up/openning/openning/openning.component
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    MatDialogModule
+    MatDialogModule,
+    FormsModule
   ],
   providers: [Pokemon],
   bootstrap: [AppComponent]

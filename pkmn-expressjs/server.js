@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -26,8 +27,16 @@ const itemSchema = new mongoose.Schema({
   price: Number,
 });
 
+const trainerSchema = new mongoose.Schema({
+  name: String,
+  avatar: String,
+  pokemons: Array,
+  badges: Number,
+});
+
 // Define a model
 const Item = mongoose.model("Item", itemSchema);
+const Trainer = mongoose.model("Trainer", trainerSchema);
 
 // CRUD operations
 
@@ -35,6 +44,18 @@ const Item = mongoose.model("Item", itemSchema);
 app.get("/api/items", (req, res) => {
   Item.find()
     .then((items) => res.json(items))
+    .catch((err) => res.status(500).json({ error: err.message }));
+});
+
+app.get("/api/trainer", (req, res) => {
+  Trainer.find()
+    .then((trainers) => res.json(trainers))
+    .catch((err) => res.status(500).json({ error: err.message }));
+});
+
+app.get("/api/trainer/:id", (req, res) => {
+  Trainer.findById(req.params.id)
+    .then((trainer) => res.json(trainer))
     .catch((err) => res.status(500).json({ error: err.message }));
 });
 
@@ -46,6 +67,19 @@ app.post("/api/items", (req, res) => {
     price: req.body.price,
   });
   newItem
+    .save()
+    .then((item) => res.json(item))
+    .catch((err) => res.status(500).json({ error: err.message }));
+});
+
+app.post("/api/trainer", (req, res) => {
+  const newTrainer = new Trainer({
+    name: req.body.name,
+    avatar: req.body.avatar,
+    pokemons: req.body.pokemons,
+    badges: req.body.badges,
+  });
+  newTrainer
     .save()
     .then((item) => res.json(item))
     .catch((err) => res.status(500).json({ error: err.message }));
