@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { PokemonModel } from '../model/pokemon-model.model';
+import { PokemonService } from '../_services/pokemon/pokemon.service';
 
 @Component({
   selector: 'app-player',
@@ -7,7 +8,7 @@ import { PokemonModel } from '../model/pokemon-model.model';
   styleUrls: ['./player.component.scss']
 })
 export class PlayerComponent implements OnInit{
-  constructor( ) { }
+  constructor(private http: PokemonService ) { }
   @Input() myPokemons: PokemonModel[] = []
   @Output() pokemonSubmit = new EventEmitter();
   movesAllReady = false
@@ -65,9 +66,10 @@ export class PlayerComponent implements OnInit{
     let checker = this.myPokemons.filter(pokemon => pokemon.moves.length == 4||pokemon.dbMoves.length==0)
     if (checker.length == 6) {
       this.movesAllReady = true
+      this.http.addUser(this.myPokemons).subscribe(response => {
+        console.log(response)
+      })
     }
-
-    //feel free to check
   }
 
   gotoTop() {

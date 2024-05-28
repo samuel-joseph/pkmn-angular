@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, map, retry, throwError } from 'rxjs';
 import { TrainerModel } from 'src/app/model/trainer-model.model';
+import { PokemonModel } from 'src/app/model/pokemon-model.model';
 
 
 const url = 'https://pokeapi.co/api/v2';
@@ -15,13 +16,20 @@ export interface Item {
   price: number;
 }
 
+export interface Trainer {
+  username: string,
+  email: string,
+  pokemons: PokemonModel,
+  password: string
+}
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class PokemonService {
   private mainUrl = 'http://localhost:3000/api'
-  private apiUrl = 'http://localhost:3000/api/item';
+  private apiUrl = 'http://localhost:3000/api/user';
   private apiTrainerUrl = '/trainer'
   constructor(private http: HttpClient) { }
 
@@ -46,6 +54,16 @@ export class PokemonService {
 
   addItem(item: Item): Observable<Item> {
     return this.http.post<Item>(this.apiUrl, item);
+  }
+
+  addUser(pokemon: PokemonModel[]): Observable<Trainer> {
+    let trainer = {
+      username: 'test',
+      email: 'test@gmail.com',
+      pokemons: pokemon,
+      password: '123456'
+    }
+    return this.http.post<Trainer>(this.apiUrl, trainer);
   }
 
   updateItem(item: Item): Observable<Item> {

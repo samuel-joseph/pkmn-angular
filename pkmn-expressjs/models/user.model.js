@@ -41,11 +41,11 @@ const typeSchema = new mongoose.Schema({
 const maxHitSchema = new mongoose.Schema({
   min_hits: {
     type: Number,
-    required: true,
+    required: false,
   },
   max_hits: {
     type: Number,
-    required: true,
+    required: false,
   },
 });
 
@@ -90,7 +90,7 @@ const moveSchema = new mongoose.Schema({
   },
   power: {
     type: Number,
-    required: true,
+    required: false,
   },
   pp: {
     type: Number,
@@ -106,7 +106,7 @@ const moveSchema = new mongoose.Schema({
   },
   accuracy: {
     type: Number,
-    required: true,
+    required: false,
   },
   damageClass: {
     type: damageClassSchema,
@@ -180,7 +180,7 @@ const metaSchema = new mongoose.Schema({
   },
   condition: {
     type: String,
-    required: true,
+    required: false,
   },
   canMegaEvolve: {
     type: Boolean,
@@ -212,11 +212,11 @@ const pokemonSchema = new mongoose.Schema({
   },
   moves: {
     type: [moveSchema],
-    required: true,
+    required: false,
   },
   dbMoves: {
     type: [moveSchema],
-    required: true,
+    required: false,
   },
   front_image: {
     type: String,
@@ -234,7 +234,10 @@ const pokemonSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  others: metaSchema,
+  others: {
+    type: metaSchema,
+    required: false,
+  },
   status: {
     type: String,
     required: false,
