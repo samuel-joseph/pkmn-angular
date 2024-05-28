@@ -316,7 +316,9 @@ export class NewGameComponent implements OnInit{
     if (isUnique.length < 1 || isUnique == undefined) {
       this.myPokemons.push(chosen)
       if (this.myPokemons.length == 6) {
-        this.pokemonSubmit.emit({ pokemon: this.myPokemons, next:'player', dbMoves: this.dbMoves })
+        this.pokemonSubmit.emit({ pokemon: this.myPokemons, next: 'player', dbMoves: this.dbMoves })
+        console.log(this.myPokemons)
+
       }
     }
   }
