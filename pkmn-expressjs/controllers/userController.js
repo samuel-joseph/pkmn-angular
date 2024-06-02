@@ -1,3 +1,5 @@
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 
 // Get all users
@@ -33,9 +35,15 @@ const createUser = async (req, res) => {
       return res.status(400).json({ message: "Email already in use" });
     }
 
-    const newUser = new User({ username, email, pokemons, password });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({
+      username,
+      email,
+      pokemons,
+      password: hashedPassword,
+    });
     await newUser.save();
-    res.status(201).json(newUser); // Respond with the created user data
+    res.status(201).json(newUser);
   } catch (error) {
     res.status(500).json({ message: "Server error: " + error.message });
   }
@@ -69,10 +77,48 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: "All fields are required." });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "Invalid email or password." });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const isMatch = await bcrypt.compare(
+      password,
+      hashedPassword,
+      (err, result) => {
+        if (err) {
+          console.error("Error comparing passwords:", err);
+          return;
+        }
+        console.log("Passwords match:", result); // result will be true if they match, false otherwise
+      }
+    );
+    if (isMatch === false) {
+      return res.status(400).json({ message: "Invalid email or password." });
+    }
+
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+    res.json({ token });
+  } catch (error) {
+    res.status(500).json({ message: "Server error." + error });
+  }
+};
+
 module.exports = {
   getUsers,
   getUserById,
   createUser,
   updateUser,
   deleteUser,
+  login,
 };
