@@ -1,5 +1,3 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 
 // Get all users
@@ -25,40 +23,25 @@ const getUserById = async (req, res) => {
   }
 };
 
-// Create a new user
-const createUser = async (req, res) => {
-  const { username, email, pokemons, password } = req.body;
-
-  try {
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: "Email already in use" });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({
-      username,
-      email,
-      pokemons,
-      password: hashedPassword,
-    });
-    await newUser.save();
-    res.status(201).json(newUser);
-  } catch (error) {
-    res.status(500).json({ message: "Server error: " + error.message });
-  }
-};
-
 // Update an existing user
 const updateUser = async (req, res) => {
+  const userId = req.user.userId;
+  const { username, email, password, pokemons } = req.body;
+
   try {
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    }); // Find and update user by ID
+    const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.json(user); // Respond with the updated user data
+
+    user.username = username;
+    user.email = email;
+    user.password = password;
+    user.pokemons = pokemons;
+
+    await user.save();
+
+    res.json({ message: "User updated successfully.", user });
   } catch (error) {
     res.status(500).json({ message: "Server error: " + error.message });
   }
@@ -77,48 +60,9 @@ const deleteUser = async (req, res) => {
   }
 };
 
-const login = async (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({ message: "All fields are required." });
-  }
-
-  try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ message: "Invalid email or password." });
-    }
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const isMatch = await bcrypt.compare(
-      password,
-      hashedPassword,
-      (err, result) => {
-        if (err) {
-          console.error("Error comparing passwords:", err);
-          return;
-        }
-        console.log("Passwords match:", result); // result will be true if they match, false otherwise
-      }
-    );
-    if (isMatch === false) {
-      return res.status(400).json({ message: "Invalid email or password." });
-    }
-
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
-    res.json({ token });
-  } catch (error) {
-    res.status(500).json({ message: "Server error." + error });
-  }
-};
-
 module.exports = {
-  getUsers,
+  // getUsers,
   getUserById,
-  createUser,
   updateUser,
   deleteUser,
-  login,
 };

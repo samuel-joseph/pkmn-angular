@@ -1,9 +1,9 @@
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { addTokenToBlacklist } = require("../utils/tokenBlacklist");
 const User = require("../models/user.model");
 
 const register = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, pokemons } = req.body;
 
   if (!username || !email || !password) {
     return res.status(400).json({ message: "All fields are required." });
@@ -15,13 +15,12 @@ const register = async (req, res) => {
       return res.status(400).json({ message: "Email already in use." });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, email, password: hashedPassword });
+    const newUser = new User({ username, email, password, pokemons });
     await newUser.save();
 
     res.status(201).json({ message: "User registered successfully." });
   } catch (error) {
-    res.status(500).json({ message: "Server error." });
+    res.status(500).json({ message: "Server error: " + error.message });
   }
 };
 
@@ -38,7 +37,7 @@ const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid email or password." });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid email or password." });
     }
@@ -47,10 +46,23 @@ const login = async (req, res) => {
       expiresIn: "1h",
     });
 
-    res.json({ token });
+    const data = {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      pokemons: user.pokemons,
+    };
+
+    res.json({ token, data });
   } catch (error) {
-    res.status(500).json({ message: "Server error." + error });
+    res.status(500).json({ message: "Server error: " + error.message });
   }
 };
 
-module.exports = { register, login };
+const logout = async (req, res) => {
+  const token = req.token;
+  addTokenToBlacklist(token);
+  res.json({ message: "Logged out successfully" });
+};
+
+module.exports = { register, login, logout };
