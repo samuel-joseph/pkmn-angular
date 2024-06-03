@@ -46,14 +46,7 @@ const login = async (req, res) => {
       expiresIn: "1h",
     });
 
-    const data = {
-      id: user._id,
-      username: user.username,
-      email: user.email,
-      pokemons: user.pokemons,
-    };
-
-    res.json({ token, data });
+    res.json({ token, user });
   } catch (error) {
     res.status(500).json({ message: "Server error: " + error.message });
   }
