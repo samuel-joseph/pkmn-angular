@@ -262,6 +262,14 @@ const userSchema = new mongoose.Schema({
     type: [pokemonSchema],
     required: true,
   },
+  victory: {
+    type: Number,
+    default: 0,
+  },
+  chance: {
+    type: Number,
+    default: 0,
+  },
   password: {
     type: String,
     required: true,
