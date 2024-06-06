@@ -1,3 +1,6 @@
+![Stack Diagram](etc/Diagram.png)
+
+
 Backend routes:
 - router.post("/", register);
 - router.post("/login", login);
