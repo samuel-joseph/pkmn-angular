@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PokemonService, Item } from './_services/pokemon/pokemon.service';
+import { AuthService } from './_services/auth/auth.service';
 
 import { PokemonModel } from './model/pokemon-model.model';
 import { MoveModel } from './model/move-model.model';
@@ -17,11 +18,7 @@ export class AppComponent implements OnInit{
   gymLeaders: any[] = []
   pokemonObj = {}
 
-  //to be deleted
-  // items: Item[] = [];
-  // newItem: Item = { name: '', quantity: 0, price: 0 };
-
-  constructor(private http: PokemonService) {}
+  constructor(private pokemonService: PokemonService, private authService: AuthService) {}
 
   public transition(child: any): void {
     switch (child.next) {
@@ -39,6 +36,10 @@ export class AppComponent implements OnInit{
       gymLeaders: this.gymLeaders,
       dbMove: this.dbMove
     }
+  }
+
+  logout() {
+    this.authService.logout().subscribe(response=>console.log(response))
   }
   
   ngOnInit(): void {

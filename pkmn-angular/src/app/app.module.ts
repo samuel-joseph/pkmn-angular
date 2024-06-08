@@ -17,6 +17,17 @@ import { OverviewComponent } from './pop-up/overview/overview.component';
 import { VersusComponent } from './pop-up/versus/versus.component';
 import { OpenningComponent } from './pop-up/openning/openning/openning.component';
 import { LoginComponent } from './login/login.component';
+import { Router, RouterModule, Routes } from '@angular/router';
+import { RegisterComponent } from './register/register.component';
+import { StorageService } from './_services/storage/storage.service';
+
+const routes: Routes = [
+  { path: '', component: OpenningComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  // Add more routes as needed
+  { path: '**', redirectTo: '' } // Redirect to home if route not found
+];
 
 @NgModule({
   declarations: [
@@ -29,16 +40,21 @@ import { LoginComponent } from './login/login.component';
     OverviewComponent,
     VersusComponent,
     OpenningComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     MatDialogModule,
-    FormsModule
+    FormsModule,
+    RouterModule.forRoot(routes)
   ],
-  providers: [Pokemon],
+  exports: [
+    RouterModule
+  ],
+  providers: [Pokemon, StorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

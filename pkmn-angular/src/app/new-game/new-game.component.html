@@ -188,7 +188,6 @@
       <p>- Choose 3 pokemon to battle</p>
     </div>
   </div>
-  <img *ngIf="regionPokemons.length==0" alt="" class="pikachu" src="https://media.tenor.com/fSsxftCb8w0AAAAC/pikachu-running.gif" />
   <div class="pokemon-list" *ngIf="regionPokemons">
     <span *ngFor="let pokemon of regionPokemons">
         <img style="border: 1px solid black; background-color: palevioletred;" alt="" [src]="pokemon.url" (click)="displayPokemon(pokemon.id)" />

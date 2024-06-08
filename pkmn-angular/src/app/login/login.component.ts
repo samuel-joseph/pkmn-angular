@@ -1,41 +1,51 @@
-import { Component, ElementRef, ViewChild, inject } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { StorageService } from '../_services/storage/storage.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
-  email: string = '';
-  password: string = '';
-  message: string = '';
+export class LoginComponent implements OnInit {
+  form: any = {
+    email: null,
+    password: null
+  };
+  isLoggedIn = false;
+  isLoginFailed = false;
+  errorMessage = '';
+  roles: string[] = [];
 
-  authService: AuthService = inject(AuthService);
-  router: Router = inject(Router);
-  activeRoute: ActivatedRoute = inject(ActivatedRoute);
+  constructor(private authService: AuthService, private storageService: StorageService) { }
 
-  ngOnInit(){
-    this.activeRoute.queryParamMap.subscribe((queries) => {
-      const logout = Boolean(queries.get('logout'));
-      if(logout){
-        this.authService.logout();
-        alert('You are now logged out. IsLogged = ' + this.authService.isLogged);
-      }
-    })
+  ngOnInit(): void {
+    if (this.storageService.isLoggedIn()) {
+      this.isLoggedIn = true;
+      this.roles = this.storageService.getUser().roles;
+    }
   }
 
-  login(){
-    this.authService.login({ email: this.email, password: this.password }).subscribe(
-      response => {
-        localStorage.setItem('token', response.token);
-        this.router.navigate(['/home']);
+  onSubmit(): void {
+    const { email, password } = this.form;
+
+    this.authService.login({ email, password }).subscribe({
+      next: data => {
+        this.storageService.saveUser(data);
+
+        this.isLoginFailed = false;
+        this.isLoggedIn = true;
+        this.roles = this.storageService.getUser().roles;
+        this.reloadPage();
       },
-      error => {
-        this.message = 'Invalid email or password.';
+      error: err => {
+        this.errorMessage = err.error.message;
+        this.isLoginFailed = true;
       }
-    )
+    });
+  }
+
+  reloadPage(): void {
+    window.location.reload();
   }
 }
