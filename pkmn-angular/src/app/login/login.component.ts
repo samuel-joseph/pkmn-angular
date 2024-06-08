@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../_services/auth/auth.service';
 import { StorageService } from '../_services/storage/storage.service';
+import { Router } from '@angular/router';
+import { StateService } from '../_services/state/state.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   form: any = {
     email: null,
     password: null
@@ -17,26 +19,23 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   roles: string[] = [];
 
-  constructor(private authService: AuthService, private storageService: StorageService) { }
-
-  ngOnInit(): void {
-    if (this.storageService.isLoggedIn()) {
-      this.isLoggedIn = true;
-      this.roles = this.storageService.getUser().roles;
-    }
-  }
+  constructor(
+    private authService: AuthService,
+    private storageService: StorageService,
+    private router: Router,
+    private stateService: StateService
+  ) { }
 
   onSubmit(): void {
     const { email, password } = this.form;
 
     this.authService.login({ email, password }).subscribe({
       next: data => {
-        this.storageService.saveUser(data);
-
+        this.stateService.setState(data);
         this.isLoginFailed = false;
         this.isLoggedIn = true;
-        this.roles = this.storageService.getUser().roles;
-        this.reloadPage();
+        this.stateService.getState().subscribe(response=>console.log(response))
+        this.router.navigate(['/new-game'])
       },
       error: err => {
         this.errorMessage = err.error.message;
