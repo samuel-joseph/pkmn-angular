@@ -5,6 +5,8 @@ import { getStats, getTypes, calculateHp, getRandNum } from '../helper/pokemon-h
 import { Pokemon } from '../helper/pokemon.class';
 import { MoveModel } from '../model/move-model.model';
 import { environment } from 'src/environment/environment';
+import { StateService } from '../_services/state/state.service';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-game',
@@ -14,7 +16,9 @@ import { environment } from 'src/environment/environment';
 export class NewGameComponent implements OnInit{
   constructor(
     private http: PokemonService,
-    private pokemonService: Pokemon
+    private pokemonService: Pokemon,
+    private stateService: StateService,
+    private router: Router
   ) { }
     @Output() pokemonSubmit = new EventEmitter();
     moveListArr = environment.moveDb
@@ -317,6 +321,10 @@ export class NewGameComponent implements OnInit{
       this.myPokemons.push(chosen)
       if (this.myPokemons.length == 6) {
         this.pokemonSubmit.emit({ pokemon: this.myPokemons, next: 'player', dbMoves: this.dbMoves })
+        
+        //new ver
+        this.stateService.setPokemon(this.myPokemons)
+        this.router.navigate(['/profile'])
         console.log(this.myPokemons)
 
       }

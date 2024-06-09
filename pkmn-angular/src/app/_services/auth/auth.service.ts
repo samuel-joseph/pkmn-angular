@@ -2,8 +2,10 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { Observable, tap } from "rxjs";
+import { PokemonModel } from "src/app/model/pokemon-model.model";
 
-const AUTH_API = 'http://54.90.231.243:3000/api/auth/';  
+const AUTH_API = 'http://54.90.231.243:3000/api/auth/';
+const USER_API = 'http://54.90.231.243:3000/api/user/';  
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -38,6 +40,29 @@ export class AuthService{
         password,
       },
       httpOptions
+    );
+  }
+
+  update(
+    username: string,
+    email: string,
+    pokemons: PokemonModel[],
+    victory: number,
+    chance: number
+  ): Observable<any> {
+    const token = this.getToken()
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.put(
+      USER_API,
+      {
+        username,
+        email,
+        password: 'password',
+        pokemons,
+      },
+      {headers}
     );
   }
 

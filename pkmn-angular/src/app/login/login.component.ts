@@ -31,11 +31,14 @@ export class LoginComponent {
 
     this.authService.login({ email, password }).subscribe({
       next: data => {
-        this.stateService.setState(data);
+        this.stateService.setState(data.user);
         this.isLoginFailed = false;
         this.isLoggedIn = true;
-        this.stateService.getState().subscribe(response=>console.log(response))
-        this.router.navigate(['/new-game'])
+        this.stateService.getState().subscribe(response =>{
+            console.log(response)
+            this.router.navigate(['/profile'])
+          }
+        )
       },
       error: err => {
         this.errorMessage = err.error.message;

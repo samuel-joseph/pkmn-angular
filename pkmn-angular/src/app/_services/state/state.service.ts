@@ -27,6 +27,13 @@ export class StateService {
     this.state$.next(newState);
   }
 
+  setPokemon(pokemons: PokemonModel[]): void{
+    this.getState().subscribe(response => {
+      response.pokemons = pokemons
+      this.setState(response)
+    })
+  }
+
   // Get state
   getState(): Observable<UserModel> {
     return this.state$.asObservable();
