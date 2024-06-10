@@ -1,14 +1,21 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Router } from "@angular/router";
-import { Observable, tap } from "rxjs";
+import { Observable, catchError, tap, throwError } from "rxjs";
 import { PokemonModel } from "src/app/model/pokemon-model.model";
+import { jwtDecode } from "jwt-decode";
 
 const AUTH_API = 'http://54.90.231.243:3000/api/auth/';
 const USER_API = 'http://54.90.231.243:3000/api/user/';  
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
+const token = localStorage.getItem('token')
+
+export interface data {
+  username: string,
+  email: string,
+  pokemons: PokemonModel[],
+  password: string
+}
+
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +35,7 @@ export class AuthService{
 
   logout(): Observable<any> {
     localStorage.removeItem('token');
-    return this.http.post(AUTH_API + 'signout', { }, httpOptions);
+    return this.http.post(AUTH_API + 'signout', { });
   }
 
   register(username: string, email: string, password: string): Observable<any> {
@@ -38,33 +45,16 @@ export class AuthService{
         username,
         email,
         password,
-      },
-      httpOptions
+      }
     );
   }
 
-  update(
-    username: string,
-    email: string,
-    pokemons: PokemonModel[],
-    victory: number,
-    chance: number
-  ): Observable<any> {
-    const token = this.getToken()
-
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    return this.http.put(
-      USER_API,
-      {
-        username,
-        email,
-        password: 'password',
-        pokemons,
-      },
-      {headers}
-    );
+  update(data: data): Observable<any> {
+    // Define the headers, including the Authorization header with the token
+    // Make the HTTP PUT request
+    return this.http.put<any>(USER_API, data);
   }
+  
 
   getToken(): string | null {
     return localStorage.getItem('token');
@@ -72,5 +62,25 @@ export class AuthService{
 
   tokenExist(): boolean {
     return this.getToken()!==null
+  }
+
+  isTokenExpired() {
+    let token = this.getToken()
+
+    if (token === null) {
+      token = ''
+    }
+
+    const decodedToken = jwtDecode(token); // Decoding the token
+    const currentTime = Date.now() / 1000; // Convert milliseconds to seconds
+
+        // Check if decodedToken or decodedToken.exp is undefined
+        if (!decodedToken || typeof decodedToken.exp === 'undefined') {
+          // Token is malformed or doesn't contain exp property
+          return true; // Consider it expired to be safe
+      }
+  
+      // Check if the token expiration time (exp) is less than the current time
+      return decodedToken.exp < currentTime;
   }
 }

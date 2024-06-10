@@ -29,12 +29,15 @@ export class ProfileComponent implements OnInit {
   }
 
   updateDb() {
-    this.authService.update(
-      this.username,
-      this.email,
-      this.pokemons,
-      this.victory,
-      this.chance)
+    console.log("AM I CALLED HERE")
+    const data = {
+      username: 'aws07',
+      email: 'aws',
+      pokemons: this.pokemons,
+      password: 'password',
+    }
+    const token = this.authService.getToken()
+    this.authService.update(data)
       .subscribe(response => {
         console.log(response)
       })
