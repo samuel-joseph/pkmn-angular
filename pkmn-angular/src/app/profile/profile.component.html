@@ -14,7 +14,10 @@
 </div>
 
 <div *ngIf="(pokemons$ | async)?.length==6; else noSixPokemons">
-  <button><a routerLink="/pre-battle">Register</a></button>
+  <div *ngFor="let pokemon of pokemons$ | async">
+    <p>{{ pokemon.name }}</p>
+    <img alt="" [src]="pokemon.front_image" />
+  </div>
 </div>
 
 
