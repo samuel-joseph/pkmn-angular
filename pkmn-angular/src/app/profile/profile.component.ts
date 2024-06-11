@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { StateService } from 'src/app/_services/state/state.service';
 import { PokemonModel } from 'src/app/model/pokemon-model.model';
 import { AuthService } from '../_services/auth/auth.service';
+import { UserModel } from '../model/trainer-model.model';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -14,27 +16,25 @@ export class ProfileComponent implements OnInit {
   pokemons: PokemonModel[] | []
   victory: number
   chance: number
+  password: string
+
+  state$: Observable<UserModel>
+  pokemons$: Observable<PokemonModel[]>
 
 
   constructor(private stateService: StateService, private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.stateService.getState().subscribe(response => {
-      this.username = response.username
-      this.email = response.email
-      this.pokemons = response.pokemons
-      this.victory = response.victory
-      this.chance = response.chance
-    })
+    this.state$ = this.stateService.getState()
+    this.pokemons$ = this.stateService.getState().pipe(map(state => state.pokemons));
   }
 
   updateDb() {
-    console.log("AM I CALLED HERE")
     const data = {
-      username: 'aws07',
-      email: 'aws',
+      username: this.username,
+      email: this.email,
       pokemons: this.pokemons,
-      password: 'password',
+      password: "password",
     }
     const token = this.authService.getToken()
     this.authService.update(data)

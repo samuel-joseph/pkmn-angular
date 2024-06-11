@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators'; // Import the map operator
+import { map } from 'rxjs/operators'; 
 import { PokemonModel } from 'src/app/model/pokemon-model.model';
 import { UserModel } from 'src/app/model/trainer-model.model';
 
@@ -27,11 +27,13 @@ export class StateService {
     this.state$.next(newState);
   }
 
-  setPokemon(pokemons: PokemonModel[]): void{
-    this.getState().subscribe(response => {
-      response.pokemons = pokemons
-      this.setState(response)
-    })
+  setPokemon(pokemons: PokemonModel[]): void {
+    const currentState = this.state$.getValue();
+    const updatedState: UserModel = {
+      ...currentState, // Copy current state
+      pokemons: [...pokemons] // Update pokemons array
+    };
+    this.setState(updatedState);
   }
 
   // Get state
@@ -39,34 +41,5 @@ export class StateService {
     return this.state$.asObservable();
   }
 
-  // // Get Pokemon by ID
-  // getPokemonById(id: number): Observable<PokemonModel | undefined> {
-  //   return this.state$.asObservable().pipe(
-  //     map(pokemonArray => pokemonArray.find(pokemon => pokemon.id === id))
-  //   );
-  // }
-
-  // // Add a new Pokemon to state
-  // addPokemon(pokemon: PokemonModel): void {
-  //   const currentState = this.state$.getValue();
-  //   currentState.push(pokemon);
-  //   this.state$.next(currentState);
-  // }
-
-  // // Update an existing Pokemon in state
-  // updatePokemon(updatedPokemon: PokemonModel): void {
-  //   const currentState = this.state$.getValue();
-  //   const index = currentState.findIndex(pokemon => pokemon.id === updatedPokemon.id);
-  //   if (index !== -1) {
-  //     currentState[index] = updatedPokemon;
-  //     this.state$.next(currentState);
-  //   }
-  // }
-
-  // // Remove a Pokemon from state
-  // removePokemon(id: number): void {
-  //   const currentState = this.state$.getValue();
-  //   const filteredState = currentState.filter(pokemon => pokemon.id !== id);
-  //   this.state$.next(filteredState);
-  // }
+  // Other methods to get, add, update, and remove Pokemon from state can be implemented similarly
 }

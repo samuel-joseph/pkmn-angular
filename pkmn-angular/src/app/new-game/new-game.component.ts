@@ -1,12 +1,14 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { PokemonService } from '../_services/pokemon/pokemon.service';
 import { PokemonModel, RegionPokemon } from '../model/pokemon-model.model';
-import { getStats, getTypes, calculateHp, getRandNum } from '../helper/pokemon-helper';
+import { getStats, getTypes, calculateHp, getRandNum, getMove } from '../helper/pokemon-helper';
 import { Pokemon } from '../helper/pokemon.class';
 import { MoveModel } from '../model/move-model.model';
 import { environment } from 'src/environment/environment';
 import { StateService } from '../_services/state/state.service';
 import { Route, Router } from '@angular/router';
+import { HelperService } from '../helper/helper.class';
+import { UserModel } from '../model/trainer-model.model';
 
 @Component({
   selector: 'app-new-game',
@@ -18,9 +20,13 @@ export class NewGameComponent implements OnInit{
     private http: PokemonService,
     private pokemonService: Pokemon,
     private stateService: StateService,
-    private router: Router
+    private router: Router,
+    private helper: HelperService
   ) { }
-    @Output() pokemonSubmit = new EventEmitter();
+  @Output() pokemonSubmit = new EventEmitter();
+
+    currentState: UserModel
+
     moveListArr = environment.moveDb
     regionArr = environment.region
     regionPokemons: RegionPokemon[] = []
@@ -130,61 +136,64 @@ export class NewGameComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    for (let pokemon of this.moveListArr) {
-      this.http.getPokemonMove(`${pokemon}`).subscribe((move) => {
-        let ailment, hits, crit_rate
+    this.stateService.getState().subscribe(response => {
+      this.currentState = response
+    })
+    // for (let pokemon of this.moveListArr) {
+    //   this.http.getPokemonMove(`${pokemon}`).subscribe((move) => {
+    //     let ailment, hits, crit_rate
 
-        if (move.meta) {
-          ailment = {
-            name: move.meta.ailment['name'],
-            category: move.meta.category['name'],
-            chance: move.meta.ailment_chance
-          }
-          hits = {
-            min_hits: move.meta.min_hits != null ? move.meta.min_hits : undefined,
-            max_hits: move.meta.max_hits != null ? move.meta.max_hits : undefined
-          }
-          crit_rate = move.meta.crit_rate
+    //     if (move.meta) {
+    //       ailment = {
+    //         name: move.meta.ailment['name'],
+    //         category: move.meta.category['name'],
+    //         chance: move.meta.ailment_chance
+    //       }
+    //       hits = {
+    //         min_hits: move.meta.min_hits != null ? move.meta.min_hits : undefined,
+    //         max_hits: move.meta.max_hits != null ? move.meta.max_hits : undefined
+    //       }
+    //       crit_rate = move.meta.crit_rate
           
-        }
+    //     }
 
-        let moveFx = this.getMoveFx(move.type.name, move.power)
+    //     let moveFx = this.getMoveFx(move.type.name, move.power)
 
-        let description 
-        for (let desc of move.flavor_text_entries) {
-          if (desc.language.name == "en") {
-            description = desc.flavor_text
-          }
-        }
+    //     let description 
+    //     for (let desc of move.flavor_text_entries) {
+    //       if (desc.language.name == "en") {
+    //         description = desc.flavor_text
+    //       }
+    //     }
 
 
-        this.dbMoves.push({
-          id: move.id,
-          name: move.name,
-          power: move.power,
-          pp: move.pp,
-          ppMax: move.pp,
-          type: move.type.name,
-          accuracy: move.accuracy,
-          damageClass: {
-            name: move.damage_class.name,
-            ailment
-          },
-          effect_chance: move.effect_chance,
-          stat_changes: move.stat_changes,
-          priority: move.priority,
-          hits,
-          crit_rate: move.meta.crit_rate,
-          moveFx,
-          target: move.target.name,
-          description,
-          drain: move.meta.drain
-        })
-      })
-    }
-    setTimeout(() => {
+    //     this.dbMoves.push({
+    //       id: move.id,
+    //       name: move.name,
+    //       power: move.power,
+    //       pp: move.pp,
+    //       ppMax: move.pp,
+    //       type: move.type.name,
+    //       accuracy: move.accuracy,
+    //       damageClass: {
+    //         name: move.damage_class.name,
+    //         ailment
+    //       },
+    //       effect_chance: move.effect_chance,
+    //       stat_changes: move.stat_changes,
+    //       priority: move.priority,
+    //       hits,
+    //       crit_rate: move.meta.crit_rate,
+    //       moveFx,
+    //       target: move.target.name,
+    //       description,
+    //       drain: move.meta.drain
+    //     })
+    //   })
+    // }
+    // setTimeout(() => {
       this.gameLoading = false
-    }, 10700)
+    // }, 10700)
   }
 
   getRegion(region: string) {
@@ -212,95 +221,102 @@ export class NewGameComponent implements OnInit{
             const id = url.substring(index + "2/move/".length)
     
             if (this.moveListArr.includes(parseInt(id))&&(learnMethod=='level-up'||learnMethod=='tutor')) {
-              let index = this.dbMoves.findIndex(val => val.id == id)
-              tempDbMoves.push(this.dbMoves[index])
+              // let index = this.dbMoves.findIndex(val => val.id == id)
+              // tempDbMoves.push(this.dbMoves[index])
+              this.http.getPokemonMove(id).subscribe(response => {
+                const createdMove = this.helper.createMove(response)
+                tempDbMoves.push(createdMove)
 
+                //to be moved
+                let i = 0
+                let groupOne:MoveModel[] = tempDbMoves.filter(move => move.type == types.typeOne)
+                let groupTwo:MoveModel[] = types.typeTwo && tempDbMoves.filter(move => move.type == types.typeTwo)
+                let nonGroupOne:MoveModel[] = tempDbMoves.filter(move => move.type !== types.typeOne)
+      
+                // while (i < 4) {
+                //   let randomNum
+                //   let index: number
+                //   let name: string
+                //   if (i == 0) {
+                //     randomNum = getRandNum(0, groupOne.length - 1)
+                //     name = groupOne[randomNum].name
+                //     let findIndex = groupOne.findIndex(pokemon=>pokemon.name == name)
+                //     moveSet.push(groupOne[randomNum])
+                //     groupOne.splice(findIndex,1)
+                //   } else if (i == 1&&groupTwo!==undefined&&groupTwo.length>0) {
+                //     randomNum = getRandNum(0, groupTwo.length - 1)
+                //     name = groupTwo[randomNum].name
+                //     moveSet.push(groupTwo[randomNum])
+                //     let findIndex = groupTwo.findIndex(pokemon => pokemon.name == name)
+                //     groupTwo.splice(findIndex,1)
+                //   } else if (i == 2) {
+                //     randomNum = getRandNum(0, nonGroupOne.length - 1)
+                //     name = nonGroupOne[randomNum].name
+                //     moveSet.push(nonGroupOne[randomNum])
+                //     let findIndex = nonGroupOne.findIndex(pokemon => pokemon.name == name)
+                //     nonGroupOne.splice(findIndex,1)
+                //   } else {
+                //     randomNum = getRandNum(0, tempDbMoves.length - 1)
+                //     name = tempDbMoves[randomNum].name
+                //     moveSet.push(tempDbMoves[randomNum])
+                //   }
+      
+                //   index = tempDbMoves.findIndex(move => move.name == name)
+                //   tempDbMoves.splice(index,1)
+                //   i++
+                // }
+                
+                let front_image
+                let back_image
+                if (pokemon.sprites.versions['generation-v']['black-white'].animated.back_default !== null) {
+                  front_image = pokemon.sprites.versions['generation-v']['black-white'].animated.front_default
+                  back_image = pokemon.sprites.versions['generation-v']['black-white'].animated.back_default
+                } else {
+                  front_image = pokemon.sprites.front_default
+                  back_image = pokemon.sprites.back_default
+                }
+                const maxHp = calculateHp(pokemon.stats[0].base_stat)
+      
+          
+                let pokemonObj: PokemonModel = {
+                  id: pokemon.id,
+                  name: pokemon.name,
+                  stats,
+                  types: getTypes(pokemon.types),
+                  moves: moveSet,
+                  dbMoves: tempDbMoves,
+                  front_image,
+                  back_image,
+                  maxHp,
+                  currentHp: maxHp,
+                  others: {
+                    stats,
+                    condition: '',
+                    originalValues: {
+                      front_image: pokemon.sprites.front_default,
+                      back_image: pokemon.sprites.back_default,
+                    }
+                  }
+                }
+      
+      
+                let objPokemon = {
+                  id: pokemon.id,
+                  name: pokemon.name,
+                  types,
+                  stats,
+                  front_image: pokemon.sprites.front_default,
+                  back_image: pokemon.sprites.back_default,
+                  moves: moveSet
+                }
+      
+                this.toDisplayPokemon.push(objPokemon)
+                this.pokemon = pokemonObj
+
+                //till at the top
+              })
             } 
           }
-
-          let i = 0
-          let groupOne:MoveModel[] = tempDbMoves.filter(move => move.type == types.typeOne)
-          let groupTwo:MoveModel[] = types.typeTwo && tempDbMoves.filter(move => move.type == types.typeTwo)
-          let nonGroupOne:MoveModel[] = tempDbMoves.filter(move => move.type !== types.typeOne)
-
-          while (i < 4) {
-            let randomNum
-            let index: number
-            let name: string
-            if (i == 0) {
-              randomNum = getRandNum(0, groupOne.length - 1)
-              name = groupOne[randomNum].name
-              let findIndex = groupOne.findIndex(pokemon=>pokemon.name == name)
-              moveSet.push(groupOne[randomNum])
-              groupOne.splice(findIndex,1)
-            } else if (i == 1&&groupTwo!==undefined&&groupTwo.length>0) { 
-              randomNum = getRandNum(0, groupTwo.length - 1)
-              name = groupTwo[randomNum].name
-              moveSet.push(groupTwo[randomNum])
-              let findIndex = groupTwo.findIndex(pokemon => pokemon.name == name)
-              groupTwo.splice(findIndex,1)
-            } else if (i == 2) { 
-              randomNum = getRandNum(0, nonGroupOne.length - 1)
-              name = nonGroupOne[randomNum].name
-              moveSet.push(nonGroupOne[randomNum])
-              let findIndex = nonGroupOne.findIndex(pokemon => pokemon.name == name)
-              nonGroupOne.splice(findIndex,1)
-            } else {
-              randomNum = getRandNum(0, tempDbMoves.length - 1)
-              name = tempDbMoves[randomNum].name
-              moveSet.push(tempDbMoves[randomNum])
-            }
-
-            index = tempDbMoves.findIndex(move => move.name == name)
-            tempDbMoves.splice(index,1)
-            i++
-          }
-          let front_image
-          let back_image
-          if (pokemon.sprites.versions['generation-v']['black-white'].animated.back_default !== null) {
-            front_image = pokemon.sprites.versions['generation-v']['black-white'].animated.front_default
-            back_image = pokemon.sprites.versions['generation-v']['black-white'].animated.back_default
-          } else {
-            front_image = pokemon.sprites.front_default
-            back_image = pokemon.sprites.back_default
-          }
-          const maxHp = calculateHp(pokemon.stats[0].base_stat)
-
-    
-          let pokemonObj: PokemonModel = {
-            id: pokemon.id,
-            name: pokemon.name,
-            stats,
-            types: getTypes(pokemon.types),
-            moves: moveSet,
-            dbMoves: tempDbMoves,
-            front_image,
-            back_image,
-            maxHp,
-            currentHp: maxHp,
-            others: {
-              stats,
-              condition: '',
-              originalValues: {
-                front_image: pokemon.sprites.front_default,
-                back_image: pokemon.sprites.back_default,
-              }
-            }
-          }
-
-
-          let objPokemon = {
-            id: pokemon.id,
-            name: pokemon.name,
-            types,
-            stats,
-            front_image: pokemon.sprites.front_default,
-            back_image: pokemon.sprites.back_default,
-            moves: moveSet
-          }
-
-          this.toDisplayPokemon.push(objPokemon)
-          this.pokemon = pokemonObj
         }
         
       })
@@ -320,13 +336,17 @@ export class NewGameComponent implements OnInit{
     if (isUnique.length < 1 || isUnique == undefined) {
       this.myPokemons.push(chosen)
       if (this.myPokemons.length == 6) {
-        this.pokemonSubmit.emit({ pokemon: this.myPokemons, next: 'player', dbMoves: this.dbMoves })
+        // this.pokemonSubmit.emit({ pokemon: this.myPokemons, next: 'player', dbMoves: this.dbMoves })
+        this.pokemonSubmit.emit({ pokemon: this.myPokemons, next: 'player', dbMoves: [] })
         
         //new ver
-        this.stateService.setPokemon(this.myPokemons)
-        this.router.navigate(['/profile'])
+        const newState: UserModel = {
+          ...this.currentState,
+          pokemons: this.myPokemons
+        }
+        // this.router.navigate(['/profile'])
+        this.router.navigate(['/choose-moveset'])
         console.log(this.myPokemons)
-
       }
     }
   }

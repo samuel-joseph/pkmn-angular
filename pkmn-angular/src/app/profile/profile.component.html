@@ -1,7 +1,7 @@
 <div>
   <h1>User Information</h1>
-  <p><strong>Username:</strong> {{ username }}</p>
-  <p><strong>Email:</strong> {{ email }}</p>
+  <p><strong>Username:</strong> {{ (state$ | async)?.username }}</p>
+  <p><strong>Email:</strong> {{ (state$ | async)?.email }}</p>
   
   <h2>Pokemons</h2>
   <ul>
@@ -9,16 +9,17 @@
   </ul>
   
   <h2>Statistics</h2>
-  <p><strong>Victories:</strong> {{ victory }}</p>
-  <p><strong>Chance:</strong> {{ chance }}%</p>
+  <p><strong>Victories:</strong> {{ (state$ | async)?.victory }}</p>
+  <p><strong>Chance:</strong> {{ (state$ | async)?.chance }}%</p>
 </div>
 
-<div *ngIf="pokemons.length==6; else noSixPokemons">
-  <button><a href="pre-battle">Register</a></button>
+<div *ngIf="(pokemons$ | async)?.length==6; else noSixPokemons">
+  <button><a routerLink="/pre-battle">Register</a></button>
 </div>
+
 
 <ng-template #noSixPokemons>
-  <button><a href="new-game">Grab Pokemons</a></button>
+  <li><a routerLink="/new-game">New Game</a></li>
 </ng-template>
 
 <button (click)="updateDb()">Save</button>

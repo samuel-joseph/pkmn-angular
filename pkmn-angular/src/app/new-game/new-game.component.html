@@ -94,50 +94,8 @@
               "
               >{{pokemon.types.typeTwo.toLocaleUpperCase()}}</div>
             </div>
-            <div style="display: flex; flex-direction: row-reverse; font-size: small; margin-top: 10px;">
-              <div style="display: flex; flex-direction: column; align-items: center;">
-                <h6>Moves:</h6>
-                <div
-                style="
-                display: flex;
-                justify-content: center;
-                margin-bottom: 5px;
-                width: 75%;
-                "
-          *ngFor="let move of pokemon.moves">
-            <button
-            [ngStyle]="{
-              'border-radius': '20px',
-              'border': 'solid black',
-              'margin-bottom': '5px',
-              'text-shadow': '0 0 black',
-              'width': '180px',
-              'color': 'white',
-              'padding': '5px',
-              'background-color':
-              move.type == 'fire' ? 'red' : 
-              move.type == 'water' ? 'blue' :
-              move.type == 'grass' ? 'green' :
-              move.type == 'psychic' ? 'purple' :
-              move.type == 'rock' ? 'brown' :
-              move.type == 'ground' ? 'brown' :
-              move.type == 'fighting' ? 'brown' :
-              move.type == 'poison' ? 'violet' :
-              move.type == 'dragon' ? 'darkviolet' :
-              move.type == 'fairy' ? 'pink' :
-              move.type == 'flying' ? 'gray' :
-              move.type == 'normal' ? 'gray' :
-              move.type == 'dark' ? 'black' : 
-              move.type == 'bug' ? 'lightgreen' :
-              move.type == 'ghost' ? 'violet' : 
-              move.type  == 'electric' ? '#b1b100' : 'black'
-            }
-            " 
-            >{{move.name}}</button>
-            </div>
-              </div>
-              <div style="padding: 0 10px;">
-                <h6>Stats</h6>
+            <div>
+              <div>
                 <div *ngFor="let stat of pokemon.stats">
                   <p style="text-align: initial; margin: 5px 0;">{{stat.name}} : {{stat.base_stat}}</p>
                   <div

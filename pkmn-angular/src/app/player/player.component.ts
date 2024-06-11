@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { PokemonModel } from '../model/pokemon-model.model';
-import { PokemonService } from '../_services/pokemon/pokemon.service';
+import { StateService } from '../_services/state/state.service';
+import { AuthService } from '../_services/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-player',
@@ -8,8 +10,13 @@ import { PokemonService } from '../_services/pokemon/pokemon.service';
   styleUrls: ['./player.component.scss']
 })
 export class PlayerComponent implements OnInit{
-  constructor(private http: PokemonService ) { }
-  @Input() myPokemons: PokemonModel[] = []
+  constructor(
+    private http: AuthService,
+    private stateService: StateService,
+    private router: Router
+  ) { }
+  // @Input() myPokemons: PokemonModel[] = []
+  myPokemons: PokemonModel[] = []
   @Output() pokemonSubmit = new EventEmitter();
   movesAllReady = false
   overviewMove: any[] = []
@@ -62,13 +69,29 @@ export class PlayerComponent implements OnInit{
     this.allMovesReady()
   }
 
-  allMovesReady(){
-    let checker = this.myPokemons.filter(pokemon => pokemon.moves.length == 4||pokemon.dbMoves.length==0)
-    if (checker.length == 6) {
-      this.movesAllReady = true
-      this.http.addUser(this.myPokemons).subscribe(response => {
-        console.log(response)
+  allMovesReady() {
+    this.stateService.getState().subscribe(response => {
+      this.myPokemons = response.pokemons
+      let checker = this.myPokemons.filter(pokemon => pokemon.moves.length == 4||pokemon.dbMoves.length==0)
+      if (checker.length == 6) {
+        this.movesAllReady = true
+        this.stateService.setPokemon(this.myPokemons)
+      }
+    })
+  }
+
+  isReady(isReady: boolean) {
+    if (isReady){
+      this.stateService.getState().subscribe(response => {
+        const data = {
+          username: response.username,
+          email: response.email,
+          pokemons: this.myPokemons,
+          password: response.password
+        }
+        this.http.update(data).subscribe(response=> console.log(response))
       })
+      this.router.navigate(['/profile'])
     }
   }
 

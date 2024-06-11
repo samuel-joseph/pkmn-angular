@@ -22,6 +22,7 @@ const routes: Routes = [
   { path: 'login', title: 'login', component: LoginComponent },
   { path: 'register', title: 'register', component: RegisterComponent },
   { path: 'profile', title: 'profile', component: ProfileComponent },
+  { path: 'choose-moveset', title: 'choose-moveset', component: PlayerComponent },
   { path: 'pre-battle', title: 'pre-battle', component: PreBattleComponent },
   // Add more routes as needed
   { path: '**', redirectTo: '' } // Redirect to home if route not found
