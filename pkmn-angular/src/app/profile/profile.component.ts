@@ -30,16 +30,21 @@ export class ProfileComponent implements OnInit {
   }
 
   updateDb() {
-    const data = {
-      username: this.username,
-      email: this.email,
-      pokemons: this.pokemons,
-      password: "password",
-    }
-    const token = this.authService.getToken()
-    this.authService.update(data)
-      .subscribe(response => {
-        console.log(response)
-      })
+    // Retrieve the latest state data
+    this.stateService.getState().subscribe(state => {
+      // Extract necessary data from the state
+      const data = {
+        username: state.username,
+        email: state.email,
+        pokemons: state.pokemons,
+        password: "password", // Replace with actual password handling logic
+      };
+  
+      // Call the authService update method with the extracted data
+      this.authService.update(data)
+        .subscribe(response => {
+          console.log(response);
+        });
+    });
   }
 }
