@@ -130,61 +130,12 @@ export class NewGameComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    for (let pokemon of this.moveListArr) {
-      this.http.getPokemonMove(`${pokemon}`).subscribe((move) => {
-        let ailment, hits, crit_rate
-
-        if (move.meta) {
-          ailment = {
-            name: move.meta.ailment['name'],
-            category: move.meta.category['name'],
-            chance: move.meta.ailment_chance
-          }
-          hits = {
-            min_hits: move.meta.min_hits != null ? move.meta.min_hits : undefined,
-            max_hits: move.meta.max_hits != null ? move.meta.max_hits : undefined
-          }
-          crit_rate = move.meta.crit_rate
-          
-        }
-
-        let moveFx = this.getMoveFx(move.type.name, move.power)
-
-        let description 
-        for (let desc of move.flavor_text_entries) {
-          if (desc.language.name == "en") {
-            description = desc.flavor_text
-          }
-        }
-
-
-        this.dbMoves.push({
-          id: move.id,
-          name: move.name,
-          power: move.power,
-          pp: move.pp,
-          ppMax: move.pp,
-          type: move.type.name,
-          accuracy: move.accuracy,
-          damageClass: {
-            name: move.damage_class.name,
-            ailment
-          },
-          effect_chance: move.effect_chance,
-          stat_changes: move.stat_changes,
-          priority: move.priority,
-          hits,
-          crit_rate: move.meta.crit_rate,
-          moveFx,
-          target: move.target.name,
-          description,
-          drain: move.meta.drain
-        })
-      })
-    }
-    setTimeout(() => {
-      this.gameLoading = false
-    }, 10700)
+    this.stateService.getMoveState().subscribe(response => {
+      this.dbMoves = response
+    })
+    // setTimeout(() => {
+    //   this.gameLoading = false
+    // }, 10700)
   }
 
   getRegion(region: string) {

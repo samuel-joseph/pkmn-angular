@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, map, retry, throwError } from 'rxjs';
 import { UserModel } from 'src/app/model/trainer-model.model';
 import { PokemonModel } from 'src/app/model/pokemon-model.model';
+import { MoveModel } from 'src/app/model/move-model.model';
 
 
 const url = 'https://pokeapi.co/api/v2';

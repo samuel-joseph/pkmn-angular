@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { PokemonModel } from 'src/app/model/pokemon-model.model';
 import { UserModel } from 'src/app/model/trainer-model.model';
 import { AuthService } from '../auth/auth.service';
+import { MoveModel } from 'src/app/model/move-model.model';
 
 @Injectable({
   providedIn: 'root'
@@ -54,12 +55,18 @@ export class StateService {
     return this.state$.asObservable();
   }
 
-  isStateEmpty(): Observable<boolean> {
+  setMoveState(newMoves: MoveModel[]): void {
+    const currentState = this.state$.getValue();
+    const updatedState: UserModel = {
+      ...currentState,
+      moves: [...newMoves]
+    };
+    this.state$.next(updatedState);
+  }
+
+  getMoveState(): Observable<MoveModel[]> {
     return this.state$.pipe(
-      map(state => {
-        // Check if any property in state has a value
-        return Object.values(state).every(value => value === null || value === '' || (Array.isArray(value) && value.length === 0));
-      })
+      map(state => state.moves?.slice() ?? []) 
     );
   }
 

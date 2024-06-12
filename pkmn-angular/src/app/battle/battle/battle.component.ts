@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 import { calculateDamage, getRandNum, isSuperEffective, multiplier, typeAdvantage } from 'src/app/helper/pokemon-helper';
 import { GymLeader } from 'src/app/model/gym-leader-model.model';
 import { MoveModel, StatModel } from 'src/app/model/move-model.model';
@@ -161,6 +162,8 @@ export class BattleComponent implements OnInit{
   playerDamageReceive: number
 
   narrate: string
+
+  constructor(private router: Router){}
 
   ngOnInit(): void {
     this.playerOption = 'default'
@@ -377,6 +380,16 @@ export class BattleComponent implements OnInit{
     this.ongoingBattle = true
     let player = this.currentPlayer1[0]
     let npc = this.currentPlayer2[0]
+
+    if (player.others.stats.length !== 8) {
+      player.others.stats.push({
+        base_stat: 0,
+        name: 'evasion'
+      }, {
+        base_stat: 100,
+        name: 'accuracy'
+      })
+    }
 
     let indexEvasionPlayer = player.others.stats.findIndex(val=>val.name == 'evasion')
     let indexEvasionNpc = npc.others.stats.findIndex(val => val.name == 'evasion')
@@ -1006,5 +1019,10 @@ export class BattleComponent implements OnInit{
     }, 10000)
 
     this.battlePhase = 'battle-done'
+  }
+
+  signout() {
+    localStorage.clear()
+    this.router.navigate(['/'])
   }
 }

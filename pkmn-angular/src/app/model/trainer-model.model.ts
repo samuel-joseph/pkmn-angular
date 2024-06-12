@@ -1,3 +1,4 @@
+import { MoveModel } from "./move-model.model";
 import { PokemonModel } from "./pokemon-model.model";
 
 export interface UserModel {
@@ -8,4 +9,5 @@ export interface UserModel {
   victory: number;
   chance: number;
   password: string;
+  moves?: Array<MoveModel>;
 }

@@ -5,6 +5,7 @@ import { environment } from 'src/environment/environment';
 import { StateService } from '../_services/state/state.service';
 import { PokemonService } from '../_services/pokemon/pokemon.service';
 import { Router } from '@angular/router';
+import { HelperService } from '../helper/helper.class';
 
 @Component({
   selector: 'app-main',
@@ -23,7 +24,7 @@ export class MainComponent implements OnInit{
   constructor(
     private router: Router,
     private stateService: StateService,
-    private http: PokemonService
+    private http: PokemonService,
   ) { }
 
   ngOnInit(): void {
@@ -32,6 +33,7 @@ export class MainComponent implements OnInit{
         localStorage.clear()
         this.router.navigate(['/login'])
       } else {
+        this.grabMovesets()
         this.myPokemon = response.pokemons
         this.gymLeaders = environment.gymLeaders
         let i = 0
@@ -66,7 +68,7 @@ export class MainComponent implements OnInit{
     this.page = child.next
   }
 
-  loadMoveDb() {
+  grabMovesets() {
     for (let pokemon of this.moveListArr) {
       this.http.getPokemonMove(`${pokemon}`).subscribe((move) => {
         let ailment, hits, crit_rate
@@ -119,6 +121,63 @@ export class MainComponent implements OnInit{
         })
       })
     }
+  }
+
+  loadMoves() {
+    const dbMoves: MoveModel[] = []
+    for (let i = 0; i < this.moveListArr.length; i++) {
+      this.http.getPokemonMove(`${this.moveListArr[i]}`).subscribe((move) => {
+        let ailment, hits, crit_rate
+
+        if (move.meta) {
+          ailment = {
+            name: move.meta.ailment['name'],
+            category: move.meta.category['name'],
+            chance: move.meta.ailment_chance
+          }
+          hits = {
+            min_hits: move.meta.min_hits != null ? move.meta.min_hits : undefined,
+            max_hits: move.meta.max_hits != null ? move.meta.max_hits : undefined
+          }
+          crit_rate = move.meta.crit_rate
+          
+        }
+
+        let moveFx = this.getMoveFx(move.type.name,move.power)
+
+        let description 
+        for (let desc of move.flavor_text_entries) {
+          if (desc.language.name == "en") {
+            description = desc.flavor_text
+          }
+        }
+
+
+        dbMoves.push({
+          id: move.id,
+          name: move.name,
+          power: move.power,
+          pp: move.pp,
+          ppMax: move.pp,
+          type: move.type.name,
+          accuracy: move.accuracy,
+          damageClass: {
+            name: move.damage_class.name,
+            ailment
+          },
+          effect_chance: move.effect_chance,
+          stat_changes: move.stat_changes,
+          priority: move.priority,
+          hits,
+          crit_rate: move.meta.crit_rate,
+          moveFx,
+          target: move.target.name,
+          description,
+          drain: move.meta.drain
+        })
+      })
+    }
+    this.stateService.setMoveState(dbMoves)
   }
 
   getMoveFx(moveType: string, power: number) {
