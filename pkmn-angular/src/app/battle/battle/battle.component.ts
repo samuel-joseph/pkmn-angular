@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 import { calculateDamage, getRandNum, isSuperEffective, multiplier, typeAdvantage } from 'src/app/helper/pokemon-helper';
 import { GymLeader } from 'src/app/model/gym-leader-model.model';
 import { MoveModel, StatModel } from 'src/app/model/move-model.model';
@@ -162,6 +163,8 @@ export class BattleComponent implements OnInit{
 
   narrate: string
 
+  constructor(private router: Router){}
+
   ngOnInit(): void {
     this.playerOption = 'default'
     this.battlePhase = 'on-going'
@@ -176,7 +179,9 @@ export class BattleComponent implements OnInit{
   }
 
   pushEvasionAccuracy(trainer:string) {
-    const pokemonStat = trainer == 'player' ? this.currentPlayer1 : this.currentPlayer2
+    const pokemonStat = trainer == 'player' ?
+      this.currentPlayer1
+      : this.currentPlayer2
     pokemonStat[0].stats.push({
       base_stat: 0,
       name: 'evasion'
@@ -200,7 +205,9 @@ export class BattleComponent implements OnInit{
   }
 
   settingUpInitialStat(trainer: string) {
-    const pokemonStat = trainer == 'player' ? this.currentPlayer1Stat : this.currentPlayer2Stat
+    const pokemonStat = trainer == 'player' ?
+      this.currentPlayer1Stat
+      : this.currentPlayer2Stat
     this.pushEvasionAccuracy(trainer)
     for (let stat of pokemonStat) {
       stat.base_stat+=this.statValue(stat.name, trainer, 'current')
@@ -374,10 +381,20 @@ export class BattleComponent implements OnInit{
     let player = this.currentPlayer1[0]
     let npc = this.currentPlayer2[0]
 
+    if (player.others.stats.length !== 8) {
+      player.others.stats.push({
+        base_stat: 0,
+        name: 'evasion'
+      }, {
+        base_stat: 100,
+        name: 'accuracy'
+      })
+    }
+
     let indexEvasionPlayer = player.others.stats.findIndex(val=>val.name == 'evasion')
     let indexEvasionNpc = npc.others.stats.findIndex(val => val.name == 'evasion')
     
-    let evasionPlayer = player.others.stats[indexEvasionPlayer].base_stat
+    let evasionPlayer = player.others.stats[indexEvasionPlayer].base_stat 
     let evasionNpc = npc.others.stats[indexEvasionNpc].base_stat
 
 
@@ -1002,5 +1019,10 @@ export class BattleComponent implements OnInit{
     }, 10000)
 
     this.battlePhase = 'battle-done'
+  }
+
+  signout() {
+    localStorage.clear()
+    this.router.navigate(['/'])
   }
 }

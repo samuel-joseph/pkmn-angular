@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, map, retry, throwError } from 'rxjs';
-import { TrainerModel } from 'src/app/model/trainer-model.model';
+import { UserModel } from 'src/app/model/trainer-model.model';
 import { PokemonModel } from 'src/app/model/pokemon-model.model';
+import { MoveModel } from 'src/app/model/move-model.model';
 
 
 const url = 'https://pokeapi.co/api/v2';
@@ -42,8 +43,8 @@ export class PokemonService {
   }
 
   //trainer
-  getTrainer(): Observable<TrainerModel[]>{
-    return this.http.get<TrainerModel[]>(this.mainUrl+this.apiTrainerUrl)
+  getTrainer(): Observable<UserModel[]>{
+    return this.http.get<UserModel[]>(this.mainUrl+this.apiTrainerUrl)
   }
 
 

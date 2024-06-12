@@ -84,4 +84,3 @@ export class PlayerComponent implements OnInit{
     this.allMovesReady()
   }
 }
-

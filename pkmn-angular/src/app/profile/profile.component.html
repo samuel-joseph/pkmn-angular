@@ -1,0 +1,29 @@
+<div>
+  <h1>User Information</h1>
+  <p><strong>Username:</strong> {{ (state$ | async)?.username }}</p>
+  <p><strong>Email:</strong> {{ (state$ | async)?.email }}</p>
+  
+  <h2>Pokemons</h2>
+  <ul>
+    <li *ngFor="let pokemon of pokemons">{{ pokemon }}</li>
+  </ul>
+  
+  <h2>Statistics</h2>
+  <p><strong>Victories:</strong> {{ (state$ | async)?.victory }}</p>
+  <p><strong>Chance:</strong> {{ (state$ | async)?.chance }}%</p>
+</div>
+
+<div *ngIf="(pokemons$ | async)?.length==6; else noSixPokemons">
+  <div *ngFor="let pokemon of pokemons$ | async">
+    <p>{{ pokemon.name }}</p>
+    <img alt="" [src]="pokemon.front_image" />
+  </div>
+  <a routerLink="/pre-game">Battle</a>
+</div>
+
+
+<ng-template #noSixPokemons>
+  <li><a routerLink="/new-game">New Game</a></li>
+</ng-template>
+
+<button (click)="updateDb()">Save</button>

@@ -1,7 +1,8 @@
-import { Component, ElementRef, ViewChild, inject } from '@angular/core';
-
+import { Component } from '@angular/core';
 import { AuthService } from '../_services/auth/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { StorageService } from '../_services/storage/storage.service';
+import { Router } from '@angular/router';
+import { StateService } from '../_services/state/state.service';
 
 @Component({
   selector: 'app-login',
@@ -9,33 +10,40 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  email: string = '';
-  password: string = '';
-  message: string = '';
+  form: any = {
+    email: null,
+    password: null
+  };
+  isLoggedIn = false;
+  isLoginFailed = false;
+  errorMessage = '';
+  roles: string[] = [];
 
-  authService: AuthService = inject(AuthService);
-  router: Router = inject(Router);
-  activeRoute: ActivatedRoute = inject(ActivatedRoute);
+  constructor(
+    private authService: AuthService,
+    private storageService: StorageService,
+    private router: Router,
+    private stateService: StateService
+  ) { }
 
-  ngOnInit(){
-    this.activeRoute.queryParamMap.subscribe((queries) => {
-      const logout = Boolean(queries.get('logout'));
-      if(logout){
-        this.authService.logout();
-        alert('You are now logged out. IsLogged = ' + this.authService.isLogged);
+  onSubmit(): void {
+    const { email, password } = this.form;
+
+    this.authService.login({ email, password }).subscribe({
+      next: data => {
+        this.stateService.setState(data.user);
+        this.isLoginFailed = false;
+        this.isLoggedIn = true;
+        this.router.navigate(['/main'])
+      },
+      error: err => {
+        this.errorMessage = err.error.message;
+        this.isLoginFailed = true;
       }
-    })
+    });
   }
 
-  login(){
-    this.authService.login({ email: this.email, password: this.password }).subscribe(
-      response => {
-        localStorage.setItem('token', response.token);
-        this.router.navigate(['/home']);
-      },
-      error => {
-        this.message = 'Invalid email or password.';
-      }
-    )
+  reloadPage(): void {
+    window.location.reload();
   }
 }

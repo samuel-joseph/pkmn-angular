@@ -1,9 +1,13 @@
+import { MoveModel } from "./move-model.model";
 import { PokemonModel } from "./pokemon-model.model";
 
-export interface TrainerModel {
+export interface UserModel {
   _id?: string;
-  name: string;
-  avatar: string;
+  username: string;
+  email: string;
   pokemons: Array<PokemonModel>;
-  badges: number;
+  victory: number;
+  chance: number;
+  password: string;
+  moves?: Array<MoveModel>;
 }
