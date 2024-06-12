@@ -8,6 +8,10 @@ import { MoveModel } from 'src/app/model/move-model.model';
 import { GymLeader } from 'src/app/model/gym-leader-model.model';
 import { mega_greninja, stat_greninja } from 'src/environment/environment-mega-pokemon.ts/greninja';
 import { Pokemon } from 'src/app/helper/pokemon.class';
+import { AuthService } from 'src/app/_services/auth/auth.service';
+import { Observable } from 'rxjs';
+import { UserModel } from 'src/app/model/trainer-model.model';
+import { StateService } from 'src/app/_services/state/state.service';
 
 @Component({
   selector: 'app-pre-battle',
@@ -33,6 +37,7 @@ export class PreBattleComponent implements OnInit {
   leaderInfo: GymLeader
 
   pokeball = environment.pokeballImg
+  state$: Observable<UserModel>
 
   player1: PokemonModel[] = []
   player2: PokemonModel[] = []
@@ -49,7 +54,11 @@ export class PreBattleComponent implements OnInit {
   highlightPokemon: PokemonModel[]=[]
   counter: number = 0
   
-  constructor(private http: PokemonService) { }
+  constructor(
+    private http: PokemonService,
+    private auth: AuthService,
+    private stateService: StateService
+  ) { }
   
   championshipFn() {
     setTimeout(() => {
@@ -66,6 +75,7 @@ export class PreBattleComponent implements OnInit {
 
 
   ngOnInit() {
+    this.state$ = this.stateService.getState()
     this.battlePhase = 'overview'
     this.initialBattlePhase()
   }
@@ -250,6 +260,7 @@ export class PreBattleComponent implements OnInit {
 
   async outcomeBattle(event: any) {
     if (event.outcome === "win") {
+      this.stateService.addVictory()
       for (let i = 0; i < this.gymLeaders.length; i++){
         if (!this.gymLeaders[i].gymLose) {
           this.myPokemons.push(...event.returnPokemonPlayer1)

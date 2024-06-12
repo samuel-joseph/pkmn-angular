@@ -24,6 +24,7 @@ import { Router, RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './register/register.component';
 import { StorageService } from './_services/storage/storage.service';
 import { ProfileComponent } from './profile/profile.component';
+import { MainComponent } from './main/main.component';
 
 const routes: Routes = [
   { path: '', component: OpenningComponent },
@@ -46,7 +47,8 @@ const routes: Routes = [
     OpenningComponent,
     LoginComponent,
     RegisterComponent,
-    ProfileComponent
+    ProfileComponent,
+    MainComponent
   ],
   imports: [
     BrowserModule,

@@ -11,45 +11,39 @@ import { environment } from 'src/environment/environment';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit{
-  title = 'pkmn-angular';
-  myPokemon: PokemonModel[] = []
-  dbMove: MoveModel[] = []
-  page: string
-  gymLeaders: any[] = []
-  pokemonObj = {}
+  // title = 'pkmn-angular';
+  // myPokemon: PokemonModel[] = []
+  // dbMove: MoveModel[] = []
+  // page: string
+  // gymLeaders: any[] = []
+  // pokemonObj = {}
 
   constructor(private pokemonService: PokemonService, private authService: AuthService) {}
 
-  public transition(child: any): void {
-    switch (child.next) {
-      case "player":
-        this.myPokemon.push(...child.pokemon)
-        this.dbMove.push(...child.dbMoves)
-        break
-      case "pre-batlle":
-        this.myPokemon.push(...child.pokemon)
-        break
-    }
-    this.page = child.next
-    this.pokemonObj = {
-      pokemon: this.myPokemon,
-      gymLeaders: this.gymLeaders,
-      dbMove: this.dbMove
-    }
-  }
+  // public transition(child: any): void {
+  //   switch (child.next) {
+  //     case "player":
+  //       this.myPokemon.push(...child.pokemon)
+  //       this.dbMove.push(...child.dbMoves)
+  //       break
+  //     case "pre-batlle":
+  //       this.myPokemon.push(...child.pokemon)
+  //       break
+  //   }
+  //   this.page = child.next
+  //   this.pokemonObj = {
+  //     pokemon: this.myPokemon,
+  //     gymLeaders: this.gymLeaders,
+  //     dbMove: this.dbMove
+  //   }
+  // }
 
   logout() {
     this.authService.logout().subscribe(response=>console.log(response))
   }
   
   ngOnInit(): void {
-    // this.http.getItems().subscribe(items => {
-    //   this.items = items;
-    // });
-    if (this.myPokemon.length < 1) {
-      this.page = 'newGame'
-    }
-    this.gymLeaders = environment.gymLeaders
+
   }
 
   // addItem(): void {

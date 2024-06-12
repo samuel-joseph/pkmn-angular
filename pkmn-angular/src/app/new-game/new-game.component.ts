@@ -323,8 +323,6 @@ export class NewGameComponent implements OnInit{
         // this.pokemonSubmit.emit({ pokemon: this.myPokemons, next: 'player', dbMoves: this.dbMoves })
         this.stateService.setPokemon(this.myPokemons)
         this.router.navigate(['/profile'])
-        console.log(this.myPokemons)
-
       }
     }
   }

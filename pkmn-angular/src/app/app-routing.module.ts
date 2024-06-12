@@ -9,23 +9,30 @@ import { RegisterComponent } from './register/register.component';
 import { authGuard } from './guards/auth-guard.guard';
 import { ProfileComponent } from './profile/profile.component';
 import { PreBattleComponent } from './battle/pre-battle/pre-battle.component';
+import { MainComponent } from './main/main.component';
 
 const routes: Routes = [
-  { path: 'player', title: 'profile', component: PlayerComponent },
-  {
-    path: 'new-game',
-    title: 'new-game',
-    component: NewGameComponent,
-    canActivate: [authGuard]
-  },
-  { path: '', title:'loading', component: OpenningComponent },
+  // { path: 'player', title: 'profile', component: PlayerComponent },
+  // {
+  //   path: 'new-game',
+  //   title: 'new-game',
+  //   component: NewGameComponent,
+  //   canActivate: [authGuard]
+  // },
+  // { path: '', title:'loading', component: OpenningComponent },
   { path: 'login', title: 'login', component: LoginComponent },
   { path: 'register', title: 'register', component: RegisterComponent },
-  { path: 'profile', title: 'profile', component: ProfileComponent },
-  { path: 'choose-moveset', title: 'choose-moveset', component: PlayerComponent },
-  { path: 'pre-battle', title: 'pre-battle', component: PreBattleComponent },
+  {
+    path: 'main',
+    title: 'main',
+    component: MainComponent, 
+    canActivate: [authGuard]
+  },
+  // { path: 'profile', title: 'profile', component: ProfileComponent },
+  // { path: 'choose-moveset', title: 'choose-moveset', component: PlayerComponent },
+  // { path: 'pre-battle', title: 'pre-battle', component: PreBattleComponent },
   // Add more routes as needed
-  { path: '**', redirectTo: '' } // Redirect to home if route not found
+  { path: '**', redirectTo: 'login' } // Redirect to home if route not found
 ];
 
 @NgModule({

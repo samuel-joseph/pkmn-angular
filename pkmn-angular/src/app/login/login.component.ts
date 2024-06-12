@@ -34,7 +34,7 @@ export class LoginComponent {
         this.stateService.setState(data.user);
         this.isLoginFailed = false;
         this.isLoggedIn = true;
-        this.router.navigate(['/profile'])
+        this.router.navigate(['/main'])
       },
       error: err => {
         this.errorMessage = err.error.message;
