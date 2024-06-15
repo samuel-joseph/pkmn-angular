@@ -26,7 +26,16 @@ const getUserById = async (req, res) => {
 // Update an existing user
 const updateUser = async (req, res) => {
   const userId = req.user.userId;
-  const { username, email, password, pokemons } = req.body;
+  const {
+    username,
+    email,
+    password,
+    pokemons,
+    victory,
+    perfectVictory,
+    lose,
+    totalGames,
+  } = req.body;
 
   try {
     const user = await User.findById(userId);
@@ -34,10 +43,21 @@ const updateUser = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    user.username = username;
-    user.email = email;
-    user.password = password;
-    user.pokemons = pokemons;
+    // Update user properties if provided in request body
+    user.username = username || user.username;
+    user.email = email || user.email;
+    user.pokemons = pokemons || user.pokemons;
+    user.victory = victory || user.victory;
+    user.perfectVictory = perfectVictory || user.perfectVictory;
+    user.lose = lose || user.lose;
+    user.totalGames = totalGames || user.totalGames;
+
+    // Update password if provided
+    if (password) {
+      user.password = password;
+      // Hash and save password securely
+      // Example: user.password = await bcrypt.hash(password, 10);
+    }
 
     await user.save();
 

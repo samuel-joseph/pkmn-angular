@@ -7,7 +7,9 @@ export interface UserModel {
   email: string;
   pokemons: Array<PokemonModel>;
   victory: number;
-  chance: number;
-  password: string;
+  perfectVictory: number
+  lose: number;
+  totalGames: number;
+  password?: string;
   moves?: Array<MoveModel>;
 }

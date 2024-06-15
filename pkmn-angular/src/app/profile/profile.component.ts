@@ -37,7 +37,10 @@ export class ProfileComponent implements OnInit {
         username: state.username,
         email: state.email,
         pokemons: state.pokemons,
-        password: "password", // Replace with actual password handling logic
+        victory: state.victory,
+        perfectVictory: state.perfectVictory,
+        lose: state.lose,
+        totalGames: state.totalGames,
       };
   
       // Call the authService update method with the extracted data
