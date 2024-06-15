@@ -968,6 +968,7 @@ export class BattleComponent implements OnInit{
   battleEnd(outcome: string) {
     const returnPokemonPlayer1: PokemonModel [] = []
     const returnPokemonPlayer2: PokemonModel[] = []
+    const perfect: boolean = this.faintedPokemonPlayer1.length === 0 ? true : false
     if (outcome === 'win') {
       this.currentPlayer1[0].currentHp = this.currentPlayer1[0].maxHp
     }
@@ -1012,9 +1013,10 @@ export class BattleComponent implements OnInit{
       }
 
       this.outcomeSubmit.emit({
-      outcome,
-      returnPokemonPlayer1,
-      returnPokemonPlayer2
+        outcome: outcome,
+        player1pokemons: returnPokemonPlayer1,
+        player2pokemons: returnPokemonPlayer2,
+        perfect: perfect
       })
     }, 10000)
 

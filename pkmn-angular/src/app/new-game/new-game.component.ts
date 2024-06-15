@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { PokemonService } from '../_services/pokemon/pokemon.service';
 import { PokemonModel, RegionPokemon } from '../model/pokemon-model.model';
 import { getStats, getTypes, calculateHp, getRandNum } from '../helper/pokemon-helper';
@@ -7,6 +7,7 @@ import { MoveModel } from '../model/move-model.model';
 import { environment } from 'src/environment/environment';
 import { StateService } from '../_services/state/state.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../_services/auth/auth.service';
 
 @Component({
   selector: 'app-new-game',
@@ -18,13 +19,15 @@ export class NewGameComponent implements OnInit{
     private http: PokemonService,
     private pokemonService: Pokemon,
     private stateService: StateService,
+    private authService: AuthService,
     private router: Router
   ) { }
+    @Input() dbMoves: MoveModel[] = []
     @Output() pokemonSubmit = new EventEmitter();
     moveListArr = environment.moveDb
     regionArr = environment.region
     regionPokemons: RegionPokemon[] = []
-    dbMoves: MoveModel[] = []
+    // dbMoves: MoveModel[] = []
     FinalArrMove: MoveModel[] = []
     pokemon: PokemonModel
     toDisplayPokemon: any[] = []
@@ -129,13 +132,13 @@ export class NewGameComponent implements OnInit{
     return 'https://www.freeiconspng.com/thumbs/x-png/x-png-18.png'
   }
 
-  ngOnInit(): void {
-    this.stateService.getMoveState().subscribe(response => {
-      this.dbMoves = response
-    })
-    // setTimeout(() => {
-    //   this.gameLoading = false
-    // }, 10700)
+  ngOnInit() {
+    // await this.stateService.getMoveState().subscribe(response => {
+    //   this.dbMoves = response
+    // })
+    setTimeout(() => {
+      this.gameLoading = false
+    }, 10700)
   }
 
   getRegion(region: string) {
@@ -271,9 +274,9 @@ export class NewGameComponent implements OnInit{
     if (isUnique.length < 1 || isUnique == undefined) {
       this.myPokemons.push(chosen)
       if (this.myPokemons.length == 6) {
-        // this.pokemonSubmit.emit({ pokemon: this.myPokemons, next: 'player', dbMoves: this.dbMoves })
         this.stateService.setPokemon(this.myPokemons)
-        this.router.navigate(['/profile'])
+        this.pokemonSubmit.emit({ pokemon: this.myPokemons, next: 'pre-battle'})
+        // this.router.navigate(['/profile'])
       }
     }
   }

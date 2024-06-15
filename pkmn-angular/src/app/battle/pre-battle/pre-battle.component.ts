@@ -12,6 +12,7 @@ import { AuthService } from 'src/app/_services/auth/auth.service';
 import { Observable } from 'rxjs';
 import { UserModel } from 'src/app/model/trainer-model.model';
 import { StateService } from 'src/app/_services/state/state.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pre-battle',
@@ -57,10 +58,12 @@ export class PreBattleComponent implements OnInit {
   constructor(
     private http: PokemonService,
     private auth: AuthService,
-    private stateService: StateService
+    private stateService: StateService,
+    private router: Router
   ) { }
   
   championshipFn() {
+    this.stateService.newGame(true)
     setTimeout(() => {
       this.highlightPokemon = []
       this.highlightPokemon.push(this.myPokemons[this.counter])
@@ -75,6 +78,7 @@ export class PreBattleComponent implements OnInit {
 
 
   ngOnInit() {
+    console.log(this.dbMoves)
     this.state$ = this.stateService.getState()
     this.battlePhase = 'overview'
     this.initialBattlePhase()
@@ -143,7 +147,6 @@ export class PreBattleComponent implements OnInit {
       this.gymPokemons.splice(randIndex, 1)
       this.player2Chosen(chosen)
     }
-
     this.player2.push(mainPokemon)
   }
 
@@ -162,40 +165,40 @@ export class PreBattleComponent implements OnInit {
   getMove() {
     let tempArr = []
     let tempArrCopy = []
-    for (let i = 0; i < this.gymPokemonsTemp.length; i++) {
+    for (let gymPokemonTemp of this.gymPokemonsTemp) {
       let tempMoves: MoveModel[] = []
-      let filtered = this.currentGymLeader.filter(tempData => tempData.name == this.gymPokemonsTemp[i].name)
+      let filtered = this.currentGymLeader.filter(tempData => tempData.name == gymPokemonTemp.name)
       let moveSet = filtered[0].moves
       for (let j = 0; j < moveSet.length; j++){
         let move = this.dbMoves.filter(move => move.name == moveSet[j])
-        if (this.gymPokemonsTemp[i].name == 'greninja'&&move[0].name == 'water-shuriken'&&move[0].hits) {
+        if (gymPokemonTemp.name == 'greninja'&&move[0].name == 'water-shuriken'&&move[0].hits) {
           move[0].power = 20
           move[0].hits.min_hits = 3
         }
         tempMoves.push(...move)
       }
 
-      const maxHp = calculateHp(this.gymPokemonsTemp[i].stats[0].base_stat)
-      const stats = this.gymPokemonsTemp[i].name == 'greninja' ? stat_greninja : getStats(this.gymPokemonsTemp[i].stats)
+      const maxHp = calculateHp(gymPokemonTemp.stats[0].base_stat)
+      const stats = gymPokemonTemp.name == 'greninja' ? stat_greninja : getStats(gymPokemonTemp.stats)
 
       let front_image
       let back_image
       
-      if (this.gymPokemonsTemp[i].name == 'greninja') {
+      if (gymPokemonTemp.name == 'greninja') {
         front_image = mega_greninja.front_image
-      }else if (this.gymPokemonsTemp[i].sprites.versions['generation-v']['black-white'].animated.back_default !== null) {
-        front_image = this.gymPokemonsTemp[i].sprites.versions['generation-v']['black-white'].animated.front_default
-        back_image = this.gymPokemonsTemp[i].sprites.versions['generation-v']['black-white'].animated.back_default
+      }else if (gymPokemonTemp.sprites.versions['generation-v']['black-white'].animated.back_default !== null) {
+        front_image = gymPokemonTemp.sprites.versions['generation-v']['black-white'].animated.front_default
+        back_image = gymPokemonTemp.sprites.versions['generation-v']['black-white'].animated.back_default
       } else {
-        front_image = this.gymPokemonsTemp[i].sprites.front_default
-        back_image = this.gymPokemonsTemp[i].sprites.back_default
+        front_image = gymPokemonTemp.sprites.front_default
+        back_image = gymPokemonTemp.sprites.back_default
       }
 
       let pokemon = {
-        id: this.gymPokemonsTemp[i].id,
-        name: this.gymPokemonsTemp[i].name,
+        id: gymPokemonTemp.id,
+        name: gymPokemonTemp.name,
         stats,
-        types: getTypes(this.gymPokemonsTemp[i].types),
+        types: getTypes(gymPokemonTemp.types),
         moves: tempMoves,
         dbMoves: tempMoves,
         front_image,
@@ -206,14 +209,14 @@ export class PreBattleComponent implements OnInit {
           stats,
           condition: '',
           originalValues: {
-            front_image: this.gymPokemonsTemp[i].sprites.front_default,
-            back_image: this.gymPokemonsTemp[i].sprites.back_default,
+            front_image: gymPokemonTemp.sprites.front_default,
+            back_image: gymPokemonTemp.sprites.back_default,
           },
-          canMegaEvolve: this.gymPokemonsTemp[i].name == 'greninja'? true:false
+          canMegaEvolve: gymPokemonTemp.name == 'greninja'? true:false
         }
       }
       let copyGymPokemons = {
-        front_image: this.gymPokemonsTemp[i].sprites.front_default
+        front_image: gymPokemonTemp.sprites.front_default
       }
       tempArr.push(pokemon)
       tempArrCopy.push(copyGymPokemons)
@@ -260,19 +263,19 @@ export class PreBattleComponent implements OnInit {
 
   async outcomeBattle(event: any) {
     if (event.outcome === "win") {
-      this.stateService.addVictory()
-      for (let i = 0; i < this.gymLeaders.length; i++){
-        if (!this.gymLeaders[i].gymLose) {
-          this.myPokemons.push(...event.returnPokemonPlayer1)
-          this.gymLeaders[i].gymLose = true
+      for (let gymLeader of this.gymLeaders) {
+        if (!gymLeader.gymLose) {
+          this.myPokemons.push(...event.player1pokemons)
+          gymLeader.gymLose = true
+          this.stateService.postBattle(this.myPokemons,event.outcome,event)
           break
         }
       }
     } else {
       this.myPokemons.push(...this.player1)
-      this.myPokemons.push(...event.returnPokemonPlayer1)
+      this.myPokemons.push(...event.player1pokemons)
       this.gymPokemons.push(...this.player2)
-      this.gymPokemons.push(...event.returnPokemonPlayer2)
+      this.gymPokemons.push(...event.player2pokemons)
     }
     this.battlePhase = 'overview'
     this.initialBattlePhase()
@@ -285,5 +288,15 @@ export class PreBattleComponent implements OnInit {
     this.player2 = []
     this.gymPokemonsTemp = []
     this.currentGymLeader = []
+  }
+
+  signout() {
+    localStorage.clear()
+    this.router.navigate(['/'])
+  }
+
+  newgame() {
+    this.stateService.newGame(false)
+    this.router.navigate(['/'])
   }
 }

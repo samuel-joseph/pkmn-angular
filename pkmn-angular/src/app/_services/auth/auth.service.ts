@@ -13,7 +13,11 @@ export interface data {
   username: string,
   email: string,
   pokemons: PokemonModel[],
-  password: string
+  password?: string,
+  victory: number,
+  lose: number,
+  perfectVictory: number,
+  totalGames: number
 }
 
 

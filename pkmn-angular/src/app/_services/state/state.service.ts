@@ -16,7 +16,9 @@ export class StateService {
     email: '',
     pokemons: [],
     victory: 0,
-    chance: 0,
+    perfectVictory: 0,
+    lose: 0,
+    totalGames: 0,
     password: ''
   };
 
@@ -29,25 +31,73 @@ export class StateService {
     this.state$.next(newState);
   }
 
-  setPokemon(pokemons: PokemonModel[]): void {
+  async setPokemon(pokemons: PokemonModel[]): Promise<void> {
     const currentState = this.state$.getValue();
     const updatedState: UserModel = {
       ...currentState, // Copy current state
       pokemons: [...pokemons] // Update pokemons array
     };
-    this.setState(updatedState);
-    this.authService.update(updatedState)
+    await this.authService.update(updatedState).subscribe(response => {
+      this.setState(updatedState);
+      console.log(response)
+    })
   }
 
-  addVictory(): void {
+  postBattle(returningPokemons: PokemonModel[], result: boolean, perfect: boolean): void {
+
     const currentState = this.state$.getValue();
+    const updatedPokemons = [...currentState.pokemons, ...returningPokemons];
     const updatedState: UserModel = {
       ...currentState, // Copy current state
-      victory: currentState.victory+1 // Update pokemons array
+      pokemons: updatedPokemons,
+      victory: result ? currentState.victory + 1 : currentState.victory,
+      perfectVictory: perfect ? currentState.perfectVictory + 1 : currentState.perfectVictory,
+      lose: result ? currentState.lose + 1 : currentState.lose,
+      totalGames: currentState.victory + currentState.lose
     };
-    this
-    this.setState(updatedState);
-    this.authService.update(updatedState)
+
+    this.authService.update(updatedState).subscribe(response => {
+      this.setState(updatedState);
+      console.log(response)
+    })
+  }
+
+  newGame(endgame: boolean): void {
+    const currentState = this.state$.getValue();
+
+    if (endgame) {
+      //to be stored in a db 'leaderboards'
+      const champion = {
+        username: currentState.username,
+        pokemons: currentState.pokemons,
+        date: Date.now(),
+        totalGames: currentState.victory + currentState.lose,
+        perfectVictory: currentState.perfectVictory
+      } 
+    }
+
+    this.setState({
+      username: currentState.username,
+      email: currentState.email,
+      pokemons: [],
+      victory: 0,
+      perfectVictory: 0,
+      lose: 0,
+      totalGames: 0
+    })
+
+    const newData = {
+      username: currentState.username,
+      email: currentState.email,
+      pokemons: [],
+      victory: 1,
+      lose: 1,
+      perfectVictory: 1,
+      totalGames: 1
+    }
+    this.authService.update(newData).subscribe(response => {
+      console.log('new game '+response)
+    })
   }
 
   // Get state
