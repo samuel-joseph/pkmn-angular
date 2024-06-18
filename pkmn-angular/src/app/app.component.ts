@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PokemonService, Item } from './_services/pokemon/pokemon.service';
+import { AuthService } from './_services/auth/auth.service';
 
 import { PokemonModel } from './model/pokemon-model.model';
 import { MoveModel } from './model/move-model.model';
@@ -10,45 +11,39 @@ import { environment } from 'src/environment/environment';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit{
-  title = 'pkmn-angular';
-  myPokemon: PokemonModel[] = []
-  dbMove: MoveModel[] = []
-  page: string
-  gymLeaders: any[] = []
-  pokemonObj = {}
+  // title = 'pkmn-angular';
+  // myPokemon: PokemonModel[] = []
+  // dbMove: MoveModel[] = []
+  // page: string
+  // gymLeaders: any[] = []
+  // pokemonObj = {}
 
-  //to be deleted
-  // items: Item[] = [];
-  // newItem: Item = { name: '', quantity: 0, price: 0 };
+  constructor(private pokemonService: PokemonService, private authService: AuthService) {}
 
-  constructor(private http: PokemonService) {}
+  // public transition(child: any): void {
+  //   switch (child.next) {
+  //     case "player":
+  //       this.myPokemon.push(...child.pokemon)
+  //       this.dbMove.push(...child.dbMoves)
+  //       break
+  //     case "pre-batlle":
+  //       this.myPokemon.push(...child.pokemon)
+  //       break
+  //   }
+  //   this.page = child.next
+  //   this.pokemonObj = {
+  //     pokemon: this.myPokemon,
+  //     gymLeaders: this.gymLeaders,
+  //     dbMove: this.dbMove
+  //   }
+  // }
 
-  public transition(child: any): void {
-    switch (child.next) {
-      case "player":
-        this.myPokemon.push(...child.pokemon)
-        this.dbMove.push(...child.dbMoves)
-        break
-      case "pre-batlle":
-        this.myPokemon.push(...child.pokemon)
-        break
-    }
-    this.page = child.next
-    this.pokemonObj = {
-      pokemon: this.myPokemon,
-      gymLeaders: this.gymLeaders,
-      dbMove: this.dbMove
-    }
+  logout() {
+    this.authService.logout().subscribe(response=>console.log(response))
   }
   
   ngOnInit(): void {
-    // this.http.getItems().subscribe(items => {
-    //   this.items = items;
-    // });
-    if (this.myPokemon.length < 1) {
-      this.page = 'newGame'
-    }
-    this.gymLeaders = environment.gymLeaders
+
   }
 
   // addItem(): void {

@@ -266,7 +266,15 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  chance: {
+  lose: {
+    type: Number,
+    default: 0,
+  },
+  perfectVictory: {
+    type: Number,
+    default: 0,
+  },
+  totalGames: {
     type: Number,
     default: 0,
   },
