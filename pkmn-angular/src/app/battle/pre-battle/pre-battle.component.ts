@@ -3,10 +3,10 @@ import { calculateHp, getRandNum, getStats, getTypes } from 'src/app/helper/poke
 import { PokemonModel, StatsModel } from 'src/app/model/pokemon-model.model';
 
 import { PokemonService } from 'src/app/_services/pokemon/pokemon.service';
-import { environment } from 'src/environment/environment';
+import { environment } from 'src/environments/environment';
 import { MoveModel } from 'src/app/model/move-model.model';
 import { GymLeader } from 'src/app/model/gym-leader-model.model';
-import { mega_greninja, stat_greninja } from 'src/environment/environment-mega-pokemon.ts/greninja';
+import { mega_greninja, stat_greninja } from 'src/environments/environment-mega-pokemon.ts/greninja';
 import { Pokemon } from 'src/app/helper/pokemon.class';
 import { AuthService } from 'src/app/_services/auth/auth.service';
 import { Observable } from 'rxjs';

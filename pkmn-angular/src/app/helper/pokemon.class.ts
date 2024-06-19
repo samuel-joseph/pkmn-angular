@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core"
 import { PokemonService } from "../_services/pokemon/pokemon.service"
 import { RegionPokemon } from "../model/pokemon-model.model"
 import { regionPokemonsImage } from "./region-helper"
-import { bannedPokemon } from "src/environment/environment-constants";
+import { bannedPokemon } from "src/environments/environment-constants";
  
 
  @Injectable({ providedIn: 'root' })

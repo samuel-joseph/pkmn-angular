@@ -29,8 +29,8 @@ export interface Trainer {
   providedIn: 'root'
 })
 export class PokemonService {
-  private mainUrl = 'http://localhost:3000/api'
-  private apiUrl = 'http://localhost:3000/api/user';
+  private mainUrl = 'https://pkmn-expressjs-a25e779e0e2a.herokuapp.com/api'
+  private apiUrl = 'https://pkmn-expressjs-a25e779e0e2a.herokuapp.com/api/user';
   private apiTrainerUrl = '/trainer'
   constructor(private http: HttpClient) { }
 

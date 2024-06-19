@@ -3,10 +3,10 @@ import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { Observable, tap } from "rxjs";
 import { PokemonModel } from "src/app/model/pokemon-model.model";
+import { environment } from "src/environments/environment";
 
-const AUTH_API = 'http://54.90.231.243:3000/api/auth/';
-const USER_API = 'http://54.90.231.243:3000/api/user/';  
-const token = localStorage.getItem('token')
+const AUTH_API = environment.AUTH_API;
+const USER_API = environment.USER_API;  
 
 export interface data {
   username: string,
@@ -34,6 +34,10 @@ export class AuthService{
           localStorage.setItem('token', response.token);
         })
       )
+  }
+
+  helloWorld(): Observable<any>{
+    return this.http.get(`https://pkmn-expressjs-a25e779e0e2a.herokuapp.com/`)
   }
 
   logout(): Observable<any> {
