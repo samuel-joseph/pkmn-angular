@@ -4,7 +4,7 @@ import { AuthService } from './_services/auth/auth.service';
 
 import { PokemonModel } from './model/pokemon-model.model';
 import { MoveModel } from './model/move-model.model';
-import { environment } from 'src/environment/environment';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

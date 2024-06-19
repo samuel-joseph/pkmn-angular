@@ -4,7 +4,7 @@ import { PokemonModel, RegionPokemon } from '../model/pokemon-model.model';
 import { getStats, getTypes, calculateHp, getRandNum } from '../helper/pokemon-helper';
 import { Pokemon } from '../helper/pokemon.class';
 import { MoveModel } from '../model/move-model.model';
-import { environment } from 'src/environment/environment';
+import { environment } from 'src/environments/environment';
 import { StateService } from '../_services/state/state.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../_services/auth/auth.service';

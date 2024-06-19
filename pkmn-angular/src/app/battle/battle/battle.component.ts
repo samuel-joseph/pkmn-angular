@@ -4,7 +4,7 @@ import { calculateDamage, getRandNum, isSuperEffective, multiplier, typeAdvantag
 import { GymLeader } from 'src/app/model/gym-leader-model.model';
 import { MoveModel, StatModel } from 'src/app/model/move-model.model';
 import { PokemonModel } from 'src/app/model/pokemon-model.model';
-import { chargeMove, powerup, rechargeMove } from 'src/environment/environment-constants';
+import { chargeMove, powerup, rechargeMove } from 'src/environments/environment-constants';
 
 
 

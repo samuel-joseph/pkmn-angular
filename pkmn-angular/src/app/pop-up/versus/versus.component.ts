@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { playerProfile } from 'src/environment/environment-constants';
+import { playerProfile } from 'src/environments/environment-constants';
 
 @Component({
   selector: 'app-versus',

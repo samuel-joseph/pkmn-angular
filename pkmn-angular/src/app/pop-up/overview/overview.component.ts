@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GymLeader } from 'src/app/model/gym-leader-model.model';
-import { environment } from 'src/environment/environment';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-overview',

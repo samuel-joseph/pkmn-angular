@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PokemonModel } from '../model/pokemon-model.model';
 import { MoveModel } from '../model/move-model.model';
-import { environment } from 'src/environment/environment';
+import { environment } from 'src/environments/environment';
 import { StateService } from '../_services/state/state.service';
 import { PokemonService } from '../_services/pokemon/pokemon.service';
 import { Router } from '@angular/router';

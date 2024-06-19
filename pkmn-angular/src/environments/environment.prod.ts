@@ -10,6 +10,9 @@ import { leon } from "./environment-gym-leaders/leon";
 import { misty } from "./environment-gym-leaders/misty";
 
 export const environment = {
+  production: true,
+  USER_API: 'https://pkmn-expressjs-a25e779e0e2a.herokuapp.com/api/user/',
+  AUTH_API: 'https://pkmn-expressjs-a25e779e0e2a.herokuapp.com/api/auth/',
   pokeballImg: pokeball,
   gymLeaders: [
     brock,
