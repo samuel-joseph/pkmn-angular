@@ -70,6 +70,4 @@ export class AuthService{
   tokenExist(): boolean {
     return this.getToken()!==null
   }
-
-  
 }
