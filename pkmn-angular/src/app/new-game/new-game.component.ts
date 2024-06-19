@@ -1,10 +1,13 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { PokemonService } from '../_services/pokemon/pokemon.service';
 import { PokemonModel, RegionPokemon } from '../model/pokemon-model.model';
 import { getStats, getTypes, calculateHp, getRandNum } from '../helper/pokemon-helper';
 import { Pokemon } from '../helper/pokemon.class';
 import { MoveModel } from '../model/move-model.model';
 import { environment } from 'src/environment/environment';
+import { StateService } from '../_services/state/state.service';
+import { Router } from '@angular/router';
+import { AuthService } from '../_services/auth/auth.service';
 
 @Component({
   selector: 'app-new-game',
@@ -14,13 +17,17 @@ import { environment } from 'src/environment/environment';
 export class NewGameComponent implements OnInit{
   constructor(
     private http: PokemonService,
-    private pokemonService: Pokemon
+    private pokemonService: Pokemon,
+    private stateService: StateService,
+    private authService: AuthService,
+    private router: Router
   ) { }
+    @Input() dbMoves: MoveModel[] = []
     @Output() pokemonSubmit = new EventEmitter();
     moveListArr = environment.moveDb
     regionArr = environment.region
     regionPokemons: RegionPokemon[] = []
-    dbMoves: MoveModel[] = []
+    // dbMoves: MoveModel[] = []
     FinalArrMove: MoveModel[] = []
     pokemon: PokemonModel
     toDisplayPokemon: any[] = []
@@ -125,59 +132,10 @@ export class NewGameComponent implements OnInit{
     return 'https://www.freeiconspng.com/thumbs/x-png/x-png-18.png'
   }
 
-  ngOnInit(): void {
-    for (let pokemon of this.moveListArr) {
-      this.http.getPokemonMove(`${pokemon}`).subscribe((move) => {
-        let ailment, hits, crit_rate
-
-        if (move.meta) {
-          ailment = {
-            name: move.meta.ailment['name'],
-            category: move.meta.category['name'],
-            chance: move.meta.ailment_chance
-          }
-          hits = {
-            min_hits: move.meta.min_hits != null ? move.meta.min_hits : undefined,
-            max_hits: move.meta.max_hits != null ? move.meta.max_hits : undefined
-          }
-          crit_rate = move.meta.crit_rate
-          
-        }
-
-        let moveFx = this.getMoveFx(move.type.name, move.power)
-
-        let description 
-        for (let desc of move.flavor_text_entries) {
-          if (desc.language.name == "en") {
-            description = desc.flavor_text
-          }
-        }
-
-
-        this.dbMoves.push({
-          id: move.id,
-          name: move.name,
-          power: move.power,
-          pp: move.pp,
-          ppMax: move.pp,
-          type: move.type.name,
-          accuracy: move.accuracy,
-          damageClass: {
-            name: move.damage_class.name,
-            ailment
-          },
-          effect_chance: move.effect_chance,
-          stat_changes: move.stat_changes,
-          priority: move.priority,
-          hits,
-          crit_rate: move.meta.crit_rate,
-          moveFx,
-          target: move.target.name,
-          description,
-          drain: move.meta.drain
-        })
-      })
-    }
+  ngOnInit() {
+    // await this.stateService.getMoveState().subscribe(response => {
+    //   this.dbMoves = response
+    // })
     setTimeout(() => {
       this.gameLoading = false
     }, 10700)
@@ -316,7 +274,9 @@ export class NewGameComponent implements OnInit{
     if (isUnique.length < 1 || isUnique == undefined) {
       this.myPokemons.push(chosen)
       if (this.myPokemons.length == 6) {
-        this.pokemonSubmit.emit({ pokemon: this.myPokemons, next:'player', dbMoves: this.dbMoves })
+        this.stateService.setPokemon(this.myPokemons)
+        this.pokemonSubmit.emit({ pokemon: this.myPokemons, next: 'pre-battle'})
+        // this.router.navigate(['/profile'])
       }
     }
   }

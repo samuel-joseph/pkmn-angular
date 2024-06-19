@@ -1,0 +1,51 @@
+:root{
+  --background-color: linear-gradient(112.1deg, rgb(32, 38, 57) 11.4%, rgb(63, 76, 119) 70.2%);
+}
+
+/* src/styles.css */
+
+/* General styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 768px; /* Prevents the container from exceeding 768px */
+  margin: 0 auto; /* Center the container */
+  padding: 20px;
+  box-sizing: border-box; /* Include padding in the width */
+}
+
+.header {
+  font-size: 2em;
+  text-align: center;
+}
+
+.content {
+  font-size: 1em;
+}
+
+/* Additional responsive styles for smaller screens */
+@media (max-width: 768px) {
+  .header {
+    font-size: 1.5em;
+  }
+
+  .content {
+    font-size: 1.2em;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    font-size: 1.2em;
+  }
+
+  .content {
+    font-size: 1em;
+  }
+}

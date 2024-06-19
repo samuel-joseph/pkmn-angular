@@ -265,6 +265,7 @@
         ">
         <button (click)="this.decisionOption('fight')" style="width: 40vw; border: none; background: none; padding: 8px 0px; border-bottom: 2px solid white; color:white;">Fight</button>
         <button *ngIf="this.player1.length!==0" (click)="this.decisionOption('swap')" style="width: 40vw; border: none; background: none; padding: 8px 0px; border-bottom: 2px solid white; color: white;">Swap</button>
+        <button *ngIf="this.player1.length!==0" (click)="this.signout()" style="width: 40vw; border: none; background: none; padding: 8px 0px; border-bottom: 2px solid white; color: white;">Sign Out</button>
         </div>
       </div>
       <div *ngSwitchCase="'swap'">

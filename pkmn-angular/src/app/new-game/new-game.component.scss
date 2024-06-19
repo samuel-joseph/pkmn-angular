@@ -6,18 +6,14 @@
   overflow-y: scroll;
 }
 
-.pikachu{
-  animation: pikachurun 20s infinite;
-  width: 100px;
-  overflow: hidden;
-}
+.parent{
+  background: var(--background-color); 
+  height: 100vh;
 
-@keyframes pikachurun {
-  0%{
-    margin-left: -50vw;
-  }
-  100%{
-    margin-left: 70vw;
+  .sub-parent{
+    display: flex;
+    text-align: center;
+    justify-content: center;
   }
 }
 

@@ -1,12 +1,11 @@
 .parent{
   display: flex;
   justify-content: center;
-  height: 100vh;
-  width: 100vw;
+  background: var(--background-color);
 }
 
 .sub-parent{
-  height: 90vh;
+  height: 100vh;
   width: 100vw;
 }
 
