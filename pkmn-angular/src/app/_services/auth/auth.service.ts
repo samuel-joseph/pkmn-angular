@@ -1,9 +1,8 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
-import { Observable, catchError, tap, throwError } from "rxjs";
+import { Observable, tap } from "rxjs";
 import { PokemonModel } from "src/app/model/pokemon-model.model";
-import { jwtDecode } from "jwt-decode";
 
 const AUTH_API = 'http://54.90.231.243:3000/api/auth/';
 const USER_API = 'http://54.90.231.243:3000/api/user/';  
@@ -66,25 +65,5 @@ export class AuthService{
 
   tokenExist(): boolean {
     return this.getToken()!==null
-  }
-
-  isTokenExpired() {
-    let token = this.getToken()
-
-    if (token === null) {
-      token = ''
-    }
-
-    const decodedToken = jwtDecode(token); // Decoding the token
-    const currentTime = Date.now() / 1000; // Convert milliseconds to seconds
-
-        // Check if decodedToken or decodedToken.exp is undefined
-        if (!decodedToken || typeof decodedToken.exp === 'undefined') {
-          // Token is malformed or doesn't contain exp property
-          return true; // Consider it expired to be safe
-      }
-  
-      // Check if the token expiration time (exp) is less than the current time
-      return decodedToken.exp < currentTime;
   }
 }
