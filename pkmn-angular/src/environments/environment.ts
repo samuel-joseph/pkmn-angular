@@ -13,6 +13,7 @@ export const environment = {
   production: false,
   USER_API: 'http://localhost:3000/api/user/',
   AUTH_API: 'http://localhost:3000/api/auth/',
+  MOVES_API: 'http://localhost:3000/api/moves/',
   pokeballImg: pokeball,
   gymLeaders: [
     brock,

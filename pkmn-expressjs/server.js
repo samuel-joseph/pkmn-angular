@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const authRoutes = require("./routes/auth.routes");
 const userRoutes = require("./routes/user.routes");
+const moveRoutes = require("./routes/move.routes");
 const cors = require("cors");
 require("dotenv").config();
 
@@ -24,8 +25,9 @@ mongoose
   .catch((err) => console.log(err));
 
 //Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/user", userRoutes);
+app.use("/api", authRoutes);
+app.use("/api", userRoutes);
+app.use("/api", moveRoutes);
 
 // Start the server
 app.listen(PORT, () => {

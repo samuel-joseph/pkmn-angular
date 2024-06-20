@@ -6,7 +6,8 @@ import { PokemonModel } from "src/app/model/pokemon-model.model";
 import { environment } from "src/environments/environment";
 
 const AUTH_API = environment.AUTH_API;
-const USER_API = environment.USER_API;  
+const USER_API = environment.USER_API;
+const MOVES_API = environment.MOVES_API;  
 
 export interface data {
   username: string,
