@@ -6,6 +6,7 @@ import { StateService } from '../_services/state/state.service';
 import { PokemonService } from '../_services/pokemon/pokemon.service';
 import { Router } from '@angular/router';
 import { MoveService } from '../_services/move/move.service';
+import { moveFxRecords } from 'src/environments/environment-constants';
 
 @Component({
   selector: 'app-main',
@@ -89,7 +90,7 @@ export class MainComponent implements OnInit{
           
         }
 
-        let moveFx = this.getMoveFx(move.type.name, move.power)
+        let moveFx = this.getMoveFx(move.type.name, move.power, move.damageClass.name)
 
         let description 
         for (let desc of move.flavor_text_entries) {
@@ -202,7 +203,7 @@ export class MainComponent implements OnInit{
           
         }
 
-        let moveFx = this.getMoveFx(move.type.name,move.power)
+        let moveFx = this.getMoveFx(move.type.name,move.power,move.damageClass.name)
 
         let description 
         for (let desc of move.flavor_text_entries) {
@@ -239,7 +240,7 @@ export class MainComponent implements OnInit{
     this.stateService.setMoveState(dbMoves)
   }
 
-  getMoveFx(moveType: string, power: number) {
+  getMoveFx(moveType: string, power: number, damageClass: string) {
     let moveDamage = ''
     if (power > 70) {
       moveDamage = 'strong'
@@ -251,11 +252,17 @@ export class MainComponent implements OnInit{
       case 'medium':
         switch (moveType) {
           case 'water':
-            return 'https://thumbs.gfycat.com/InformalWellwornCockroach-small.gif'
+            return damageClass == 'physical' ?
+              moveFxRecords.bluePhysical
+              : moveFxRecords.waterSpecialMid
           case 'fire':
-            return 'https://i.pinimg.com/originals/29/ca/76/29ca767e0d917e541cd18eb97f4825dc.gif'
+            return damageClass == 'physical' ?
+            moveFxRecords.firePhysical
+            : moveFxRecords.fireSpecialHard
           case 'grass':
-            return 'https://i.imgur.com/uDJiGRk.gif'
+            return damageClass == 'physical' ?
+            moveFxRecords.grassPhysical
+            : moveFxRecords.grassSpecial
           case 'electric':
             return 'https://media3.giphy.com/media/ebQMQkzmJNT7G/source.gif'
           case 'fighting':

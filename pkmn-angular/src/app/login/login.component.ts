@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../_services/auth/auth.service';
 import { StorageService } from '../_services/storage/storage.service';
 import { Router } from '@angular/router';
@@ -9,7 +9,7 @@ import { StateService } from '../_services/state/state.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent {
   form: any = {
     email: null,
     password: null
@@ -45,11 +45,5 @@ export class LoginComponent implements OnInit{
 
   reloadPage(): void {
     window.location.reload();
-  }
-
-  ngOnInit(): void {
-    this.authService.helloWorld().subscribe(response => {
-        console.log(response)
-      })
   }
 }

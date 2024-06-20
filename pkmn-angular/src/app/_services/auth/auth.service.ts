@@ -37,10 +37,6 @@ export class AuthService{
       )
   }
 
-  helloWorld(): Observable<any>{
-    return this.http.get(`https://pkmn-expressjs-a25e779e0e2a.herokuapp.com/`)
-  }
-
   logout(): Observable<any> {
     localStorage.removeItem('token');
     return this.http.post(AUTH_API + 'signout', { });
