@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 import { UserModel } from 'src/app/model/trainer-model.model';
 import { StateService } from 'src/app/_services/state/state.service';
 import { Router } from '@angular/router';
+import { MoveService } from 'src/app/_services/move/move.service';
 
 @Component({
   selector: 'app-pre-battle',
@@ -20,7 +21,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./pre-battle.component.scss']
 })
 export class PreBattleComponent implements OnInit {
-  @Input() dbMoves: MoveModel[] = []
+  dbMoves: MoveModel[] = []
   @Input() gymLeaders: any[] = []
   @Input() pokemonObj = {}
   @Input() myPokemons: PokemonModel[] = []
@@ -56,6 +57,7 @@ export class PreBattleComponent implements OnInit {
   counter: number = 0
   
   constructor(
+    private moveService: MoveService,
     private http: PokemonService,
     private auth: AuthService,
     private stateService: StateService,
@@ -78,10 +80,12 @@ export class PreBattleComponent implements OnInit {
 
 
   ngOnInit() {
-    console.log(this.dbMoves)
-    this.state$ = this.stateService.getState()
-    this.battlePhase = 'overview'
-    this.initialBattlePhase()
+    this.moveService.getAllMoves().subscribe(response => {
+      this.dbMoves = response;
+      this.state$ = this.stateService.getState()
+      this.battlePhase = 'overview'
+      this.initialBattlePhase()
+    })
   }
 
 

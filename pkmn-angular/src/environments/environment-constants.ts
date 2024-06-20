@@ -37,8 +37,36 @@ export const rechargeMove = ['hyper-beam', 'giga-impact', 'frenzy-plant', 'blast
 
 export const chargeMove = ['meteor-beam','solar-beam','sky-attack']
 
-// export const moveFxRecords = {
-//   waterSpecialLow: 'https://thumbs.gfycat.com/InformalWellwornCockroach-small.gif',
-//   waterSpecialMid: 'https://webstockreview.net/images/clipart-mountain-ocean-1.gif',
-//   waterSpecialHard: ''
-// }
+export const moveFxRecords = {
+  normalPhysical: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExc3gwN2Rhb2h3OXBneDBwYjlqdjVlb2traGNxZTQ2Yms1ODg3aXd5ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/fmo8xv1OW7ZJcAUTzc/giphy.gif',
+  normalSpecial: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXdpdmJwNDJ0bDhnemNib2l3bDRwZWtybDl3OTByZnppZDVuejc1ZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/NYTAuwIWmSeD5s6R94/giphy.gif',
+  waterSpecialMid: 'https://webstockreview.net/images/clipart-mountain-ocean-1.gif',
+  waterSpecialHard: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYjRrN3Yxc3Rnb3dxczZ0aHMyOTNuYWJvdjR2NzAxNmxnbDQxeWw1OSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/z4S4HdtN7wdoG7DpCY/giphy.gif',
+  thunderPhysical: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGRwenJid3gxbjR0MzVqZWowazA1eW1mczBmaHRrYWxja3FzNjhyMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/rZhhPoYrGQG7MwdsQT/giphy.gif',
+  thunderSpecialMid: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNGFxMXZneGNmNTVlMjVmemVlYTgxNDlmYjg5bGx5cWh2bXE4dHd5ciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/hNYkLlyMeAdZmR4xHB/giphy.gif',
+  thunderSpecialHard: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXExZTNoZjNzeG9lNms3cWtvaWNmbHZlZjJqcGx5Ym9iOHI3bzg2NyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/uFfPCiMeFA6uov8k8r/giphy.gif',
+  windSpecial: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZDM1NGVuZWswcmRsZWgyMDMxZjRud3B2NDNveGh5ZjEydW40M3IxNSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lE1p0BarhmyzQJw3YS/giphy.gif',
+  fireSpecialHard: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbHl5bGE5ajl0ODlmYTI4MWN0dmt1NjM0Y2p3NXBxd2JncHN6YWRkciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/emJi9eudMrCiBjtANl/giphy.gif',
+  firePhysical: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3owanozdWtyYm83a2J3M3JxaG9qY3E1bWRzYXEydnNnaG9rajF6MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/EutQrPm4jsOetTb3FQ/giphy.gif',
+  dragonPhysical: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHd1aml4MmRsZnJwcGNjb2x5eHp0NjR2cTg3Mzdka292aW15bXlzaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/UoX9yeWgG3NWjMCKNr/giphy.gif',
+  rockSpecial: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYXYxaHozYmxpODVocjRzNHJjZHhiZXNreDZwcHZjNWI1YndpMGo1YiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ctizPCxai08VbX32tc/giphy.gif',
+  grassPhysical: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmN1dDJnaG84dmthaHU4MnNnbmwyejF0YXk1dmlqZjl0OXZ0NmhvdSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JObK0NZrUIxMtIw3ew/giphy.gif',
+  grassStrong: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcWZxd3dkaXdhenNlY3FzYzYwMjE4YnZsamtnNWFudm9xdXpoa3h1aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/u7WUnku5CPaxLAM0A2/giphy.gif',
+  grassSpecial: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExY285OXNsaHQxajZicmtjcGt3bW1vMDQ4dWNseTVneXhka2wweTJydSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/mfMrQ8HT4cyvNrEx16/giphy.gif',
+  psychicSpecial: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTRoM28waW50ZzRndng3ZHUxcGtwcjRhNDdiNHhhYzR4c3ZoNGl6aSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lRaUs596WABq7QX5D0/giphy.gif',
+  psychicPhysical: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeW9yYnk5Nmp2bDExM21sejJ4OGkydW5sZTZmZ3JjYWNiMTd2bHpiNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/e5J4amMJ1C6w9yiDUn/giphy.gif',
+  purpleSpecial: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeXpuYzF4dHhjcWk0aHY3cm4xenZ1bDNtZm9sdjEzYnAyaXcwaG44aSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/pEg46cOqW2jGnhu8cb/giphy.gif',
+  bluePhysical: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWJvOWtuanBrZHkyaXBxc3N5ZWI0d2htdWJnbGliNzFwYzQ5eWloeiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/z2CzdHblaAC6ko2jL4/giphy.gif',
+  brown: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWYzN3JrNGVweGJvcW0zcmRramhyOTh3M2w2MWx2ZndyZ2x5Nm5xZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/II4fQRPMjUO5g8A0t6/giphy.gif',
+  pinkBlast: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaW9sOG1jNGt3aTE3eHhkZjNwOXM3ZHc3Mms0OXp2NnR0aWMxdm94eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jE6Ycfo85lRahafSER/giphy.gif',
+  pinkBlast2: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMHdvZ2xvZzk4YTg3ZHhyOHgzZTd0dHgzbGlwdW1yNW9uMXF5cWdsZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/eQL4VoItI2YGWc6iUy/giphy.gif',
+  blackBlast: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNTZhaWd5cWYwdjJxcDBtdHRxcngwcWdoY2FsbWIyY2FibzlpbHp1OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/m2qrNQtJucrlbtNDCS/giphy.gif',
+  metal1: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMjlib3Y4Z2ljYzNoNXQ2MTJxNWo2eXl0MTN3cmdrdm90NXpic203byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YDXhStb3bbI1o6wmU9/giphy.gif',
+  metal2: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExajF2Y3BwZDVucmd0dW95dHM4a2p4a3Z5NWswenpxOGE4cDUxdmhxZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/kgSoCiDKKOsNgKA3jQ/giphy.gif',
+  fighting: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExemY0azB0dDFwNXQ5bmV5emg0NWNuOGdkd2lwdGJoYWVoYThpd3U5ZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3rfRJHF6NXcyltgeO3/giphy.gif',
+  poison: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNnQwMm5kd2VoaG51Mjg3YXV6ZGR5d241bmM0djE5M2kwbHJvdG9wbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2fCs0wJYMk2YSXEIxE/giphy.gif',
+  ice: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdnY5MWczdzdjN2RoZTlwOXBsdXF0ZmF5Z3JqeXlweTRhYjhobHh6MSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lwhbs1x6xUsvZ4D4PR/giphy.gif',
+  ice1: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmdwMXRvc2p2OHFwMDJ0dmRwdW9rdHlqOHh6c2dmcW0wdTE5OXdvZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/L4lB5uGCz4sBGhtFcu/giphy.gif',
+  redPhysical: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2xxeDZ2dW1ycTdnNnZ6OTNjMmYxaGl6cG8zbWpzM2dieTJlM2RncCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ffi4EKWEqsQZKpqcDd/giphy.gif'
+
+}

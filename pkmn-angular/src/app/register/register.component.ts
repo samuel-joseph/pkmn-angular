@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../_services/auth/auth.service';
+import { Router } from '@angular/router';
+import { StateService } from '../_services/state/state.service';
 
 @Component({
   selector: 'app-register',
@@ -16,14 +18,18 @@ export class RegisterComponent {
   isSignUpFailed = false;
   errorMessage = '';
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    private stateService: StateService,
+    private router: Router,
+    private authService: AuthService) { }
 
   onSubmit(): void {
     const { username, email, password } = this.form;
 
     this.authService.register(username, email, password).subscribe({
       next: data => {
-        console.log(data);
+        this.stateService.setState(data.user);
+        this.router.navigate(['/main'])
         this.isSuccessful = true;
         this.isSignUpFailed = false;
       },
