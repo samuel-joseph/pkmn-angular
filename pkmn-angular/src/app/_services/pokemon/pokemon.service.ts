@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, map, retry, throwError } from 'rxjs';
 import { UserModel } from 'src/app/model/trainer-model.model';
 import { PokemonModel } from 'src/app/model/pokemon-model.model';
-import { MoveModel } from 'src/app/model/move-model.model';
+import { environment } from 'src/environments/environment';
 
 
 const url = 'https://pokeapi.co/api/v2';
@@ -29,10 +29,8 @@ export interface Trainer {
   providedIn: 'root'
 })
 export class PokemonService {
-  private mainUrl = 'https://pkmn-expressjs-a25e779e0e2a.herokuapp.com/api'
-  private apiUrl = 'https://pkmn-expressjs-a25e779e0e2a.herokuapp.com/api/user';
-  private apiTrainerUrl = '/trainer'
   constructor(private http: HttpClient) { }
+  USER_API = environment.USER_API
 
   getPokemon(id: string){
     return this.http.get(`${url}${monster}${id}`)
@@ -43,35 +41,7 @@ export class PokemonService {
   }
 
   //trainer
-  getTrainer(): Observable<UserModel[]>{
-    return this.http.get<UserModel[]>(this.mainUrl+this.apiTrainerUrl)
-  }
-
-
-  //coming from mongodb
-  getItems(): Observable<Item[]> {
-    return this.http.get<Item[]>(this.apiUrl);
-  }
-
-  addItem(item: Item): Observable<Item> {
-    return this.http.post<Item>(this.apiUrl, item);
-  }
-
-  addUser(pokemon: PokemonModel[]): Observable<Trainer> {
-    let trainer = {
-      username: 'test',
-      email: 'test@gmail.com',
-      pokemons: pokemon,
-      password: '123456'
-    }
-    return this.http.post<Trainer>(this.apiUrl, trainer);
-  }
-
-  updateItem(item: Item): Observable<Item> {
-    return this.http.put<Item>(`${this.apiUrl}/${item._id}`, item);
-  }
-
-  deleteItem(id: string): Observable<{ message: string }> {
-    return this.http.delete<{ message: string }>(`${this.apiUrl}/${id}`);
+  getTrainer(_id:string): Observable<UserModel[]>{
+    return this.http.get<UserModel[]>(this.USER_API+_id)
   }
 }

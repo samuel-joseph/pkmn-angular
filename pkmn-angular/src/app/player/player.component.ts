@@ -66,9 +66,7 @@ export class PlayerComponent implements OnInit{
     let checker = this.myPokemons.filter(pokemon => pokemon.moves.length == 4||pokemon.dbMoves.length==0)
     if (checker.length == 6) {
       this.movesAllReady = true
-      this.http.addUser(this.myPokemons).subscribe(response => {
-        console.log(response)
-      })
+      //supply logic
     }
   }
 

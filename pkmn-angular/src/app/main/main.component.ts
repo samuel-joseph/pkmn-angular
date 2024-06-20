@@ -5,7 +5,8 @@ import { environment } from 'src/environments/environment';
 import { StateService } from '../_services/state/state.service';
 import { PokemonService } from '../_services/pokemon/pokemon.service';
 import { Router } from '@angular/router';
-import { HelperService } from '../helper/helper.class';
+import { MoveService } from '../_services/move/move.service';
+import { moveFxRecords } from 'src/environments/environment-constants';
 
 @Component({
   selector: 'app-main',
@@ -25,15 +26,17 @@ export class MainComponent implements OnInit{
     private router: Router,
     private stateService: StateService,
     private http: PokemonService,
+    private moveService: MoveService
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    // await this.initializeAllMoves()
     this.stateService.getState().subscribe(response => {
       if (response.email === '') {
         localStorage.clear()
         this.router.navigate(['/login'])
       } else {
-        this.grabMovesets()
+        // this.grabMovesets()
         this.myPokemon = response.pokemons
         this.gymLeaders = environment.gymLeaders
         let i = 0
@@ -68,9 +71,9 @@ export class MainComponent implements OnInit{
     this.page = child.next
   }
 
-  grabMovesets() {
-    for (let pokemon of this.moveListArr) {
-      this.http.getPokemonMove(`${pokemon}`).subscribe((move) => {
+  initializeAllMoves() {
+    for (let idMove of this.moveListArr) {
+      this.http.getPokemonMove(`${idMove}`).subscribe((move)=>{
         let ailment, hits, crit_rate
 
         if (move.meta) {
@@ -87,7 +90,7 @@ export class MainComponent implements OnInit{
           
         }
 
-        let moveFx = this.getMoveFx(move.type.name, move.power)
+        let moveFx = this.getMoveFx(move.type.name, move.power, move.damageClass.name)
 
         let description 
         for (let desc of move.flavor_text_entries) {
@@ -97,7 +100,7 @@ export class MainComponent implements OnInit{
         }
 
 
-        this.dbMove.push({
+        const data:MoveModel = {
           id: move.id,
           name: move.name,
           power: move.power,
@@ -118,10 +121,67 @@ export class MainComponent implements OnInit{
           target: move.target.name,
           description,
           drain: move.meta.drain
-        })
+        }
+
+        this.moveService.addMove(data).subscribe(response=> console.log(response))
       })
     }
   }
+
+  // grabMovesets() {
+  //   for (let pokemon of this.moveListArr) {
+  //     this.http.getPokemonMove(`${pokemon}`).subscribe((move) => {
+  //       let ailment, hits, crit_rate
+
+  //       if (move.meta) {
+  //         ailment = {
+  //           name: move.meta.ailment['name'],
+  //           category: move.meta.category['name'],
+  //           chance: move.meta.ailment_chance
+  //         }
+  //         hits = {
+  //           min_hits: move.meta.min_hits != null ? move.meta.min_hits : undefined,
+  //           max_hits: move.meta.max_hits != null ? move.meta.max_hits : undefined
+  //         }
+  //         crit_rate = move.meta.crit_rate
+          
+  //       }
+
+  //       let moveFx = this.getMoveFx(move.type.name, move.power)
+
+  //       let description 
+  //       for (let desc of move.flavor_text_entries) {
+  //         if (desc.language.name == "en") {
+  //           description = desc.flavor_text
+  //         }
+  //       }
+
+
+  //       this.dbMove.push({
+  //         id: move.id,
+  //         name: move.name,
+  //         power: move.power,
+  //         pp: move.pp,
+  //         ppMax: move.pp,
+  //         type: move.type.name,
+  //         accuracy: move.accuracy,
+  //         damageClass: {
+  //           name: move.damage_class.name,
+  //           ailment
+  //         },
+  //         effect_chance: move.effect_chance,
+  //         stat_changes: move.stat_changes,
+  //         priority: move.priority,
+  //         hits,
+  //         crit_rate: move.meta.crit_rate,
+  //         moveFx,
+  //         target: move.target.name,
+  //         description,
+  //         drain: move.meta.drain
+  //       })
+  //     })
+  //   }
+  // }
 
   loadMoves() {
     const dbMoves: MoveModel[] = []
@@ -143,7 +203,7 @@ export class MainComponent implements OnInit{
           
         }
 
-        let moveFx = this.getMoveFx(move.type.name,move.power)
+        let moveFx = this.getMoveFx(move.type.name,move.power,move.damageClass.name)
 
         let description 
         for (let desc of move.flavor_text_entries) {
@@ -180,7 +240,7 @@ export class MainComponent implements OnInit{
     this.stateService.setMoveState(dbMoves)
   }
 
-  getMoveFx(moveType: string, power: number) {
+  getMoveFx(moveType: string, power: number, damageClass: string) {
     let moveDamage = ''
     if (power > 70) {
       moveDamage = 'strong'
@@ -192,11 +252,17 @@ export class MainComponent implements OnInit{
       case 'medium':
         switch (moveType) {
           case 'water':
-            return 'https://thumbs.gfycat.com/InformalWellwornCockroach-small.gif'
+            return damageClass == 'physical' ?
+              moveFxRecords.bluePhysical
+              : moveFxRecords.waterSpecialMid
           case 'fire':
-            return 'https://i.pinimg.com/originals/29/ca/76/29ca767e0d917e541cd18eb97f4825dc.gif'
+            return damageClass == 'physical' ?
+            moveFxRecords.firePhysical
+            : moveFxRecords.fireSpecialHard
           case 'grass':
-            return 'https://i.imgur.com/uDJiGRk.gif'
+            return damageClass == 'physical' ?
+            moveFxRecords.grassPhysical
+            : moveFxRecords.grassSpecial
           case 'electric':
             return 'https://media3.giphy.com/media/ebQMQkzmJNT7G/source.gif'
           case 'fighting':

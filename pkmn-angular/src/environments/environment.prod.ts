@@ -13,6 +13,7 @@ export const environment = {
   production: true,
   USER_API: 'https://pkmn-expressjs-a25e779e0e2a.herokuapp.com/api/user/',
   AUTH_API: 'https://pkmn-expressjs-a25e779e0e2a.herokuapp.com/api/auth/',
+  MOVES_API: 'https://pkmn-expressjs-a25e779e0e2a.herokuapp.com/api/moves/',
   pokeballImg: pokeball,
   gymLeaders: [
     brock,
