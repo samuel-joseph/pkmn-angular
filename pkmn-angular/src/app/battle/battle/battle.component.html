@@ -1,6 +1,4 @@
-<div [ngSwitch]="battlePhase"
-  class="parent"
->
+<div [ngSwitch]="battlePhase">
   <div
   class="on-going"
    *ngSwitchCase="'on-going'">
@@ -47,7 +45,12 @@
     class="damageReceived"
     >MISS</p>
     </div>
-      <div class="npcIdle">
+      <div style="
+      display: flex; 
+      justify-content: flex-end; 
+      padding-right: 8vw;
+      margin-top: 5vh;"
+      >
         <img
         *ngIf="this.playerAttackMotion&&this.npcDamageReceive>0"
         class="attackFx"
@@ -173,7 +176,13 @@
       </div>
     </div>
     <div [ngSwitch]="playerOption"
-    class="playerOption"
+    style="
+      display: flex; 
+      flex-direction: column; 
+      justify-content: center;
+      margin-top: -25vh;
+      z-index: 20;
+      padding: 20px;"
     >
     <div *ngSwitchCase="'fight'">
       <div *ngIf="moveOverview.length==0">

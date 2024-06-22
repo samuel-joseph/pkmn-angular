@@ -44,9 +44,6 @@ export class NewGameComponent implements OnInit{
     await this.moveService.getAllMoves().subscribe(response => {
       this.dbMoves = response
     })
-    setTimeout(() => {
-      this.gameLoading = false
-    }, 10700)
   }
 
   getRegion(region: string) {
