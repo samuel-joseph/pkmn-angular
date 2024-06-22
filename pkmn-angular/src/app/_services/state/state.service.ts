@@ -37,30 +37,35 @@ export class StateService {
       ...currentState, // Copy current state
       pokemons: [...pokemons] // Update pokemons array
     };
-    await this.authService.update(updatedState).subscribe(response => {
+    try {
+      const response = await this.authService.update(updatedState);
       this.setState(updatedState);
-      console.log(response)
-    })
+      console.log(response);
+    } catch (error) {
+      console.error('Error updating state:', error);
+    }
   }
 
-  postBattle(result: boolean, perfect: boolean): void {
-
-    const currentState = this.state$.getValue();
-    const updatedState: UserModel = {
-      ...currentState, // Copy current state
-      victory: result ? currentState.victory + 1 : currentState.victory,
-      perfectVictory: perfect ? currentState.perfectVictory + 1 : currentState.perfectVictory,
-      lose: result ? currentState.lose + 1 : currentState.lose,
-      totalGames: currentState.victory + currentState.lose
-    };
-
-    this.authService.update(updatedState).subscribe(response => {
+  async postBattle(result: boolean, perfect: boolean): Promise<void> {
+    try {
+      const currentState = this.state$.getValue();
+      const updatedState: UserModel = {
+        ...currentState, // Copy current state
+        victory: result ? currentState.victory + 1 : currentState.victory,
+        perfectVictory: perfect ? currentState.perfectVictory + 1 : currentState.perfectVictory,
+        lose: result ? currentState.lose + 1 : currentState.lose,
+        totalGames: currentState.victory + currentState.lose
+      };
+  
+      const response = await this.authService.update(updatedState);
       this.setState(updatedState);
-      console.log(response)
-    })
+      console.log(response);
+    } catch (error) {
+      console.error('Error updating state:', error);
+    }
   }
 
-  newGame(endgame: boolean): void {
+  async newGame(endgame: boolean): Promise<void> {
     const currentState = this.state$.getValue();
 
     if (endgame) {
@@ -93,9 +98,12 @@ export class StateService {
       perfectVictory: 1,
       totalGames: 1
     }
-    this.authService.update(newData).subscribe(response => {
-      console.log('new game '+response)
-    })
+    try {
+      const response = await this.authService.update(newData)
+      console.log(response)
+    } catch (e) {
+      console.error('Error updating status: ',e)
+    }
   }
 
   // Get state

@@ -273,6 +273,8 @@ export class PreBattleComponent implements OnInit {
           gymLeader.gymLose = true
           this.stateService.postBattle(event.outcome,event)
           break
+        } else {
+          this.championshipFn()
         }
       }
     } else {
