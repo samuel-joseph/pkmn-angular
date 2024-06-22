@@ -30,7 +30,7 @@ export class MainComponent implements OnInit{
   ) { }
 
   async ngOnInit(): Promise<void> {
-    await this.initializeAllMoves()
+    // await this.initializeAllMoves()
     this.stateService.getState().subscribe(response => {
       if (response.email === '') {
         localStorage.clear()
