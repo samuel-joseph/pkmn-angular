@@ -1,6 +1,4 @@
-<div [ngSwitch]="battlePhase"
-  class="parent"
->
+<div [ngSwitch]="battlePhase">
   <div
   class="on-going"
    *ngSwitchCase="'on-going'">
@@ -47,7 +45,12 @@
     class="damageReceived"
     >MISS</p>
     </div>
-      <div class="npcIdle">
+      <div style="
+      display: flex; 
+      justify-content: flex-end; 
+      padding-right: 8vw;
+      margin-top: 5vh;"
+      >
         <img
         *ngIf="this.playerAttackMotion&&this.npcDamageReceive>0"
         class="attackFx"
@@ -168,122 +171,127 @@
       class="damageReceived"
       >MISS</p>
       </div>
-      <div *ngIf="this.ongoingBattle">
-        <p style="text-align: center; font-size: 14pt; color:white; padding-top: 5vh;">{{this.narrate}}</p>
-      </div>
-    </div>
-    <div [ngSwitch]="playerOption"
-    class="playerOption"
-    >
-    <div *ngSwitchCase="'fight'">
-      <div *ngIf="moveOverview.length==0">
-        <div         
-        *ngIf="!this.ongoingBattle">
-          <div
-          style="
-          display: flex;
-          justify-content: center;
-          margin-bottom: 5px;
-          "
-          *ngFor="let move of this.currentPlayer1[0].moves">
-            <button
-            [ngStyle]="{
-              'border-radius': '20px',
-              'border': 'solid white',
-              'margin-bottom': '5px',
-              'text-shadow': '0 0 white',
-              'width': '180px',
-              'color': 'white',
-              'padding': '5px',
-              'background-color':
-              move.type == 'fire' ? 'red' : 
-              move.type == 'water' ? 'blue' :
-              move.type == 'grass' ? 'green' :
-              move.type == 'psychic' ? 'purple' :
-              move.type == 'rock' ? 'brown' :
-              move.type == 'ground' ? 'brown' :
-              move.type == 'fighting' ? 'brown' :
-              move.type == 'poison' ? 'violet' :
-              move.type == 'dragon' ? 'darkviolet' :
-              move.type == 'fairy' ? 'pink' :
-              move.type == 'flying' ? 'gray' :
-              move.type == 'normal' ? 'gray' :
-              move.type == 'dark' ? 'black' : 
-              move.type == 'bug' ? 'lightgreen' :
-              move.type == 'ghost' ? 'violet' : 
-              move.type  == 'electric' ? '#b1b100' : 'black'
-            }
+      <div style="height: 20vh; background-color: black;">
+        <div [ngSwitch]="playerOption"
+        style="
+          display: flex; 
+          flex-direction: column; 
+          justify-content: center;"
+        >
+        <div *ngSwitchCase="'fight'">
+          <div *ngIf="moveOverview.length==0">
+            <div         
+            *ngIf="!this.ongoingBattle">
+              <div
+              style="
+              display: flex;
+              justify-content: center;
+              margin-bottom: 5px;
+              "
+              *ngFor="let move of this.currentPlayer1[0].moves">
+                <button
+                [ngStyle]="{
+                  'border-radius': '20px',
+                  'border': 'solid white',
+                  'margin-bottom': '5px',
+                  'text-shadow': '0 0 white',
+                  'width': '180px',
+                  'color': 'white',
+                  'padding': '5px',
+                  'background-color':
+                  move.type == 'fire' ? 'red' : 
+                  move.type == 'water' ? 'blue' :
+                  move.type == 'grass' ? 'green' :
+                  move.type == 'psychic' ? 'purple' :
+                  move.type == 'rock' ? 'brown' :
+                  move.type == 'ground' ? 'brown' :
+                  move.type == 'fighting' ? 'brown' :
+                  move.type == 'poison' ? 'violet' :
+                  move.type == 'dragon' ? 'darkviolet' :
+                  move.type == 'fairy' ? 'pink' :
+                  move.type == 'flying' ? 'gray' :
+                  move.type == 'normal' ? 'gray' :
+                  move.type == 'dark' ? 'black' : 
+                  move.type == 'bug' ? 'lightgreen' :
+                  move.type == 'ghost' ? 'violet' : 
+                  move.type  == 'electric' ? '#b1b100' : 'black'
+                }
+                " 
+                (click)="this.openOverview(move)" 
+                >{{move.name}}</button>
+                </div>
+                <div *ngIf="this.currentPlayer1" (click)="this.decisionOption('default')"
+                style="text-align: center; color: white;"
+                >back</div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="moveOverview.length!=0">
+            <div style="
+            display: flex;
+            font-size: small;
+            flex-direction: column;
+            color:white;
             " 
-            (click)="this.openOverview(move)" 
-            >{{move.name}}</button>
+            *ngFor="let move of moveOverview"
+            >
+              <h6 style="text-align: center; border-bottom: 2px solid;">{{move.name.toLocaleUpperCase()}}</h6>
+              <div style="display: flex; flex-direction: row; justify-content: space-around;">
+                <span>Power: {{move.power}}</span>
+                <span>Type: {{move.type}}</span>
+              </div>
+              <div style="display: flex; flex-direction: row; justify-content: space-around; border-bottom: 2px solid black;">
+                <span>PP: {{move.pp}}/{{move.ppMax}}</span>
+                <span>{{move.damageClass.name}}</span>
+              </div>
+              <span>Description: {{move.description}}</span>
+              <span style="border-bottom: 2px solid white;">Accuracy: {{move.accuracy}}</span>
+              <div>
+                <h6 style="text-align: center; color:white;">Use this move?</h6>
+                <div style="display: flex; flex-direction: row; justify-content: space-around;">
+                  <button *ngIf="move.pp!=0" style="border-radius: 20px; color:black;" (click)="this.chosenMove(move)">YES</button>  
+                  <button style="border-radius: 20px; color:black;" (click)="this.closeOverview()">NO</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngSwitchCase="'default'">
+            <div
+            *ngIf="!this.ongoingBattle"
+            style="
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-bottom: 5px;
+            align-items: center;
+            ">
+            <button (click)="this.decisionOption('fight')" style="width: 40vw; border: none; background: none; padding: 8px 0px; border-bottom: 2px solid white; color:white;">Fight</button>
+            <button *ngIf="this.player1.length!==0" (click)="this.decisionOption('swap')" style="width: 40vw; border: none; background: none; padding: 8px 0px; border-bottom: 2px solid white; color: white;">Swap</button>
+            <button *ngIf="this.player1.length!==0" (click)="this.signout()" style="width: 40vw; border: none; background: none; padding: 8px 0px; border-bottom: 2px solid white; color: white;">Sign Out</button>
+            </div>
+          </div>
+          <div *ngSwitchCase="'swap'">
+            <div 
+            style="
+            display: flex;
+            justify-content: center;
+            margin-bottom: 5px;
+            align-items: center;
+            "
+            *ngFor="let pokemon of this.player1">
+              <button style="width: 40vw; border: none; background: none; padding: 8px 0px; border-bottom: 2px solid white; color:white;" (click)="this.swapOption(pokemon)">{{pokemon.name}}</button>
             </div>
             <div *ngIf="this.currentPlayer1" (click)="this.decisionOption('default')"
-            style="text-align: center; color: white;"
+            style="text-align: center; color:white;"
             >back</div>
           </div>
         </div>
       </div>
-      <div *ngIf="moveOverview.length!=0">
-        <div style="
-        display: flex;
-        font-size: small;
-        flex-direction: column;
-        color:white;
-        " 
-        *ngFor="let move of moveOverview"
-        >
-          <h6 style="text-align: center; border-bottom: 2px solid;">{{move.name.toLocaleUpperCase()}}</h6>
-          <div style="display: flex; flex-direction: row; justify-content: space-around;">
-            <span>Power: {{move.power}}</span>
-            <span>Type: {{move.type}}</span>
-          </div>
-          <div style="display: flex; flex-direction: row; justify-content: space-around; border-bottom: 2px solid black;">
-            <span>PP: {{move.pp}}/{{move.ppMax}}</span>
-            <span>{{move.damageClass.name}}</span>
-          </div>
-          <span>Description: {{move.description}}</span>
-          <span style="border-bottom: 2px solid white;">Accuracy: {{move.accuracy}}</span>
-          <div>
-            <h6 style="text-align: center; color:white;">Use this move?</h6>
-            <div style="display: flex; flex-direction: row; justify-content: space-around;">
-              <button *ngIf="move.pp!=0" style="border-radius: 20px; color:black;" (click)="this.chosenMove(move)">YES</button>  
-              <button style="border-radius: 20px; color:black;" (click)="this.closeOverview()">NO</button>
-            </div>
-          </div>
+        <div *ngIf="this.ongoingBattle">
+          <p style="text-align: center; font-size: 14pt; color:white;">{{this.narrate}}</p>
         </div>
-      </div>
-      <div *ngSwitchCase="'default'">
-        <div
-        *ngIf="!this.ongoingBattle"
-        style="
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin-bottom: 5px;
-        align-items: center;
-        ">
-        <button (click)="this.decisionOption('fight')" style="width: 40vw; border: none; background: none; padding: 8px 0px; border-bottom: 2px solid white; color:white;">Fight</button>
-        <button *ngIf="this.player1.length!==0" (click)="this.decisionOption('swap')" style="width: 40vw; border: none; background: none; padding: 8px 0px; border-bottom: 2px solid white; color: white;">Swap</button>
-        <button *ngIf="this.player1.length!==0" (click)="this.signout()" style="width: 40vw; border: none; background: none; padding: 8px 0px; border-bottom: 2px solid white; color: white;">Sign Out</button>
-        </div>
-      </div>
-      <div *ngSwitchCase="'swap'">
-        <div 
-        style="
-        display: flex;
-        justify-content: center;
-        margin-bottom: 5px;
-        align-items: center;
-        "
-        *ngFor="let pokemon of this.player1">
-          <button style="width: 40vw; border: none; background: none; padding: 8px 0px; border-bottom: 2px solid white; color:white;" (click)="this.swapOption(pokemon)">{{pokemon.name}}</button>
-        </div>
-        <div *ngIf="this.currentPlayer1" (click)="this.decisionOption('default')"
-        style="text-align: center; color:white;"
-        >back</div>
       </div>
     </div>
-  </div>
 
   <div
   class="battleDone"

@@ -3,10 +3,10 @@
   flex-direction: column;
   background-color: black;
   height: 100vh;
-  background-image: url('../../../assets/images/background/arena.jpg');
+  background-image: url('../../../assets/images/background/arena3.jpg');
   background-size: contain;
+  background-repeat: no-repeat;
   
-
   .powerupfx{
     animation: aura 2s;
     opacity: 1;
@@ -110,16 +110,9 @@
 
   .playerIdle {
     padding-left: 8vw;
-    margin-bottom: 5vh;
+    margin-bottom: 2vh;
     position: relative;
     z-index: 5;
-  }
-
-  .npcIdle{
-    display: flex; 
-    justify-content: flex-end; 
-    padding-right: 8vw;
-    margin-top: 5vh;
   }
   
   .megaNpcPhysical{
@@ -134,14 +127,6 @@
     opacity: 0;    
   }
 
-  .playerOption{
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center;
-    margin-top: -25vh;
-    z-index: 20;
-    padding: 20px;
-  }
 
   @keyframes npcPhysicalAttack {
     5%{
@@ -319,7 +304,6 @@
  opacity: 0;
 }
 
-
 @keyframes fallingText {
   0%{
     margin-top: 0px;
@@ -330,7 +314,6 @@
     opacity: 1;
   }
 }
-
 
 .battleDone{
   display: flex;

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth/auth.service';
 import { Router } from '@angular/router';
 import { StateService } from '../_services/state/state.service';
@@ -8,7 +8,7 @@ import { StateService } from '../_services/state/state.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   form: any = {
     email: null,
     password: null
@@ -18,11 +18,19 @@ export class LoginComponent {
   errorMessage = '';
   roles: string[] = [];
 
+  gameLoading = true
+
   constructor(
     private authService: AuthService,
     private router: Router,
     private stateService: StateService
   ) { }
+
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.gameLoading = false
+    }, 10700)
+  }
 
   onSubmit(): void {
     const { email, password } = this.form;
