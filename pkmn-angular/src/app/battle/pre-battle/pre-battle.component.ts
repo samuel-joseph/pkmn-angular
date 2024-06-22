@@ -271,7 +271,7 @@ export class PreBattleComponent implements OnInit {
         if (!gymLeader.gymLose) {
           this.myPokemons.push(...event.player1pokemons)
           gymLeader.gymLose = true
-          this.stateService.postBattle(this.myPokemons,event.outcome,event)
+          this.stateService.postBattle(event.outcome,event)
           break
         }
       }
@@ -301,6 +301,6 @@ export class PreBattleComponent implements OnInit {
 
   newgame() {
     this.stateService.newGame(false)
-    this.router.navigate(['/'])
+    this.router.navigate(['/main'])
   }
 }

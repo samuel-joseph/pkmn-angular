@@ -27,9 +27,7 @@ export class LoginComponent implements OnInit{
   ) { }
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.gameLoading = false
-    }, 10700)
+
   }
 
   onSubmit(): void {

@@ -1,4 +1,5 @@
-<div class="parent">
+<app-openning *ngIf="gameLoading"></app-openning>
+<div *ngIf="!gameLoading" class="parent">
   <div class="sub-parent" 
   *ngIf="toDisplayPokemon.length!==0&&clickedPokemon">
     <div style="    
@@ -156,41 +157,24 @@
       </div>
     </div>
   </div>
+  <div class="hamburger-menu">
+    <button class="hamburger" (click)="toggleMenu()">&#9776;</button>
+    <input type="text" [(ngModel)]="inputValue" placeholder="Enter pokemon">
+    <button class="enter-button" (click)="displayPokemon(inputValue)">Enter</button>  
+    <div class="menu" [ngClass]="{'show': menuOpen}">
+      <div *ngFor="let region of regionArr">
+        <button (click)="getRegion(region)">{{region}}</button>
+      </div>
+    </div>
+  </div>  
   <div *ngIf="myPokemons&&!clickedPokemon">
     <span *ngFor="let pokemon of myPokemons">
       <img alt="" class="idleAnimationPlayer" style="width: 15%;" [src]="pokemon.front_image" (click)="removePokemon(pokemon.id)"/>
     </span>
   </div>
-  <div style="display: flex; flex-direction: row; justify-content: center;">
-    <div *ngFor="let region of regionArr">
-      <button (click)="getRegion(region)">{{region}}</button>
-    </div>
-  </div>
-  <div *ngIf="regionPokemons.length==0" 
-    style="   
-    padding: 2vh 5vw;
-    text-align:justify;
-    color: white;
-    "
-    >
-    <h2>Main objectives</h2>
-    <div style="text-align: left; padding-left: 5px; padding-bottom: 5vh;">
-      <p>- Become the pokemon Champion</p>
-      <p>- Defeat all the gym leaders</p>
-      <p>- Defeat Champion Ash</p>
-      <p>- Have fun!</p>
-    </div>
-    <h6>Sub objectives</h6>
-    <div style="text-align: left; padding-left: 5px;">
-      <p>- Choose 6 pokemons</p>
-      <p>- Choose 4 moves in every 6 pokemon</p>
-      <p>- Choose 3 pokemon to battle</p>
-    </div>
-  </div>
-  <img *ngIf="regionPokemons.length==0" alt="" class="pikachu" src="https://media.tenor.com/fSsxftCb8w0AAAAC/pikachu-running.gif" />
   <div class="pokemon-list" *ngIf="regionPokemons">
     <span *ngFor="let pokemon of regionPokemons">
-        <img style="border: 1px solid black; background-color: palevioletred;" alt="" [src]="pokemon.url" (click)="displayPokemon(pokemon.id)" />
+        <img alt="" style="border: 1px solid black; background-color: palevioletred;" alt="" [src]="pokemon.url" (click)="displayPokemon(pokemon.id)" />
     </span>
   </div>
 </div>

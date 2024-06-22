@@ -24,6 +24,7 @@ export class NewGameComponent implements OnInit{
     private authService: AuthService,
     private router: Router
   ) { }
+    menuOpen = false;
     dbMoves: MoveModel[] = []
     @Output() pokemonSubmit = new EventEmitter();
     moveListArr = environment.moveDb
@@ -33,7 +34,9 @@ export class NewGameComponent implements OnInit{
     FinalArrMove: MoveModel[] = []
     pokemon: PokemonModel
     toDisplayPokemon: any[] = []
-  clickedPokemon = false
+    clickedPokemon = false
+    gameLoading = true
+    inputValue: string = '';
     
     myPokemons: PokemonModel[] = []
 
@@ -42,18 +45,34 @@ export class NewGameComponent implements OnInit{
     await this.moveService.getAllMoves().subscribe(response => {
       this.dbMoves = response
     })
+    setTimeout(() => {
+      this.gameLoading = false
+      this.getRegion(this.regionArr[0])
+      this.menuOpen = !this.menuOpen
+    }, 10700)
+  }
+
+  // handleEnter(): void {
+  //   console.log('Enter button clicked', this.inputValue);
+  //   // Add your logic here
+  //   this.displayPokemon()
+  // }
+
+  toggleMenu(): void {
+    this.menuOpen = !this.menuOpen;
   }
 
   getRegion(region: string) {
     let copyRegionPokemons = this.pokemonService.getPokemonRegion(region)
     this.regionPokemons = copyRegionPokemons
+    this.menuOpen = !this.menuOpen
   }
 
   displayPokemon(id: string) {
     this.clickedPokemon = true
     const isUnique = this.myPokemons.filter(pokemon => pokemon.id == parseInt(id))  
     if(isUnique.length == 0){
-      this.http.getPokemon(id).subscribe((data) => {
+      this.http.getPokemon(id.toLowerCase()).subscribe((data) => {
         let temp: any = []
         temp.push(data)
         for (let pokemon of temp) {
