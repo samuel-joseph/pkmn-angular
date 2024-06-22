@@ -33,8 +33,6 @@ export class NewGameComponent implements OnInit{
     FinalArrMove: MoveModel[] = []
     pokemon: PokemonModel
     toDisplayPokemon: any[] = []
-  
-  gameLoading = true
   clickedPokemon = false
     
     myPokemons: PokemonModel[] = []
