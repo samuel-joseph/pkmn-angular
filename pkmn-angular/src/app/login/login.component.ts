@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../_services/auth/auth.service';
-import { StorageService } from '../_services/storage/storage.service';
 import { Router } from '@angular/router';
 import { StateService } from '../_services/state/state.service';
 
@@ -21,7 +20,6 @@ export class LoginComponent {
 
   constructor(
     private authService: AuthService,
-    private storageService: StorageService,
     private router: Router,
     private stateService: StateService
   ) { }

@@ -1,4 +1,5 @@
 export interface MoveModel {
+  _id: number,
   id: number,
   name: string,
   power: number,
