@@ -30,7 +30,7 @@ export class MainComponent implements OnInit{
   ) { }
 
   async ngOnInit(): Promise<void> {
-    // await this.initializeAllMoves()
+    await this.initializeAllMoves()
     this.stateService.getState().subscribe(response => {
       if (response.email === '') {
         localStorage.clear()
@@ -72,60 +72,18 @@ export class MainComponent implements OnInit{
   }
 
   initializeAllMoves() {
-    for (let idMove of this.moveListArr) {
-      this.http.getPokemonMove(`${idMove}`).subscribe((move)=>{
-        let ailment, hits, crit_rate
-
-        if (move.meta) {
-          ailment = {
-            name: move.meta.ailment['name'],
-            category: move.meta.category['name'],
-            chance: move.meta.ailment_chance
+    this.moveService.getAllMoves().subscribe(response => {
+      const allMoves = response
+      for (let move of allMoves) {
+        move.moveFx = this.getMoveFx(move.type,move.power,move.damageClass.name)
+        this.moveService.updateMove(move).subscribe((response) => {
+          console.log('Move updated successfully ',response)
+        }),
+          (error: any) => {
+            console.log('Error updating move',error)
           }
-          hits = {
-            min_hits: move.meta.min_hits != null ? move.meta.min_hits : undefined,
-            max_hits: move.meta.max_hits != null ? move.meta.max_hits : undefined
-          }
-          crit_rate = move.meta.crit_rate
-          
-        }
-
-        let moveFx = this.getMoveFx(move.type.name, move.power, move.damageClass.name)
-
-        let description 
-        for (let desc of move.flavor_text_entries) {
-          if (desc.language.name == "en") {
-            description = desc.flavor_text
-          }
-        }
-
-
-        const data:MoveModel = {
-          id: move.id,
-          name: move.name,
-          power: move.power,
-          pp: move.pp,
-          ppMax: move.pp,
-          type: move.type.name,
-          accuracy: move.accuracy,
-          damageClass: {
-            name: move.damage_class.name,
-            ailment
-          },
-          effect_chance: move.effect_chance,
-          stat_changes: move.stat_changes,
-          priority: move.priority,
-          hits,
-          crit_rate: move.meta.crit_rate,
-          moveFx,
-          target: move.target.name,
-          description,
-          drain: move.meta.drain
-        }
-
-        this.moveService.addMove(data).subscribe(response=> console.log(response))
-      })
-    }
+      }
+    })
   }
 
   // grabMovesets() {
@@ -214,6 +172,7 @@ export class MainComponent implements OnInit{
 
 
         dbMoves.push({
+          _id: move._id,
           id: move.id,
           name: move.name,
           power: move.power,
@@ -258,86 +217,104 @@ export class MainComponent implements OnInit{
           case 'fire':
             return damageClass == 'physical' ?
             moveFxRecords.firePhysical
-            : moveFxRecords.fireSpecialHard
+            : moveFxRecords.fireSpecialMid
           case 'grass':
             return damageClass == 'physical' ?
             moveFxRecords.grassPhysical
             : moveFxRecords.grassSpecial
           case 'electric':
-            return 'https://media3.giphy.com/media/ebQMQkzmJNT7G/source.gif'
+            return damageClass == 'physical' ?
+              moveFxRecords.thunderPhysical
+              : moveFxRecords.thunderSpecialMid
           case 'fighting':
-            return 'https://cdna.artstation.com/p/assets/images/images/015/934/194/original/joshua-gates-quick-explosion.gif?1550235110'
+            return damageClass == 'physical' ?
+              moveFxRecords.fighting 
+              : moveFxRecords.thunderPhysical
           case 'normal':
-            return 'https://cdna.artstation.com/p/assets/images/images/015/934/194/original/joshua-gates-quick-explosion.gif?1550235110'
+            return moveFxRecords.normalPhysical
           case 'dragon':
-            return 'https://orangemushroom.files.wordpress.com/2016/07/demon-awakening-effect-slash-1.gif?w=400'
+            return damageClass == 'physical' ?
+              moveFxRecords.dragonPhysical
+              : moveFxRecords.purpleSpecial
           case 'ghost':
-            return 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/96269ce8-4a07-4702-936a-6860e1b5594f/dc62zhb-097d58db-0e51-4e7e-b3b4-8cee199d08a4.png/v1/fit/w_150,h_150,strp/shadow_ball__redesign__by_venjix5_dc62zhb-150.png'
+            return damageClass == 'physical' ?
+              moveFxRecords.psychicPhysical
+              : moveFxRecords.dark
           case 'psychic':
-            return 'https://i.gifer.com/OupZ.gif'
+            return damageClass == 'physical' ?
+              moveFxRecords.psychicPhysical
+              : moveFxRecords.psychicSpecial
           case 'steel':
-            return 'https://miro.medium.com/v2/resize:fit:1400/1*itTs80OkVKKxysXRr9svew.gif'
+            return moveFxRecords.metal1
           case 'fairy':
-            return 'https://thumbs.gfycat.com/PlumpKnobbyArmednylonshrimp-size_restricted.gif'
+            return moveFxRecords.pinkBlast
           case 'dark':
-            return 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/96269ce8-4a07-4702-936a-6860e1b5594f/dc62zhb-097d58db-0e51-4e7e-b3b4-8cee199d08a4.png/v1/fit/w_150,h_150,strp/shadow_ball__redesign__by_venjix5_dc62zhb-150.png'
+            return moveFxRecords.dark
           case 'bug':
-            return 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/96269ce8-4a07-4702-936a-6860e1b5594f/dc62zhb-097d58db-0e51-4e7e-b3b4-8cee199d08a4.png/v1/fit/w_150,h_150,strp/shadow_ball__redesign__by_venjix5_dc62zhb-150.png'
+            return moveFxRecords.grassPhysical
           case 'flying':
-            return 'https://thumbs.gfycat.com/RaggedMixedBlackfly-max-1mb.gif'
+            return moveFxRecords.fighting
           case 'ice':
-            return 'https://clipart-library.com/img/973912.gif'
+            return moveFxRecords.ice
           case 'rock':
-            return 'https://media3.giphy.com/media/SFinpavCE7qC4ed3AG/giphy.gif?cid=6c09b9525a92lkkl5w214mkl5hxm1sd4eqoyvvj9yg69p68i&ep=v1_stickers_related&rid=giphy.gif&ct=s'
+            return moveFxRecords.boulder
           case 'ground':
-            return 'https://i.gifer.com/o8G.gif'
+            return moveFxRecords.normalPhysical
           case 'poison':
-            return 'https://i.gifer.com/OupZ.gif'
+            return moveFxRecords.violetDiamond
           default:
-            return 'https://www.freeiconspng.com/thumbs/x-png/x-png-18.png'
+            return damageClass == 'physical' ?
+              moveFxRecords.normalPhysical
+              : moveFxRecords.normalSpecial
         }
       case 'strong':
         switch (moveType) {
           case 'water':
-            return 'https://webstockreview.net/images/clipart-mountain-ocean-1.gif'
+            return moveFxRecords.waterSpecialHard
           case 'fire':
-            return 'https://i.gifer.com/3q62.gif'
+            return moveFxRecords.fireSpecialHard
           case 'grass':
-            return 'https://thumbs.gfycat.com/PlumpKnobbyArmednylonshrimp-size_restricted.gif'
+            return moveFxRecords.grassStrong
           case 'electric':
-            return 'https://i.gifer.com/4bXG.gif'
+            return moveFxRecords.thunderSpecialHard
           case 'fighting':
-            return 'https://cdna.artstation.com/p/assets/images/images/015/934/194/original/joshua-gates-quick-explosion.gif?1550235110'
+            return moveFxRecords.fighting
           case 'normal':
-            return 'https://media2.giphy.com/media/dphDDCpGfzJPq/source.gif'
+            return moveFxRecords.strongBlast
           case 'dragon':
-            return 'https://pa1.narvii.com/6881/3e2030d2b7d2ffe47e7fd0fa6fea2b7ce27f43fdr1-350-500_hq.gif'
+          return damageClass == 'physical' ?
+          moveFxRecords.dragonPhysical
+          : moveFxRecords.aura
           case 'ghost':
-            return 'https://thumbs.gfycat.com/SickEnchantingAdamsstaghornedbeetle-small.gif'
+            return moveFxRecords.purpleSpecial
           case 'psychic':
-            return 'https://pa1.narvii.com/6916/24eaf472b2d3a587aed0c268fcd42f35aedb7061r1-1024-1024_hq.gif'
+            return moveFxRecords.psychicSpecialHard
           case 'steel':
-            return 'https://miro.medium.com/v2/resize:fit:1400/1*itTs80OkVKKxysXRr9svew.gif'
+            return moveFxRecords.metal2
           case 'fairy':
-            return 'https://thumbs.gfycat.com/PlumpKnobbyArmednylonshrimp-size_restricted.gif'
+            return moveFxRecords.pinkBlast2
           case 'dark':
-            return 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/96269ce8-4a07-4702-936a-6860e1b5594f/dc62zhb-097d58db-0e51-4e7e-b3b4-8cee199d08a4.png/v1/fit/w_150,h_150,strp/shadow_ball__redesign__by_venjix5_dc62zhb-150.png'
+            return moveFxRecords.blackBlast
           case 'bug':
-            return 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/96269ce8-4a07-4702-936a-6860e1b5594f/dc62zhb-097d58db-0e51-4e7e-b3b4-8cee199d08a4.png/v1/fit/w_150,h_150,strp/shadow_ball__redesign__by_venjix5_dc62zhb-150.png'
+            return moveFxRecords.grassStrong
           case 'flying':
-            return 'https://thumbs.gfycat.com/RaggedMixedBlackfly-max-1mb.gif'
+            return moveFxRecords.windSpecial
           case 'ice':
-            return 'https://clipart-library.com/img/973912.gif'
+            return moveFxRecords.ice1
           case 'rock':
-            return 'https://media3.giphy.com/media/SFinpavCE7qC4ed3AG/giphy.gif?cid=6c09b9525a92lkkl5w214mkl5hxm1sd4eqoyvvj9yg69p68i&ep=v1_stickers_related&rid=giphy.gif&ct=s'
+            return moveFxRecords.rockSpecial
           case 'ground':
-            return 'https://i.gifer.com/o8G.gif'
+            return moveFxRecords.groundSpecial
           case 'poison':
-            return 'https://i.gifer.com/OupZ.gif'
+            return moveFxRecords.violetDiamond
           default:
-            return 'https://www.freeiconspng.com/thumbs/x-png/x-png-18.png'
+            return damageClass == 'physical' ?
+            moveFxRecords.normalPhysical
+            : moveFxRecords.normalSpecial
         }
     }
-    return 'https://www.freeiconspng.com/thumbs/x-png/x-png-18.png'
+    return damageClass == 'physical' ?
+    moveFxRecords.normalPhysical
+    : moveFxRecords.normalSpecial
   }
 }

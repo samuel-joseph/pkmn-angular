@@ -26,13 +26,13 @@ export class MoveService {
     return this.http.get(this.MOVES_API);
   }
 
-  deleteMove(id:number): Observable<any> {
-    return this.http.delete(this.MOVES_API+id);
+  deleteMove(_id:number): Observable<any> {
+    return this.http.delete(this.MOVES_API+_id);
   }
 
   updateMove(data: MoveModel): Observable<any> {
     return this.http.put(
-      this.MOVES_API + data.id,
+      this.MOVES_API + data._id,
       data
     )
   }

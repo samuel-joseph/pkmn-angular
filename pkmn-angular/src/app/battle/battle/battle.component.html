@@ -4,7 +4,7 @@
   <div
   class="on-going"
    *ngSwitchCase="'on-going'">
-    <div class="playerIdle">
+    <div>
       <img
       *ngIf="this.playerAttackMotion&&this.playerAttackClass=='physical'"
       alt=""
@@ -47,7 +47,7 @@
     class="damageReceived"
     >MISS</p>
     </div>
-      <div style="display: flex; justify-content: flex-end;">
+      <div class="npcIdle">
         <img
         *ngIf="this.playerAttackMotion&&this.npcDamageReceive>0"
         class="attackFx"
@@ -90,7 +90,6 @@
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
-    margin-top: 10vh;
     "
     >
       <div>
@@ -168,6 +167,9 @@
       *ngIf="this.npcAttackMotion&&this.playerDamageReceive==0"
       class="damageReceived"
       >MISS</p>
+      </div>
+      <div *ngIf="this.ongoingBattle">
+        <p style="text-align: center; font-size: 14pt; color:white; padding-top: 5vh;">{{this.narrate}}</p>
       </div>
     </div>
     <div [ngSwitch]="playerOption"
@@ -249,9 +251,6 @@
             </div>
           </div>
         </div>
-      </div>
-      <div *ngIf="this.ongoingBattle">
-        <p style="text-align: center; font-size: 14pt; color:white; padding-top: 5vh;">{{this.narrate}}</p>
       </div>
       <div *ngSwitchCase="'default'">
         <div
