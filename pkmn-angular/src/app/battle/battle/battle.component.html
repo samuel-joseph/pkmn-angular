@@ -177,7 +177,10 @@
       </div>
     </div>
     <div [ngSwitch]="playerOption"
-    class="playerOption"
+    style="
+    height: 20vh;
+    background-color: black;
+    "
     >
     <div *ngSwitchCase="'fight'">
       <div *ngIf="moveOverview.length==0">
