@@ -40,8 +40,8 @@ export const rechargeMove = ['hyper-beam', 'giga-impact', 'frenzy-plant', 'blast
 export const chargeMove = ['meteor-beam','solar-beam','sky-attack']
 
 export const moveFxRecords = {
-  normalPhysical: image+'normal.gif',
-  normalSpecial: image+'normal.gif',
+  normalPhysical: image+'tackle.gif',
+  normalSpecial: image+'taclke.gif',
   waterSpecialMid: 'https://webstockreview.net/images/clipart-mountain-ocean-1.gif',
   waterSpecialHard: image+'water-strong.gif',
   thunderPhysical: image+'yellow-physical.gif',
@@ -76,5 +76,9 @@ export const moveFxRecords = {
   boulder: image+'rock.gif',
   strongBlast:'https://media2.giphy.com/media/dphDDCpGfzJPq/source.gif',
   aura:'https://pa1.narvii.com/6881/3e2030d2b7d2ffe47e7fd0fa6fea2b7ce27f43fdr1-350-500_hq.gif',
-  psychicSpecialHard:'https://pa1.narvii.com/6916/24eaf472b2d3a587aed0c268fcd42f35aedb7061r1-1024-1024_hq.gif'
+  psychicSpecialHard: 'https://pa1.narvii.com/6916/24eaf472b2d3a587aed0c268fcd42f35aedb7061r1-1024-1024_hq.gif',
+  slash: image + 'slash.gif',
+  shuriken: image + 'shuriken.gif',
+  punch: image + 'punch.gif',
+  grassUlt: image + 'grassUltimate.gif'
 }

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
-import { Observable, tap } from "rxjs";
+import { Observable, firstValueFrom, tap } from "rxjs";
 import { PokemonModel } from "src/app/model/pokemon-model.model";
 import { environment } from "src/environments/environment";
 
@@ -53,10 +53,19 @@ export class AuthService{
     );
   }
 
-  update(data: data): Observable<any> {
-    // Define the headers, including the Authorization header with the token
-    // Make the HTTP PUT request
-    return this.http.put<any>(USER_API, data);
+  // update(data: data): Observable<any> {
+  //   // Define the headers, including the Authorization header with the token
+  //   // Make the HTTP PUT request
+  //   return this.http.put<any>(USER_API, data);
+  // }
+
+
+  update(data: data): Promise<any> {
+    return firstValueFrom(this.http.put<any>(USER_API, data));
+  }
+
+  delete(_id: string) {
+    return this.http.delete(USER_API + _id);
   }
   
 

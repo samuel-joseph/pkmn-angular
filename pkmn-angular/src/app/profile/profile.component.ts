@@ -44,10 +44,10 @@ export class ProfileComponent implements OnInit {
       };
   
       // Call the authService update method with the extracted data
-      this.authService.update(data)
-        .subscribe(response => {
-          console.log(response);
-        });
+      // this.authService.update(data)
+      //   .subscribe(response => {
+      //     console.log(response);
+      //   });
     });
   }
 }
