@@ -43,7 +43,7 @@ export class StateService {
     })
   }
 
-  postBattle(result: boolean, perfect: boolean): void {
+  async postBattle(result: boolean, perfect: boolean): Promise<void> {
 
     const currentState = this.state$.getValue();
     const updatedState: UserModel = {
@@ -54,7 +54,7 @@ export class StateService {
       totalGames: currentState.victory + currentState.lose
     };
 
-    this.authService.update(updatedState).subscribe(response => {
+    await this.authService.update(updatedState).subscribe(response => {
       this.setState(updatedState);
       console.log(response)
     })
