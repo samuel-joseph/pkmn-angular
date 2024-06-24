@@ -25,6 +25,7 @@ import { RegisterComponent } from './register/register.component';
 import { StorageService } from './_services/storage/storage.service';
 import { ProfileComponent } from './profile/profile.component';
 import { MainComponent } from './main/main.component';
+import { EndingComponent } from './ending/ending.component';
 
 const routes: Routes = [
   { path: '', component: OpenningComponent },
@@ -48,7 +49,8 @@ const routes: Routes = [
     LoginComponent,
     RegisterComponent,
     ProfileComponent,
-    MainComponent
+    MainComponent,
+    EndingComponent
   ],
   imports: [
     BrowserModule,

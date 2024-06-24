@@ -1,0 +1,69 @@
+    <div style="
+      width: 100vw;
+      height: 100vh;
+      background-color: black;
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      justify-content: center;"
+      >
+      <div class="featuredPokemonParent">
+        <div *ngIf="!this.showChampionPokemon">
+          <div *ngFor="let pokemon of highlightPokemon">
+            <img alt="" style="height:20vh" [src]="pokemon.front_image" />
+            <h4>{{pokemon.name.toLocaleUpperCase()}} No. {{pokemon.id}}</h4>
+          </div>
+        </div>
+        <div *ngIf="this.showChampionPokemon" class="allPokemonsParent">
+          <h2>Congratulations!!!</h2>
+          <h2>You are the new</h2>
+          <h1>POKEMON MASTER</h1>
+          <div
+            style="
+            display: flex;
+            justify-content: space-around;
+            ">
+            <span>Total Matches: {{totalGames}}</span>            
+            <span>Perfect Victory: {{perfectWins}}</span>
+          </div>
+          <div class="allPokemons" *ngIf="this.showChampionPokemon">
+            <div style="
+              height: 12vh;
+              " *ngFor="let pokemon of myPokemons">
+              <img alt="" [src]="pokemon.front_image" />
+              <img alt="" style="height: 40px; margin-left: -30px;" src="https://media4.giphy.com/media/8XhEqSstMlwyyseiq0/giphy.gif" />
+            </div>
+          </div>
+          <p>From the bottom of my heart I wanna thank you for giving time to play the game that I created!
+          </p>
+          <br />
+          <br />
+          <h3>
+            <a (click)="playAgain()">PLAY AGAIN</a>
+          </h3>
+          <div id="footer">
+            <p>Feel free to follow me:</p>
+            <a href="https://www.instagram.com/techjoe21/"><img style="width: 8vw;" alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/2048px-Instagram_icon.png" /></a>
+          </div>
+        </div>
+      </div>
+      <img 
+      *ngIf="this.showChampionPokemon" 
+      [ngStyle]="{
+        'opacity': this.showChampionPokemon ? '1' : '0',
+        'width': '100vw',
+      }"
+      alt="" 
+      src="https://bestanimations.com/media/fireworks/671801409ba-awesome-coloful-fireworks-animated-gif-image-3.gif" />
+      <div *ngIf="!this.showChampionPokemon" [ngClass]="this.showChampionPokemon?'':'trophyFalling'">            
+        <img 
+        src="https://media4.giphy.com/media/8XhEqSstMlwyyseiq0/giphy.gif" 
+        alt="" 
+        />
+      </div>
+      <div
+      class="pokemonHolder">
+        <div class="parentBadge" *ngFor="let gym of this.gymLeaders">
+          <img  style="height: 15vh;" alt="" [src]="gym.gymBadge" />
+        </div>
+      </div>
