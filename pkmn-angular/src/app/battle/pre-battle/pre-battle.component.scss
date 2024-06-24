@@ -3,6 +3,8 @@
   flex-direction: column; 
   flex-wrap: wrap; 
   justify-self: center;
+  background-image: url('../../../assets/images/background/prebattle2.jpg');
+  background-size: cover;
 
   .pokeballImg{
     width: 10vw;
@@ -21,14 +23,16 @@
     flex-direction: column; 
     align-items: center; 
     justify-content:space-evenly;
+    width: 20vw;
   }
 
   .pokemon-container{
     display: flex; 
-      flex-direction: row; 
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 0 5vw;
+    flex-direction: row; 
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0 5vw;
+    border: 2px solid black;
   }
 }
 

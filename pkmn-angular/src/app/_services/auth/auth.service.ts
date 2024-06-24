@@ -63,6 +63,10 @@ export class AuthService{
   update(data: data): Promise<any> {
     return firstValueFrom(this.http.put<any>(USER_API, data));
   }
+
+  delete(_id: string) {
+    return this.http.delete(USER_API + _id);
+  }
   
 
   getToken(): string | null {

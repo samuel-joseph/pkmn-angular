@@ -106,6 +106,15 @@ export class PreBattleComponent implements OnInit {
     },4000)
   }
 
+  deleteAccount() {
+    this.stateService.getState().subscribe(response => {
+      if(response._id)
+        this.auth.delete(response._id).subscribe(response => console.log('Successfully deleted ', response))
+      this.auth.logout()
+      this.router.navigate(['/login'])
+    })
+  }
+
   toggleSwitch() {
     this.switchOn = !this.switchOn
   }

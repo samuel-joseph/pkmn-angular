@@ -75,7 +75,7 @@ export class MainComponent implements OnInit{
     this.moveService.getAllMoves().subscribe(response => {
       const allMoves = response
       for (let move of allMoves) {
-        move.moveFx = this.getMoveFx(move.type,move.power,move.damageClass.name)
+        move.moveFx = this.getMoveFx(move)
         this.moveService.updateMove(move).subscribe((response) => {
           console.log('Move updated successfully ',response)
         }),
@@ -161,7 +161,7 @@ export class MainComponent implements OnInit{
           
         }
 
-        let moveFx = this.getMoveFx(move.type.name,move.power,move.damageClass.name)
+        let moveFx = this.getMoveFx(move)
 
         let description 
         for (let desc of move.flavor_text_entries) {
@@ -199,9 +199,18 @@ export class MainComponent implements OnInit{
     this.stateService.setMoveState(dbMoves)
   }
 
-  getMoveFx(moveType: string, power: number, damageClass: string) {
+  getMoveFx(move: MoveModel) {
+
+    if (move.name.includes('slash')) {
+      return moveFxRecords.slash
+    } else if (move.name.includes('punch')&&move.power>=100) {
+      return moveFxRecords.punch
+    } else if (move.name.includes('shuriken')) {
+      return moveFxRecords.shuriken
+    }
+
     let moveDamage = ''
-    if (power > 70) {
+    if (move.power > 70) {
       moveDamage = 'strong'
     } else {
       moveDamage = 'medium'
@@ -209,39 +218,39 @@ export class MainComponent implements OnInit{
     
     switch (moveDamage) {
       case 'medium':
-        switch (moveType) {
+        switch (move.type) {
           case 'water':
-            return damageClass == 'physical' ?
+            return move.damageClass.name == 'physical' ?
               moveFxRecords.bluePhysical
               : moveFxRecords.waterSpecialMid
           case 'fire':
-            return damageClass == 'physical' ?
+            return move.damageClass.name == 'physical' ?
             moveFxRecords.firePhysical
             : moveFxRecords.fireSpecialMid
           case 'grass':
-            return damageClass == 'physical' ?
+            return move.damageClass.name == 'physical' ?
             moveFxRecords.grassPhysical
             : moveFxRecords.grassSpecial
           case 'electric':
-            return damageClass == 'physical' ?
+            return move.damageClass.name == 'physical' ?
               moveFxRecords.thunderPhysical
               : moveFxRecords.thunderSpecialMid
           case 'fighting':
-            return damageClass == 'physical' ?
+            return move.damageClass.name == 'physical' ?
               moveFxRecords.fighting 
               : moveFxRecords.thunderPhysical
           case 'normal':
             return moveFxRecords.normalPhysical
           case 'dragon':
-            return damageClass == 'physical' ?
+            return move.damageClass.name == 'physical' ?
               moveFxRecords.dragonPhysical
               : moveFxRecords.purpleSpecial
           case 'ghost':
-            return damageClass == 'physical' ?
+            return move.damageClass.name == 'physical' ?
               moveFxRecords.psychicPhysical
               : moveFxRecords.dark
           case 'psychic':
-            return damageClass == 'physical' ?
+            return move.damageClass.name == 'physical' ?
               moveFxRecords.psychicPhysical
               : moveFxRecords.psychicSpecial
           case 'steel':
@@ -263,18 +272,18 @@ export class MainComponent implements OnInit{
           case 'poison':
             return moveFxRecords.violetDiamond
           default:
-            return damageClass == 'physical' ?
+            return move.damageClass.name == 'physical' ?
               moveFxRecords.normalPhysical
               : moveFxRecords.normalSpecial
         }
       case 'strong':
-        switch (moveType) {
+        switch (move.type) {
           case 'water':
             return moveFxRecords.waterSpecialHard
           case 'fire':
             return moveFxRecords.fireSpecialHard
           case 'grass':
-            return moveFxRecords.grassStrong
+            return moveFxRecords.grassUlt
           case 'electric':
             return moveFxRecords.thunderSpecialHard
           case 'fighting':
@@ -282,7 +291,7 @@ export class MainComponent implements OnInit{
           case 'normal':
             return moveFxRecords.strongBlast
           case 'dragon':
-          return damageClass == 'physical' ?
+          return move.damageClass.name == 'physical' ?
           moveFxRecords.dragonPhysical
           : moveFxRecords.aura
           case 'ghost':
@@ -308,12 +317,12 @@ export class MainComponent implements OnInit{
           case 'poison':
             return moveFxRecords.violetDiamond
           default:
-            return damageClass == 'physical' ?
+            return move.damageClass.name == 'physical' ?
             moveFxRecords.normalPhysical
             : moveFxRecords.normalSpecial
         }
     }
-    return damageClass == 'physical' ?
+    return move.damageClass.name == 'physical' ?
     moveFxRecords.normalPhysical
     : moveFxRecords.normalSpecial
   }
