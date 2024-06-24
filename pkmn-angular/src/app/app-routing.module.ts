@@ -10,6 +10,7 @@ import { authGuard } from './guards/auth-guard.guard';
 import { ProfileComponent } from './profile/profile.component';
 import { PreBattleComponent } from './battle/pre-battle/pre-battle.component';
 import { MainComponent } from './main/main.component';
+import { EndingComponent } from './ending/ending.component';
 
 const routes: Routes = [
   // { path: 'player', title: 'profile', component: PlayerComponent },
@@ -26,6 +27,12 @@ const routes: Routes = [
     path: 'main',
     title: 'main',
     component: MainComponent, 
+    canActivate: [authGuard]
+  },
+  {
+    path: 'end',
+    title: 'end',
+    component: EndingComponent,
     canActivate: [authGuard]
   },
   // { path: 'profile', title: 'profile', component: ProfileComponent },

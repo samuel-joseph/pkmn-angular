@@ -67,7 +67,6 @@ export class PreBattleComponent implements OnInit {
   ) { }
   
   championshipFn() {
-    // this.stateService.newGame(true)
     setTimeout(() => {
       this.highlightPokemon = []
       this.highlightPokemon.push(this.myPokemons[this.counter])
@@ -76,6 +75,7 @@ export class PreBattleComponent implements OnInit {
         this.championshipFn()
       } else {
         this.showChampionPokemon = true
+        // this.stateService.newGame(true)
       }
     },10000)
   }
@@ -96,8 +96,9 @@ export class PreBattleComponent implements OnInit {
     setTimeout(() => {
       this.currentGymLeader = this.checkLeaders()
       if (this.currentGymLeader.length == 0) {
-        this.battlePhase = 'new-champion'
-        this.championshipFn()
+        // this.battlePhase = 'new-champion'
+        // this.championshipFn()
+        this.router.navigate(['/end'])
       }else{
         this.copyMyPokemons = this.myPokemons
         this.getPokemon()
