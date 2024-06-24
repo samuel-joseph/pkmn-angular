@@ -1,4 +1,4 @@
-<div class="parent" [ngSwitch]="battlePhase">
+<div [ngSwitch]="battlePhase">
   <div *ngSwitchCase="'game-over'">
     <app-root></app-root>
   </div>
@@ -161,7 +161,7 @@
         </div>
       </div>
     </div>
-    <button (click)="newgame()">New Game</button>
+    <button (click)="newgame(false)">New Game</button>
     <button (click)="signout()">Sign out</button>
   </div>
   <app-battle 
@@ -172,9 +172,13 @@
   *ngSwitchCase="'in-battle'"
   >
   </app-battle>
+  <!-- notes -->
+  <!-- transfer this to a new component -->
   <div
   *ngSwitchCase="'new-champion'">
-    <div>
+    <div
+    class="parent"
+    >
       <div class="featuredPokemonParent">
         <div *ngIf="!this.showChampionPokemon">
           <div *ngFor="let pokemon of highlightPokemon">

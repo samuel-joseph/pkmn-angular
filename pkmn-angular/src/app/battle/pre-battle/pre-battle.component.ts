@@ -15,11 +15,13 @@ import { StateService } from 'src/app/_services/state/state.service';
 import { Router } from '@angular/router';
 import { MoveService } from 'src/app/_services/move/move.service';
 
+
 @Component({
   selector: 'app-pre-battle',
   templateUrl: './pre-battle.component.html',
   styleUrls: ['./pre-battle.component.scss']
 })
+
 export class PreBattleComponent implements OnInit {
   dbMoves: MoveModel[] = []
   @Input() gymLeaders: any[] = []
@@ -65,7 +67,7 @@ export class PreBattleComponent implements OnInit {
   ) { }
   
   championshipFn() {
-    this.stateService.newGame(true)
+    // this.stateService.newGame(true)
     setTimeout(() => {
       this.highlightPokemon = []
       this.highlightPokemon.push(this.myPokemons[this.counter])
@@ -271,11 +273,9 @@ export class PreBattleComponent implements OnInit {
         if (!gymLeader.gymLose) {
           this.myPokemons.push(...event.player1pokemons)
           gymLeader.gymLose = true
-          this.stateService.postBattle(event.outcome,event)
+          this.stateService.postBattle(event)
           break
-        } else {
-          this.championshipFn()
-        }
+        } 
       }
     } else {
       this.myPokemons.push(...this.player1)
@@ -301,8 +301,13 @@ export class PreBattleComponent implements OnInit {
     this.router.navigate(['/'])
   }
 
-  newgame() {
-    this.stateService.newGame(false)
-    this.router.navigate(['/main'])
+  async newgame(champion: boolean): Promise<void> {
+    try{
+      const response = this.stateService.newGame(champion)
+      console.log(response)
+      this.router.navigate(['/main'])
+    } catch (e) {
+      console.error(e)
+    }
   }
 }
