@@ -43,13 +43,11 @@ export class StateService {
     })
   }
 
-  postBattle(returningPokemons: PokemonModel[], result: boolean, perfect: boolean): void {
+  postBattle(result: boolean, perfect: boolean): void {
 
     const currentState = this.state$.getValue();
-    const updatedPokemons = [...currentState.pokemons, ...returningPokemons];
     const updatedState: UserModel = {
       ...currentState, // Copy current state
-      pokemons: updatedPokemons,
       victory: result ? currentState.victory + 1 : currentState.victory,
       perfectVictory: perfect ? currentState.perfectVictory + 1 : currentState.perfectVictory,
       lose: result ? currentState.lose + 1 : currentState.lose,

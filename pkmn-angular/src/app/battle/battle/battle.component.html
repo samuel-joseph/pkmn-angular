@@ -174,12 +174,13 @@
       </div>
       <div *ngIf="this.ongoingBattle">
         <p style="
+          padding-top: 10vh;
           text-align: center; 
           font-size: 14pt; 
           color:white; 
           height: 20vh;
           background-color: black;"
-        >{{this.narrate}}</p>
+          >{{this.narrate}}</p>
       </div>
     </div>
     <div [ngSwitch]="playerOption"

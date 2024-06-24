@@ -23,20 +23,23 @@ export class RegisterComponent {
     private router: Router,
     private authService: AuthService) { }
 
-  onSubmit(): void {
-    const { username, email, password } = this.form;
-
-    this.authService.register(username, email, password).subscribe({
-      next: data => {
+    async onSubmit(): Promise<void> {
+      const { username, email, password } = this.form;
+    
+      try {
+        const data = await this.authService.register(username, email, password).toPromise();
         this.stateService.setState(data.user);
-        this.router.navigate(['/main'])
+        await this.router.navigate(['/main']);
         this.isSuccessful = true;
         this.isSignUpFailed = false;
-      },
-      error: err => {
-        this.errorMessage = err.error.message;
+      } catch (err) {
+        // Type guard to check if err is an instance of an object with the expected structure
+        if (err instanceof Error && (err as any).error && typeof (err as any).error.message === 'string') {
+          this.errorMessage = (err as any).error.message;
+        } else {
+          this.errorMessage = 'An unexpected error occurred';
+        }
         this.isSignUpFailed = true;
       }
-    });
-  }
+    }
 }

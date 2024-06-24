@@ -6,6 +6,76 @@
   overflow-y: scroll;
 }
 
+.hamburger-menu {
+  position: relative;
+}
+
+.hamburger {
+  font-size: 30px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+.menu {
+  display: none;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.menu.show {
+  display: block;
+}
+
+.menu div {
+  margin: 5px 0;
+}
+
+.menu button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  width: 100%;
+  text-align: left;
+  outline: none;
+}
+
+input {
+  margin-left: 10px;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-bottom: 2px solid black;
+  background: none;
+  outline: none;
+  color: white;
+}
+
+.enter-button {
+  margin-left: 10px;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  background: none;
+  color: grey;
+  font-weight: bold;
+  border: none;
+  outline: none;
+}
+
+.menu button:hover {
+  background-color: #f0f0f0;
+}
+
+
 .parent{
   background: var(--background-color); 
   height: 100vh;
