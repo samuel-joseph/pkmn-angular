@@ -168,7 +168,9 @@ export class NewGameComponent implements OnInit{
       this.myPokemons.push(chosen)
       if (this.myPokemons.length == 6) {
         this.stateService.setPokemon(this.myPokemons)
-        this.pokemonSubmit.emit({ pokemon: this.myPokemons, next: 'pre-battle'})
+        setTimeout(() => {
+          this.pokemonSubmit.emit({ pokemon: this.myPokemons, next: 'pre-battle'})
+        },2000)
         // this.router.navigate(['/profile'])
       }
     }

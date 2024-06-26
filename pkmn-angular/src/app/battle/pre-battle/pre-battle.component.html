@@ -38,12 +38,9 @@
       </div>
     </div>
     <div>
-      <div *ngIf="this.player1.length==3;else versus">
+      <div *ngIf="this.player1.length==3">
         <app-pop-up (battlePrep)="battleReady($event)"></app-pop-up>
       </div>
-      <ng-template #versus>
-        <h1 style="text-align: center;">VS</h1>
-      </ng-template> 
     </div>
     <div 
     *ngIf="this.myPokemons"
@@ -172,6 +169,32 @@
         </div>
       </div>
     </div>
+    <div style="
+        display: flex; 
+        flex-direction: column;
+        justify-content: center;
+        color: white;
+        " 
+        *ngIf="state$ | async as userState">
+        <h1 style="text-align: center;">{{userState.username}} Information</h1>
+        <div style="
+          display: flex; 
+          flex-direction: row;
+          justify-content: space-around;"
+          >
+          <span>Win: {{ userState.victory }}</span>
+          <span>Lose: {{ userState.lose }}</span>
+        </div>
+        <div style="
+          display: flex; 
+          flex-direction: row;
+          justify-content: space-around;"
+          >
+          <span>Perfect Victory: {{ userState.perfectVictory }}</span>
+          <span>Total Games: {{ userState.totalGames }}</span>
+        </div>
+        <!-- Add more fields as necessary -->
+      </div>
     <button (click)="newgame(false)">New Game</button>
     <button (click)="signout()">Sign out</button>
     <button style="background-color: red; color: white" 

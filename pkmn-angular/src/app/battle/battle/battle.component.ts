@@ -896,7 +896,7 @@ export class BattleComponent implements OnInit{
         let newType
         if (this.currentPlayer1[0].others.condition == '' && move.damageClass.ailment && move.damageClass.ailment.category == 'ailment') {
           return move
-        } else if(this.currentPlayer2[0].stats==this.currentPlayer2[0].others.stats && move.damageClass.ailment &&move.damageClass.ailment.category == 'net-good-stats'){
+        } else if(move.damageClass.ailment&&move.damageClass.ailment.category == 'net-good-stats'&&move.pp==move.ppMax){
           return move
         }else if (typeArr.typeTwo) {
           newType = typeAdvantage(move.type, typeArr.typeOne) * typeAdvantage(move.type, typeArr.typeTwo)

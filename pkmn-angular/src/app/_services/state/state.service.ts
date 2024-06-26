@@ -6,6 +6,7 @@ import { UserModel } from 'src/app/model/trainer-model.model';
 import { AuthService } from '../auth/auth.service';
 import { MoveModel } from 'src/app/model/move-model.model';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,19 +14,22 @@ import { environment } from 'src/environments/environment';
 export class StateService {
 
   private defaultUser: UserModel = {
+    _id: '',
     username: '',
     email: '',
     pokemons: [],
     victory: 0,
     perfectVictory: 0,
     lose: 0,
-    totalGames: 0,
-    password: ''
+    totalGames: 0
   };
 
   private state$: BehaviorSubject<UserModel> = new BehaviorSubject<UserModel>(this.defaultUser);
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) { }
 
   // Set state
   setState(newState: UserModel): void {
@@ -51,23 +55,62 @@ export class StateService {
   }
 
   async postBattle(event: any): Promise<void> {
-    try {
-      const currentState = this.state$.getValue();
-      const updatedState: UserModel = {
-        ...currentState, // Copy current state
-        victory: event.result === "win" ? currentState.victory + 1 : currentState.victory,
-        perfectVictory: event.perfect ? currentState.perfectVictory + 1 : currentState.perfectVictory,
-        lose: event.result === "lose" ? currentState.lose + 1 : currentState.lose,
-        totalGames: currentState.victory + currentState.lose
-      };
-  
-      const response = await this.authService.update(updatedState);
-      this.setState(updatedState);
-      console.log(response);
-    } catch (error) {
-      console.error('Error updating state:', error);
+    const win: boolean = event.outcome === 'win'
+    const perfect: boolean = event.perfect
+   try {
+     const currentState = this.state$.getValue();
+     if(currentState._id)
+      this.authService.getUser(currentState._id).subscribe(async data => {
+        if (win) {
+          currentState.victory = currentState.victory + 1
+          currentState.perfectVictory = perfect ? currentState.perfectVictory + 1 : currentState.perfectVictory
+        }
+        else if (!win && currentState.victory == 0) {
+          this.newGame(false)
+          this.router.navigate(['/main'])
+        }
+        else {
+          currentState.lose = currentState.lose + 1
+        }
+
+        currentState.totalGames = currentState.totalGames + 1
+        // const response = await this.authService.update(currentState);
+        this.setState(currentState)
+        const response = await this.authService.update(currentState);
+        console.log(response)
+      })
+    } catch (e) {
+      console.error("Error updating ",e)
     }
   }
+
+  // async postBattle(event: any): Promise<void> {
+  //   try {
+  //     const currentState = this.state$.getValue();
+  //     if (event.outcome == "lose") {
+  //       if(currentState._id){
+  //         this.loseScenario(currentState._id)
+  //       }
+  //     }
+  //     const updatedState: UserModel = {
+  //       ...currentState, // Copy current state
+  //       victory: event.outcome === "win" ?
+  //         currentState.victory + 1
+  //         : currentState.victory,
+  //       perfectVictory: event.perfect ?
+  //         currentState.perfectVictory + 1
+  //         : currentState.perfectVictory,
+  //       lose: event.outcome === "lose" ? currentState.lose + 1 : currentState.lose,
+  //       totalGames: currentState.victory + 1 + currentState.lose
+  //     };
+  
+  //     const response = await this.authService.update(updatedState);
+  //     this.setState(updatedState);
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.error('Error updating state:', error);
+  //   }
+  // }
 
   async newGame(endgame: boolean): Promise<void> {
     for (let gymLeader of environment.gymLeaders) {
@@ -87,6 +130,7 @@ export class StateService {
     }
 
     this.setState({
+      _id: currentState._id,
       username: currentState.username,
       email: currentState.email,
       pokemons: [],
@@ -112,6 +156,8 @@ export class StateService {
     //   console.error('Error updating status: ',e)
     // }
   }
+
+
 
   // Get state
   getState(): Observable<UserModel> {
