@@ -37,6 +37,8 @@ export class NewGameComponent implements OnInit{
     clickedPokemon = false
     gameLoading = true
     inputValue: string = '';
+  
+    isChamp = false
     
     myPokemons: PokemonModel[] = []
 
@@ -44,12 +46,16 @@ export class NewGameComponent implements OnInit{
   async ngOnInit():Promise<void> {
     await this.moveService.getAllMoves().subscribe(response => {
       this.dbMoves = response
+      this.stateService.getState().subscribe(response => {
+        if(response.champion)
+          this.isChamp = response.champion
+      })
     })
-    setTimeout(() => {
-      this.gameLoading = false
+    // setTimeout(() => {
+      // this.gameLoading = false
       this.getRegion(this.regionArr[0])
       this.menuOpen = !this.menuOpen
-    }, 10700)
+    // }, 10700)
   }
 
   // handleEnter(): void {

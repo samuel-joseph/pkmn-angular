@@ -12,4 +12,5 @@ export interface UserModel {
   totalGames: number;
   password?: string;
   moves?: Array<MoveModel>;
+  champion?: boolean
 }

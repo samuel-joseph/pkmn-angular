@@ -1,5 +1,5 @@
-<!-- <app-openning *ngIf="gameLoading"></app-openning> -->
-<div class="col-md-12">
+<app-openning></app-openning>
+<div *ngIf="!gameLoading" class="col-md-12" style="padding-top: 25vh;">
   <div class="card card-container container">
     <form
       *ngIf="!isLoggedIn"

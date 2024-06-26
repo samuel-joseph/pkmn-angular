@@ -21,7 +21,8 @@ export class StateService {
     victory: 0,
     perfectVictory: 0,
     lose: 0,
-    totalGames: 0
+    totalGames: 0,
+    champion: false
   };
 
   private state$: BehaviorSubject<UserModel> = new BehaviorSubject<UserModel>(this.defaultUser);
@@ -127,6 +128,8 @@ export class StateService {
         totalGames: currentState.victory + currentState.lose,
         perfectVictory: currentState.perfectVictory
       } 
+      currentState.champion = true
+      this.authService.update(currentState)
     }
 
     this.setState({

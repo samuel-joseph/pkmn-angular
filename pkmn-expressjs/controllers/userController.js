@@ -23,6 +23,24 @@ const getUserById = async (req, res) => {
   }
 };
 
+const getChampions = async (req, res) => {
+  try {
+    // Find all users where champion is true
+    const users = await User.find({ champion: true });
+
+    // Check if no users are found
+    if (!users || users.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No users with champion property found" });
+    }
+
+    res.json(users); // Respond with the array of users
+  } catch (error) {
+    res.status(500).json({ message: "Server error: " + error.message });
+  }
+};
+
 // Update an existing user
 const updateUser = async (req, res) => {
   const userId = req.user.userId;
@@ -35,6 +53,7 @@ const updateUser = async (req, res) => {
     perfectVictory,
     lose,
     totalGames,
+    champion,
   } = req.body;
 
   try {
@@ -51,6 +70,7 @@ const updateUser = async (req, res) => {
     user.perfectVictory = perfectVictory || user.perfectVictory;
     user.lose = lose || user.lose;
     user.totalGames = totalGames || user.totalGames;
+    user.champion = champion || user.champion;
 
     // Update password if provided
     if (password) {
@@ -82,6 +102,7 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
   getUsers,
+  getChampions,
   getUserById,
   updateUser,
   deleteUser,

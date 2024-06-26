@@ -6,10 +6,11 @@
   align-items: center;
   letter-spacing: .5rem;
   font-weight: bolder;
-  background-image: url("../../../assets/images/background/background_1.jpg");
-  background-position: center;
+  background-image: url('../../../assets/images/background/prebattle1.jpg');
+  background-position: top;
   background-repeat: no-repeat;
   background-size: cover;
+  position: absolute;
 
   .textParent{
     overflow: hidden;
