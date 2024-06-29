@@ -283,10 +283,6 @@ const userSchema = new mongoose.Schema({
     required: true,
     maxlength: 100,
   },
-  champion: {
-    type: Boolean,
-    default: false,
-  },
   createdAt: {
     type: Date,
     default: Date.now,

@@ -10,9 +10,14 @@ const register = async (req, res) => {
   }
 
   try {
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
+    const existingEmail = await User.findOne({ email });
+    if (existingEmail) {
       return res.status(400).json({ message: "Email already in use." });
+    }
+
+    const existingUsername = await User.findOne({ username });
+    if (existingUsername) {
+      return res.status(400).json({ message: "Username already in use." });
     }
 
     const newUser = new User({ username, email, password, pokemons });
@@ -36,7 +41,9 @@ const login = async (req, res) => {
   }
 
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({
+      $or: [{ email: email }, { username: email }],
+    });
     if (!user) {
       return res.status(400).json({ message: "Invalid email or password." });
     }
