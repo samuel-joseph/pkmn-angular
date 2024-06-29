@@ -283,16 +283,16 @@ export class PreBattleComponent implements OnInit {
         if (!gymLeader.gymLose) {
           this.myPokemons.push(...event.player1pokemons)
           gymLeader.gymLose = true
-          this.stateService.postBattle(event)
           break
         } 
       }
     } else {
-      this.myPokemons.push(...this.player1)
       this.myPokemons.push(...event.player1pokemons)
       this.gymPokemons.push(...this.player2)
       this.gymPokemons.push(...event.player2pokemons)
     }
+
+    this.stateService.postBattle(event)
     this.battlePhase = 'overview'
     this.initialBattlePhase()
   }

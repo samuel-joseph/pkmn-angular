@@ -59,6 +59,14 @@ export class AuthService{
   //   return this.http.put<any>(USER_API, data);
   // }
 
+  getUser(_id: string): Observable<any> {
+    return this.http.get(USER_API + _id);
+  }
+
+  getChampions(): Observable<any> {
+    return this.http.get(USER_API + 'champions');
+  }
+
 
   update(data: data): Promise<any> {
     return firstValueFrom(this.http.put<any>(USER_API, data));

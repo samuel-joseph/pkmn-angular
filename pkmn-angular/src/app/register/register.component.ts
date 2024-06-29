@@ -34,11 +34,12 @@ export class RegisterComponent {
         this.isSignUpFailed = false;
       } catch (err) {
         // Type guard to check if err is an instance of an object with the expected structure
-        if (err instanceof Error && (err as any).error && typeof (err as any).error.message === 'string') {
+        // if (err instanceof Error && (err as any).error && typeof (err as any).error.message === 'string') {
           this.errorMessage = (err as any).error.message;
-        } else {
-          this.errorMessage = 'An unexpected error occurred';
-        }
+        // } else {
+        //   this.errorMessage = 'An unexpected error occurred';
+        //   console.log("What is error: ",err)
+        // }
         this.isSignUpFailed = true;
       }
     }

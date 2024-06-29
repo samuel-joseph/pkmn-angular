@@ -1,5 +1,4 @@
-<app-openning *ngIf="gameLoading"></app-openning>
-<div *ngIf="!gameLoading" class="parent">
+<div class="parent">
   <div class="sub-parent" 
   *ngIf="toDisplayPokemon.length!==0&&clickedPokemon">
     <div style="    
@@ -159,8 +158,8 @@
   </div>
   <div class="hamburger-menu">
     <button class="hamburger" (click)="toggleMenu()">&#9776;</button>
-    <input type="text" [(ngModel)]="inputValue" placeholder="Enter pokemon">
-    <button class="enter-button" (click)="displayPokemon(inputValue)">Enter</button>  
+    <input *ngIf="isChamp" type="text" [(ngModel)]="inputValue" placeholder="Enter pokemon">
+    <button *ngIf="isChamp" class="enter-button" (click)="displayPokemon(inputValue)">Enter</button>  
     <div class="menu" [ngClass]="{'show': menuOpen}">
       <div *ngFor="let region of regionArr">
         <button (click)="getRegion(region)">{{region}}</button>
