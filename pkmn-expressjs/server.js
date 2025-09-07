@@ -9,6 +9,8 @@ require("dotenv").config();
 
 const app = express();
 
+app.get("/healthz", (_req, res) => res.send("ok"));
+
 const PORT = process.env.PORT || 3000;
 
 // Middleware

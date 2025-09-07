@@ -62,10 +62,29 @@ const login = async (req, res) => {
   }
 };
 
+const validateToken = async (req, res) => {
+  const { token } = req.body;
+
+  if (!token) {
+    return res
+      .status(400)
+      .json({ valid: false, message: "Token is required." });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ valid: false, message: "Invalid token." });
+    }
+
+    // Optionally, you can send the decoded token or user information
+    res.json({ valid: true, userId: decoded.userId });
+  });
+};
+
 const logout = async (req, res) => {
   const token = req.token;
   addTokenToBlacklist(token);
   res.json({ message: "Logged out successfully" });
 };
 
-module.exports = { register, login, logout };
+module.exports = { register, login, logout, validateToken };
