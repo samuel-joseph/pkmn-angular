@@ -11,9 +11,9 @@ import { misty } from "./environment-gym-leaders/misty";
 
 export const environment = {
   production: false,
-  USER_API: 'http://localhost:3000/api/user/',
-  AUTH_API: 'http://localhost:3000/api/auth/',
-  MOVES_API: 'http://localhost:3000/api/moves/',
+  USER_API: 'https://pkmn-expressjs.onrender.com/api/user/',
+  AUTH_API: 'https://pkmn-expressjs.onrender.com/api/auth/',
+  MOVES_API: 'https://pkmn-expressjs.onrender.com/api/moves/',
   pokeballImg: pokeball,
   gymLeaders: [
     brock,
