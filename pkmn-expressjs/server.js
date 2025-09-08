@@ -20,8 +20,8 @@ app.use(bodyParser.json());
 app.use(
   cors({
     origin: [
-      "http://localhost:4200",        // Angular dev server
-      "https://pkmn-angular.web.app", // your Firebase-hosted Angular app (adjust if different)
+      "http://localhost:4200", // Angular dev server
+      "https://the-pokemon-stadium-battle.web.app", // your Firebase-hosted Angular app (adjust if different)
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
