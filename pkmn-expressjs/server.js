@@ -15,7 +15,19 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors());
+
+// 🔥 Explicit CORS config
+app.use(
+  cors({
+    origin: [
+      "http://localhost:4200",        // Angular dev server
+      "https://pkmn-angular.web.app", // your Firebase-hosted Angular app (adjust if different)
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 
 // Connect to MongoDB
 mongoose
@@ -26,7 +38,7 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log(err));
 
-//Routes
+// Routes
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", moveRoutes);
