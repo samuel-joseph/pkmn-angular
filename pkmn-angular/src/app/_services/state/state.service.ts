@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, firstValueFrom } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators'; 
 import { PokemonModel } from 'src/app/model/pokemon-model.model';
 import { UserModel } from 'src/app/model/trainer-model.model';
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class StateService {
 
-  private readonly defaultUser: UserModel = {
+  private defaultUser: UserModel = {
     _id: '',
     username: '',
     email: '',
@@ -25,119 +25,155 @@ export class StateService {
     champion: false
   };
 
-  private state$ = new BehaviorSubject<UserModel>(this.defaultUser);
+  private state$: BehaviorSubject<UserModel> = new BehaviorSubject<UserModel>(this.defaultUser);
 
   constructor(
     private router: Router,
     private authService: AuthService
-  ) {}
+  ) { }
 
-  // ========== Helpers ==========
-  private resetStats(user: UserModel): UserModel {
-    return {
-      ...user,
+  // Set state
+  setState(newState: UserModel): void {
+    this.state$.next(newState);
+  }
+
+  async setPokemon(pokemons: PokemonModel[]): Promise<void> {
+    const currentState = this.state$.getValue();
+    const updatedState: UserModel = {
+      ...currentState,
+      pokemons: [...pokemons],
+      victory: 0,
+      perfectVictory: 0,
+      lose: 0,
+      totalGames: 0
+    };
+    try {
+      const response = await this.authService.update(updatedState);
+      this.setState(updatedState);
+    } catch (error) {
+      console.error('Error updating state:', error);
+    }
+  }
+
+  async postBattle(event: any): Promise<void> {
+    const win: boolean = event.outcome === 'win'
+    const perfect: boolean = event.perfect
+   try {
+     const currentState = this.state$.getValue();
+     if(currentState._id)
+      this.authService.getUser(currentState._id).subscribe(async data => {
+        if (win) {
+          currentState.victory = currentState.victory + 1
+          currentState.perfectVictory = perfect ? currentState.perfectVictory + 1 : currentState.perfectVictory
+        }
+        else if (!win && currentState.victory == 0) {
+          this.newGame(false)
+          this.router.navigate(['/main'])
+        }
+        else {
+          currentState.lose = currentState.lose + 1
+        }
+
+        currentState.totalGames = currentState.totalGames + 1
+        // const response = await this.authService.update(currentState);
+        this.setState(currentState)
+        const response = await this.authService.update(currentState);
+        console.log(response)
+      })
+    } catch (e) {
+      console.error("Error updating ",e)
+    }
+  }
+
+  // async postBattle(event: any): Promise<void> {
+  //   try {
+  //     const currentState = this.state$.getValue();
+  //     if (event.outcome == "lose") {
+  //       if(currentState._id){
+  //         this.loseScenario(currentState._id)
+  //       }
+  //     }
+  //     const updatedState: UserModel = {
+  //       ...currentState, // Copy current state
+  //       victory: event.outcome === "win" ?
+  //         currentState.victory + 1
+  //         : currentState.victory,
+  //       perfectVictory: event.perfect ?
+  //         currentState.perfectVictory + 1
+  //         : currentState.perfectVictory,
+  //       lose: event.outcome === "lose" ? currentState.lose + 1 : currentState.lose,
+  //       totalGames: currentState.victory + 1 + currentState.lose
+  //     };
+  
+  //     const response = await this.authService.update(updatedState);
+  //     this.setState(updatedState);
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.error('Error updating state:', error);
+  //   }
+  // }
+
+  async newGame(endgame: boolean): Promise<void> {
+    for (let gymLeader of environment.gymLeaders) {
+      gymLeader.gymLose = false
+    }
+    const currentState = this.state$.getValue();
+
+    if (endgame) {
+      //to be stored in a db 'leaderboards'
+      const champion = {
+        username: currentState.username,
+        pokemons: currentState.pokemons,
+        date: Date.now(),
+        totalGames: currentState.victory + currentState.lose,
+        perfectVictory: currentState.perfectVictory
+      } 
+      currentState.champion = true
+      this.authService.update(currentState)
+    }
+
+    this.setState({
+      _id: currentState._id,
+      username: currentState.username,
+      email: currentState.email,
       pokemons: [],
       victory: 0,
       perfectVictory: 0,
       lose: 0,
-      totalGames: 0,
-      champion: false
-    };
+      totalGames: 0
+    })
+
+    // const newData = {
+    //   username: currentState.username,
+    //   email: currentState.email,
+    //   pokemons: [],
+    //   victory: 1,
+    //   lose: 1,
+    //   perfectVictory: 1,
+    //   totalGames: 1
+    // }
+    // try {
+    //   const response = await this.authService.update(newData)
+    //   console.log(response)
+    // } catch (e) {
+    //   console.error('Error updating status: ',e)
+    // }
   }
 
-  private async updateUser(user: UserModel): Promise<UserModel> {
-    try {
-      const response = await this.authService.update(user);
-      this.setState(user);
-      return user;
-    } catch (error) {
-      console.error('Error updating user:', error);
-      throw error;
-    }
-  }
 
-  // ========== State Management ==========
-  setState(newState: UserModel): void {
-    this.state$.next({ ...newState });
-  }
 
+  // Get state
   getState(): Observable<UserModel> {
     return this.state$.asObservable();
   }
 
-  // ========== Pokemon Management ==========
-  async setPokemon(pokemons: PokemonModel[]): Promise<UserModel> {
-    const updated = this.resetStats({
-      ...this.state$.getValue(),
-      pokemons: [...pokemons]
-    });
-    return this.updateUser(updated);
-  }
-
-  // ========== Battle Handling ==========
-  async postBattle(event: { outcome: 'win' | 'lose'; perfect?: boolean }): Promise<UserModel> {
-    const win = event.outcome === 'win';
-    const perfect = !!event.perfect;
-    const currentState = this.state$.getValue();
-
-    if (!currentState._id) return currentState;
-
-    try {
-      const freshUser = await firstValueFrom(this.authService.getUser(currentState._id));
-
-      let updated: UserModel = { ...freshUser };
-
-      if (win) {
-        updated.victory++;
-        if (perfect) updated.perfectVictory++;
-      } else if (!win && updated.victory === 0) {
-        await this.newGame(false);
-        this.router.navigate(['/main']);
-        return updated;
-      } else {
-        updated.lose++;
-      }
-
-      updated.totalGames++;
-
-      return this.updateUser(updated);
-    } catch (error) {
-      console.error("Error posting battle:", error);
-      throw error;
-    }
-  }
-
-  async newGame(endgame: boolean): Promise<UserModel> {
-    // Reset gym leaders
-    environment.gymLeaders.forEach(leader => leader.gymLose = false);
-
-    let current = this.state$.getValue();
-
-    if (endgame) {
-      // TODO: Save champion in leaderboard collection
-      const champion = {
-        username: current.username,
-        pokemons: current.pokemons,
-        date: Date.now(),
-        totalGames: current.victory + current.lose,
-        perfectVictory: current.perfectVictory
-      };
-      current = { ...current, champion: true };
-      await this.updateUser(current);
-    }
-
-    const resetUser = this.resetStats(current);
-    this.setState(resetUser);
-    return resetUser;
-  }
-
-  // ========== Moves ==========
   setMoveState(newMoves: MoveModel[]): void {
-    const updated: UserModel = {
-      ...this.state$.getValue(),
+    const currentState = this.state$.getValue();
+    const updatedState: UserModel = {
+      ...currentState,
       moves: [...newMoves]
     };
-    this.setState(updated);
+    this.state$.next(updatedState);
   }
 
   getMoveState(): Observable<MoveModel[]> {
@@ -145,4 +181,6 @@ export class StateService {
       map(state => state.moves?.slice() ?? []) 
     );
   }
+
+  // Other methods to get, add, update, and remove Pokemon from state can be implemented similarly
 }
